@@ -1,0 +1,11 @@
+{
+  "name": "project_t",
+  "version": "0.0.1",
+  "description": "A open-source project with a Node.js backend and Next.js frontend",
+  "author": "dbatonyi",
+  "license": "ISC",
+  "scripts": {
+    "install-pl": "concurrently \"cd api && npm install\" \"cd frontend && npm install\"",
+    "start-pl": "concurrently \"cd api && npm run start\" \"cd frontend && npm run dev\""
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "signInTitle": "Sign in",
+  "signInAuthError": "Wrong email or password!",
+  "signInEmail": "Email Address",
+  "signInPassword": "Password",
+  "signInSubmit": "Sign in",
+  "signInPassReset": "Reset password!",
+  "signInRegistration": "I don't have a user yet!"
+}

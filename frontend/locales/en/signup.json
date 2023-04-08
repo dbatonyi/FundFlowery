@@ -1,0 +1,9 @@
+{
+  "signupTitle": "Registration",
+  "signupEmail": "Email Address",
+  "signupFirstName": "Firstname",
+  "signupLastName": "Lastname",
+  "signupPassword": "Password",
+  "signupRePassword": "Re-Password",
+  "signupSubmit": "Sign up"
+}

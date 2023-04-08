@@ -1,0 +1,17 @@
+// Import Variable
+
+@import "./variables.scss";
+
+// Components
+
+@import "./components/language-selector.scss";
+
+// Pages
+
+@import "./pages/login.scss";
+@import "./pages/register.scss";
+@import "./pages/password.scss";
+
+@import "./pages/dashboard.scss";
+
+// Common

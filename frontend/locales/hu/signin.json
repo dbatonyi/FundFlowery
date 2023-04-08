@@ -1,0 +1,9 @@
+{
+  "signInTitle": "Bejelentkezés",
+  "signInAuthError": "Hibás email cím vagy jelszó!",
+  "signInEmail": "Email cím",
+  "signInPassword": "Jelszó",
+  "signInSubmit": "Bejelentkezés",
+  "signInPassReset": "Elfelejtettem a jelszavam!",
+  "signInRegistration": "Még nincs felhasználóm!"
+}

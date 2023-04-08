@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <title>Project-T Password Reset</title>
+  </head>
+  <body>
+    <div
+      style="max-width: 320px; background-color: #8cd3ff; padding: 40px; margin: auto; font-size: 16px"
+    >
+      <h2>Dear {{user}},</h2>
+      <span style="font-weight: bold;"><p style="padding: 15px 0;">You can
+          change your password at the link below:
+        </p></span>
+      <a
+        style="color: black; background-color: #89b9d6; padding: 5px 10px; border: 1px solid black; text-decoration: none;"
+        href="http://localhost:3000/password/reset/{{reghash}}"
+      >Link</a>
+      <p>Greeting, Project-T group</p>
+    </div>
+    <div
+      style="min-height: 20px; background-color: #89b9d6; max-width: 320px; margin: auto; padding: 20px 40px; font-size: 12px;"
+    >
+      Created by: dbatonyi
+    </div>
+  </body>
+</html>

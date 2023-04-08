@@ -1,0 +1,9 @@
+{
+  "signupTitle": "Regisztráció",
+  "signupEmail": "Email Cím",
+  "signupFirstName": "Keresztnév",
+  "signupLastName": "Vezetéknév",
+  "signupPassword": "Jelszó",
+  "signupRePassword": "Jelszó ismét",
+  "signupSubmit": "Regisztráció"
+}

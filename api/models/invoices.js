@@ -7,9 +7,9 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ User }) {
+    static associate({ FinanceTable }) {
       // define association here
-      this.belongsTo(User);
+      this.belongsTo(FinanceTable);
     }
   }
 
@@ -20,16 +20,16 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      customerName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       invoiceDate: {
         type: DataTypes.DATE,
         allowNull: false,
       },
       totalAmount: {
         type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      invoiceCategory: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
     },

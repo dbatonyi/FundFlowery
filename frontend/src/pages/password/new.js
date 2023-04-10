@@ -1,8 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
-const config = require("@/config");
+const config = require("../../../config");
 
 const NewPassword = () => {
   const router = useRouter();
@@ -28,9 +27,8 @@ const NewPassword = () => {
   };
 
   return (
-    <div className="project-t-password">
-      <LanguageSwitcher />
-      <div className="project-t-password__form-container">
+    <div className="new-password">
+      <div className="new-password__form-container">
         <form onSubmit={submit}>
           <h1>{t("newPassTitle")}</h1>
 

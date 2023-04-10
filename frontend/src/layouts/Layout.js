@@ -1,8 +1,9 @@
 import React, { createContext, useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import Header from "@/components/Header";
 
-const config = require("@/config");
+const config = require("../../config");
 
 export const AuthContext = React.createContext(null);
 
@@ -123,7 +124,7 @@ const Layout = (props) => {
               <meta name="description" content="Project-T" />
               <link rel="icon" href="/favicon.ico" />
             </Head>
-
+            <Header auth={auth} logout={logout} />
             <main className="project-t-main">
               {props.children}
               {statusMessage ? (

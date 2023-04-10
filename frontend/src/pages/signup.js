@@ -1,8 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
-const config = require("@/config");
+const config = require("../../config");
 
 const SignUp = () => {
   const { t } = useTranslation("signup");
@@ -39,10 +38,9 @@ const SignUp = () => {
   };
 
   return (
-    <div className="project-t-signup">
-      <LanguageSwitcher />
-      <div className="project-t-signup-containerd">
-        <form className="project-t-signup-container__form" onSubmit={submit}>
+    <div className="signup">
+      <div className="signup-containerd">
+        <form className="signup-container__form" onSubmit={submit}>
           <h1>{t("signupTitle")}</h1>
 
           <label htmlFor="email">{t("signupEmail")}</label>

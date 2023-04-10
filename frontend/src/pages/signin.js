@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { AuthContext } from "../layouts/Layout";
 
 const signIn = () => {
   const { t } = useTranslation("signin");
@@ -26,13 +26,12 @@ const signIn = () => {
   }, [authFailed]);
 
   return (
-    <div className="project-t-signin">
-      <LanguageSwitcher />
-      <div className="project-t-signin__form-container">
+    <div className="signin">
+      <div className="signin__form-container">
         <form onSubmit={submit}>
           <h1>{t("signInTitle")}</h1>
           {authFailed ? (
-            <div className="project-t-signin__form-container--error">
+            <div className="signin__form-container--error">
               {t("signInAuthError")}
             </div>
           ) : (
@@ -55,10 +54,10 @@ const signIn = () => {
             </button>
           </div>
         </form>
-        <div className="project-t-signin__form-container--password-reset">
+        <div className="signin__form-container--password-reset">
           <Link href="/password/new">{t("signInPassReset")}</Link>
         </div>
-        <div className="project-t-signin__form-container--sign-up">
+        <div className="signin__form-container--sign-up">
           <Link href="/signup">{t("signInRegistration")}</Link>
         </div>
       </div>

@@ -31,6 +31,31 @@ exports.apiLog = async function (req, res) {
   }
 };
 
+exports.createFinancialTable = async function (req, res) {
+  const { FinancialTable } = require("../models");
+  let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+
+  const authenticateToken = req.headers["authenticate"];
+
+  if (!authenticateToken || config.apiToken !== authenticateToken.slice(7)) {
+    utils.writeToLogFile(`IP: ${ip} -- (API token not valid!)`, "warning");
+    return res.status(403).send({ message: "API token not valid!" });
+  }
+
+  const { userId, tableName } = req.body;
+
+  try {
+    const financialTable = await FinancialTable.create({ userId, tableName });
+
+    return res.status(200).send({
+      message: "Financial table successfully created!",
+    });
+  } catch (error) {
+    utils.writeToLogFile(`IP: ${ip} -- ${error}`, "error");
+    return res.status(500).send({ message: "Something went wrong!" });
+  }
+};
+
 exports.getFinancialTablesByUser = async function (req, res) {
   const { FinancialTable } = require("../models");
   let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
@@ -46,7 +71,7 @@ exports.getFinancialTablesByUser = async function (req, res) {
 
   try {
     const financialTables = await FinancialTable.findAll({
-      where: { uuid: userId },
+      where: { userId },
     });
     return res.status(200).send({
       data: financialTables,
@@ -59,7 +84,7 @@ exports.getFinancialTablesByUser = async function (req, res) {
 };
 
 exports.getFinancialTableDataById = async function (req, res) {
-  const { FinancialTable, Invoices, Earnings } = require("../models");
+  const { FinancialTable, Incomes, Outgoings } = require("../models");
   let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 
   const authenticateToken = req.headers["authenticate"];
@@ -74,7 +99,7 @@ exports.getFinancialTableDataById = async function (req, res) {
   try {
     const financialTable = await FinancialTable.findAll({
       where: { uuid: tableId },
-      include: [Invoices, Earnings],
+      include: [Incomes, Outgoings],
     });
 
     return res.status(200).send({

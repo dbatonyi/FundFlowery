@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Invoices extends Model {
+  class Incomes extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,35 +9,43 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({ FinancialTable }) {
       // define association here
-      this.belongsTo(FinancialTable);
+      this.belongsTo(FinancialTable, { foreignKey: "financialTableId" });
     }
   }
 
-  Invoices.init(
+  Incomes.init(
     {
-      invoiceID: {
+      incomeID: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      invoiceDate: {
+      incomeDate: {
         type: DataTypes.DATE,
         allowNull: false,
       },
-      totalAmount: {
+      incomeAmount: {
         type: DataTypes.FLOAT,
         allowNull: false,
       },
-      invoiceCategory: {
+      incomeCategory: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      incomeOrigin: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      description: {
         type: DataTypes.STRING,
         allowNull: false,
       },
     },
     {
       sequelize,
-      tableName: "invoices",
-      modelName: "Invoices",
+      tableName: "incomes",
+      modelName: "Incomes",
     }
   );
-  return Invoices;
+  return Incomes;
 };

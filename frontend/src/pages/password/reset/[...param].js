@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-const config = require("../../../../config");
+const configData = require("../../../../config");
 
 const ResetPassword = () => {
   const router = useRouter();
@@ -17,7 +17,7 @@ const ResetPassword = () => {
     const rePassword = formData.get("repassword");
 
     if (password === rePassword) {
-      await fetch(`${config.serverUrl}/api/password/reset/${urlParam}`, {
+      await fetch(`${configData.serverUrl}/api/password/reset/${urlParam}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

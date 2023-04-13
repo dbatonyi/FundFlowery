@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../layouts/Layout";
 
@@ -74,7 +75,6 @@ const FinancialTable = (props) => {
         const dataJson = await response.json();
 
         if (response.status === 200) {
-          console.log(dataJson.data);
           setFinancialTableList(dataJson.data);
           setFilteredFinancialTableList(dataJson.data);
         }
@@ -108,10 +108,10 @@ const FinancialTable = (props) => {
   };
 
   return (
-    <div className="financial-table">
-      <div className="financial-table__container">
+    <div className="financial-table-list">
+      <div className="financial-table-list__container">
         <h1>Financial Tables</h1>
-        <div className="financial-table__container--controllers">
+        <div className="financial-table-list__container--controllers">
           <div
             className="create-new-table"
             onClick={() => {
@@ -121,13 +121,26 @@ const FinancialTable = (props) => {
             +
           </div>
         </div>
-        <div className="financial-table__container-list">
+        <div className="financial-table-list__container-list">
           The financial tables list goes here!
           {filteredFinancialTableList &&
           filteredFinancialTableList.length > 0 ? (
-            <div className="financial-table-list--item">item</div>
+            <>
+              {filteredFinancialTableList.map((table) => {
+                return (
+                  <div
+                    key={table.uuid}
+                    className="financial-table-list__container-list--item"
+                  >
+                    <Link href={`/financial-table/${table.uuid}`}>
+                      {table.tableName}
+                    </Link>
+                  </div>
+                );
+              })}
+            </>
           ) : (
-            <div className="financial-table--no-result">
+            <div className="financial-table-list--no-result">
               There is no financial table with this user.
             </div>
           )}

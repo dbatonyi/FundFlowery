@@ -83,7 +83,7 @@ exports.getFinancialTablesByUser = async function (req, res) {
   }
 };
 
-exports.getFinancialTableDataById = async function (req, res) {
+exports.getFinancialTableDataByUuid = async function (req, res) {
   const { FinancialTable, Incomes, Outgoings } = require("../models");
   let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 
@@ -94,11 +94,11 @@ exports.getFinancialTableDataById = async function (req, res) {
     return res.status(403).send({ message: "API token not valid!" });
   }
 
-  const { tableId } = req.body;
+  const { tableUuid } = req.body;
 
   try {
     const financialTable = await FinancialTable.findAll({
-      where: { uuid: tableId },
+      where: { uuid: tableUuid },
       include: [Incomes, Outgoings],
     });
 
@@ -106,6 +106,45 @@ exports.getFinancialTableDataById = async function (req, res) {
       data: financialTable,
       message: "Financial table data retrieved successfully!",
     });
+  } catch (error) {
+    utils.writeToLogFile(`IP: ${ip} -- ${error}`, "error");
+    return res.status(500).send({ message: "Something went wrong!" });
+  }
+};
+
+exports.deleteFinancialTableByUuid = async function (req, res) {
+  const { FinancialTable, Incomes, Outgoings } = require("../models");
+  let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+
+  const authenticateToken = req.headers["authenticate"];
+
+  if (!authenticateToken || config.apiToken !== authenticateToken.slice(7)) {
+    utils.writeToLogFile(`IP: ${ip} -- (API token not valid!)`, "warning");
+    return res.status(403).send({ message: "API token not valid!" });
+  }
+
+  const { tableUuid } = req.body;
+
+  try {
+    const financialTable = await FinancialTable.findOne({
+      where: { uuid: tableUuid },
+      include: [Incomes, Outgoings],
+    });
+
+    if (financialTable) {
+      await Promise.all([
+        Incomes.destroy({ where: { financialTableId: financialTable.uuid } }),
+        Outgoings.destroy({ where: { financialTableId: financialTable.uuid } }),
+      ]);
+
+      await financialTable.destroy();
+
+      return res.status(200).send({
+        message: "Financial table successfully deleted!",
+      });
+    }
+
+    return res.status(404).send({ message: "No table find in the database!" });
   } catch (error) {
     utils.writeToLogFile(`IP: ${ip} -- ${error}`, "error");
     return res.status(500).send({ message: "Something went wrong!" });

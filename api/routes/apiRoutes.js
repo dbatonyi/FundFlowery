@@ -7,13 +7,15 @@ module.exports = function (app) {
 
   app.post("/api/create-financial-table", apiController.createFinancialTable);
 
+  app.post("/api/get-financial-tables", apiController.getFinancialTablesByUser);
+
   app.post(
-    "/api/get-financial-tables-by-user",
-    apiController.getFinancialTablesByUser
+    "/api/get-financial-table-data",
+    apiController.getFinancialTableDataByUuid
   );
 
   app.post(
-    "/api/get-financial-table-data-by-id",
-    apiController.getFinancialTableDataById
+    "/api/delete-financial-table",
+    apiController.deleteFinancialTableByUuid
   );
 };

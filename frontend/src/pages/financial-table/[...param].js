@@ -14,7 +14,7 @@ const FinancialTable = () => {
     const fetchFinancialTable = async () => {
       try {
         const response = await fetch(
-          `${configData.serverUrl}/api/get-financial-table-data-by-id`,
+          `${configData.serverUrl}/api/get-financial-table-data`,
           {
             method: "POST",
             headers: {
@@ -23,7 +23,7 @@ const FinancialTable = () => {
             },
             credentials: "include",
             body: JSON.stringify({
-              tableId: urlParam,
+              tableUuid: urlParam,
             }),
           }
         );

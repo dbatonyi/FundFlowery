@@ -1,4 +1,4 @@
-# Project-L Documentation
+# Project-T Documentation
 
 **Author:** dbatonyi
 
@@ -8,4 +8,4 @@
 
 ## Description:
 
-Project-L readme coming soon!
+Project-T readme coming soon!

@@ -13,7 +13,10 @@ const FinancialTable = (props) => {
   const [filteredFinancialTableList, setFilteredFinancialTableList] =
     useState(null);
 
-  const [showPopup, setShowPopup] = useState(false);
+  const [selectedTableUuid, setSelectedTableUuid] = useState(null);
+
+  const [showCreatePopup, setShowCreatePopup] = useState(false);
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
 
   //Functions
 
@@ -53,13 +56,48 @@ const FinancialTable = (props) => {
     }
   };
 
+  const deleteFinancialTable = async (tableUuid) => {
+    try {
+      const response = await fetch(
+        `${configData.serverUrl}/api/delete-financial-table`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authenticate: `Bearer ${configData.apiToken}`,
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            tableUuid,
+          }),
+        }
+      );
+      const dataJson = await response.json();
+
+      if (response.status === 200) {
+        setReRender(!reRender);
+      }
+    } catch (error) {
+      const log = await fetch(`${configData.serverUrl}/api/log`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          log: error,
+        }),
+      });
+      const data = await log.json();
+      setStatusMessage(data.message);
+    }
+  };
+
   //useEffects
 
   useEffect(() => {
     const fetchFinancialTableList = async () => {
       try {
         const response = await fetch(
-          `${configData.serverUrl}/api/get-financial-tables-by-user`,
+          `${configData.serverUrl}/api/get-financial-tables`,
           {
             method: "POST",
             headers: {
@@ -95,7 +133,7 @@ const FinancialTable = (props) => {
     fetchFinancialTableList();
   }, [reRender]);
 
-  //Form handler
+  //Handlers
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -115,7 +153,7 @@ const FinancialTable = (props) => {
           <div
             className="create-new-table"
             onClick={() => {
-              setShowPopup(true);
+              setShowCreatePopup(true);
             }}
           >
             +
@@ -135,6 +173,15 @@ const FinancialTable = (props) => {
                     <Link href={`/financial-table/${table.uuid}`}>
                       {table.tableName}
                     </Link>
+                    <div
+                      className="delete-table"
+                      onClick={() => {
+                        setSelectedTableUuid(table.uuid);
+                        setShowDeletePopup(true);
+                      }}
+                    >
+                      Delete
+                    </div>
                   </div>
                 );
               })}
@@ -146,12 +193,12 @@ const FinancialTable = (props) => {
           )}
         </div>
       </div>
-      {showPopup ? (
+      {showCreatePopup ? (
         <div className="popup-container">
           <div
             className="popup-container--close"
             onClick={() => {
-              setShowPopup(false);
+              setShowCreatePopup(false);
             }}
           >
             X
@@ -164,6 +211,41 @@ const FinancialTable = (props) => {
               Create
             </button>
           </form>
+        </div>
+      ) : null}
+      {showDeletePopup ? (
+        <div className="popup-container">
+          <div
+            className="popup-container--close"
+            onClick={() => {
+              setShowDeletePopup(false);
+            }}
+          >
+            X
+          </div>
+          <div className="popup-container--title">
+            You really want to delete the table
+          </div>
+          <div className="popup-container--controllers">
+            <div
+              className="cancel"
+              onClick={() => {
+                setShowDeletePopup(false);
+                setSelectedTableUuid(null);
+              }}
+            >
+              No
+            </div>
+            <div
+              className="accept"
+              onClick={() => {
+                deleteFinancialTable(selectedTableUuid);
+                setShowDeletePopup(false);
+              }}
+            >
+              Yes
+            </div>
+          </div>
         </div>
       ) : null}
     </div>

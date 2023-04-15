@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
+      incomeTitle: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       incomeAmount: {
         type: DataTypes.FLOAT,
         allowNull: false,
@@ -38,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       description: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
     },
     {

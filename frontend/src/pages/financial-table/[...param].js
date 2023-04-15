@@ -2,13 +2,19 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { AuthContext } from "../../layouts/Layout";
+import NewIncomeForm from "@/components/forms/NewIncomeForm";
+import NewOutgoingForm from "@/components/forms/NewOutgoingForm";
+
 const configData = require("../../../config");
 
 const FinancialTable = () => {
   const router = useRouter();
   const urlParam = router.query.param;
 
-  const { setStatusMessage, userInfo } = useContext(AuthContext);
+  const { setStatusMessage } = useContext(AuthContext);
+
+  const [reRender, setReRender] = useState(false);
+  const [openedForm, setOpenedForm] = useState(null);
 
   useEffect(() => {
     const fetchFinancialTable = async () => {
@@ -47,13 +53,44 @@ const FinancialTable = () => {
     };
 
     fetchFinancialTable();
-  }, []);
+  }, [reRender]);
 
   return (
     <div className="financial-table">
       <div className="financial-table__form-container">
-        Table data goes here
+        <div
+          className="add-new-income-item"
+          onClick={() => {
+            setOpenedForm("income");
+          }}
+        >
+          + Add new income item
+        </div>
+        <div
+          className="add-new-outgoing-item"
+          onClick={() => {
+            setOpenedForm("outgoing");
+          }}
+        >
+          + Add new outgoing item
+        </div>
       </div>
+      {openedForm === "income" ? (
+        <NewIncomeForm
+          tableUuid={urlParam}
+          setOpenedForm={setOpenedForm}
+          reRender={reRender}
+          setReRender={setReRender}
+        />
+      ) : null}
+      {openedForm === "outgoing" ? (
+        <NewOutgoingForm
+          tableUuid={urlParam}
+          setOpenedForm={setOpenedForm}
+          reRender={reRender}
+          setReRender={setReRender}
+        />
+      ) : null}
     </div>
   );
 };

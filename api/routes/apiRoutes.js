@@ -18,4 +18,8 @@ module.exports = function (app) {
     "/api/delete-financial-table",
     apiController.deleteFinancialTableByUuid
   );
+
+  app.post("/api/create-new-income-item", apiController.createIncomeItem);
+
+  app.post("/api/create-new-outgoing-item", apiController.createOutgoingItem);
 };

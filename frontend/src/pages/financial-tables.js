@@ -142,7 +142,7 @@ const FinancialTable = (props) => {
     const tableName = formData.get("table-name");
     createNewFinancialTable(tableName);
 
-    setShowPopup(false);
+    setShowCreatePopup(false);
   };
 
   return (

@@ -99,7 +99,10 @@ exports.getFinancialTableDataByUuid = async function (req, res) {
   try {
     const financialTable = await FinancialTable.findAll({
       where: { uuid: tableUuid },
-      include: [Incomes, Outgoings],
+      include: [
+        { model: Incomes, as: "incomes" },
+        { model: Outgoings, as: "outgoings" },
+      ],
     });
 
     return res.status(200).send({

@@ -75,6 +75,7 @@ const FinancialTable = (props) => {
       const dataJson = await response.json();
 
       if (response.status === 200) {
+        setStatusMessage(dataJson.message);
         setReRender(!reRender);
       }
     } catch (error) {

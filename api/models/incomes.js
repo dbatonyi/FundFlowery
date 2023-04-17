@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Incomes.init(
     {
-      incomeID: {
+      incomeId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,

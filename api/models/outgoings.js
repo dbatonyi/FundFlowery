@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Outgoings.init(
     {
-      outgoingID: {
+      outgoingId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -39,6 +39,14 @@ module.exports = (sequelize, DataTypes) => {
       outgoingOrigin: {
         type: DataTypes.STRING,
         allowNull: true,
+      },
+      outgoingLocation: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      outgoingOnSale: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
       description: {
         type: DataTypes.STRING,

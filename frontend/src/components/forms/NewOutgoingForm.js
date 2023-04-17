@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import configData from "../../../config";
 import { AuthContext } from "@/layouts/Layout";
 
@@ -10,6 +10,12 @@ const NewOutgoingForm = ({
 }) => {
   const { setStatusMessage } = useContext(AuthContext);
 
+  const [isOnSaleChecked, setIsOnSaleChecked] = useState(false);
+
+  const handleOnSaleCheckboxChange = (event) => {
+    setIsOnSaleChecked(event.target.checked);
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -20,6 +26,7 @@ const NewOutgoingForm = ({
     const outgoingAmount = formData.get("outgoing-amount");
     const outgoingCategory = formData.get("outgoing-category");
     const outgoingOrigin = formData.get("outgoing-origin");
+    const outgoingLocation = formData.get("outgoing-location");
     const description = formData.get("description");
 
     try {
@@ -38,6 +45,8 @@ const NewOutgoingForm = ({
             outgoingAmount,
             outgoingCategory: outgoingCategory.toLowerCase(),
             outgoingOrigin: outgoingOrigin.toLowerCase(),
+            outgoingLocation: outgoingLocation.toLowerCase(),
+            outgoingOnSale: isOnSaleChecked,
             description,
             tableUuid,
           }),
@@ -85,6 +94,16 @@ const NewOutgoingForm = ({
         <input className="text" name="outgoing-category" type="text" required />
         <label htmlFor="outgoing-origin">Outgoing origin</label>
         <input className="text" name="outgoing-origin" type="text" required />
+        <label htmlFor="outgoing-location">Outgoing location</label>
+        <input className="text" name="outgoing-location" type="text" />
+        <label>
+          <input
+            type="checkbox"
+            checked={isOnSaleChecked}
+            onChange={handleOnSaleCheckboxChange}
+          />
+          On Sale
+        </label>
         <label htmlFor="description">Description</label>
         <input className="text" name="description" type="text" />
         <div className="submit-btn">

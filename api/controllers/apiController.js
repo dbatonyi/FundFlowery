@@ -212,6 +212,8 @@ exports.createOutgoingItem = async function (req, res) {
     outgoingAmount,
     outgoingCategory,
     outgoingOrigin,
+    outgoingLocation,
+    outgoingOnSale,
     description,
     tableUuid,
   } = req.body;
@@ -223,6 +225,8 @@ exports.createOutgoingItem = async function (req, res) {
       outgoingAmount,
       outgoingCategory,
       outgoingOrigin,
+      outgoingLocation,
+      outgoingOnSale,
       description,
       financialTableId: tableUuid,
     });
@@ -230,6 +234,72 @@ exports.createOutgoingItem = async function (req, res) {
     return res.status(200).send({
       message: "Outgoing item successfully created!",
     });
+  } catch (error) {
+    utils.writeToLogFile(`IP: ${ip} -- ${error}`, "error");
+    return res.status(500).send({ message: "Something went wrong!" });
+  }
+};
+
+exports.deleteIncomeItem = async function (req, res) {
+  const { Incomes } = require("../models");
+  let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+
+  const authenticateToken = req.headers["authenticate"];
+
+  if (!authenticateToken || config.apiToken !== authenticateToken.slice(7)) {
+    utils.writeToLogFile(`IP: ${ip} -- (API token not valid!)`, "warning");
+    return res.status(403).send({ message: "API token not valid!" });
+  }
+
+  const { incomeId } = req.body;
+
+  try {
+    const incomeItem = await Incomes.findOne({
+      where: { incomeId },
+    });
+
+    if (incomeItem) {
+      await incomeItem.destroy();
+
+      return res.status(200).send({
+        message: "Income item successfully deleted!",
+      });
+    }
+
+    return res.status(404).send({ message: "No table find in the database!" });
+  } catch (error) {
+    utils.writeToLogFile(`IP: ${ip} -- ${error}`, "error");
+    return res.status(500).send({ message: "Something went wrong!" });
+  }
+};
+
+exports.deleteOutgoingItem = async function (req, res) {
+  const { Outgoings } = require("../models");
+  let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+
+  const authenticateToken = req.headers["authenticate"];
+
+  if (!authenticateToken || config.apiToken !== authenticateToken.slice(7)) {
+    utils.writeToLogFile(`IP: ${ip} -- (API token not valid!)`, "warning");
+    return res.status(403).send({ message: "API token not valid!" });
+  }
+
+  const { outgoingId } = req.body;
+
+  try {
+    const outgoingItem = await Outgoings.findOne({
+      where: { outgoingId },
+    });
+
+    if (outgoingItem) {
+      await outgoingItem.destroy();
+
+      return res.status(200).send({
+        message: "Outgoing item successfully deleted!",
+      });
+    }
+
+    return res.status(404).send({ message: "No table find in the database!" });
   } catch (error) {
     utils.writeToLogFile(`IP: ${ip} -- ${error}`, "error");
     return res.status(500).send({ message: "Something went wrong!" });

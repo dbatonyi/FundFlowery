@@ -26,4 +26,13 @@ module.exports = function (app) {
   app.post("/api/delete-income-item", apiController.deleteIncomeItem);
 
   app.post("/api/delete-outgoing-item", apiController.deleteOutgoingItem);
+
+  app.post(
+    "/api/edit-financial-table-title",
+    apiController.editFinancialTableTitle
+  );
+
+  app.post("/api/edit-income-card", apiController.editIncomeCard);
+
+  app.post("/api/edit-outgoing-card", apiController.editOutgoingCard);
 };

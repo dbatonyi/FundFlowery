@@ -13,7 +13,7 @@ const FinancialTable = () => {
   const router = useRouter();
   const urlParam = router.query.param;
 
-  const { setStatusMessage } = useContext(AuthContext);
+  const { setStatusMessage, userInfo } = useContext(AuthContext);
 
   const [tableData, setTableData] = useState(null);
   const [incomes, setIncomes] = useState(null);
@@ -25,6 +25,8 @@ const FinancialTable = () => {
 
   const [openedForm, setOpenedForm] = useState(null);
   const [titleForm, setTitleForm] = useState(false);
+
+  const [isSharePopupOpened, setIsSharePopupOpened] = useState(false);
 
   useEffect(() => {
     const fetchFinancialTable = async () => {
@@ -56,7 +58,10 @@ const FinancialTable = () => {
       } catch (error) {
         const log = await fetch(`${configData.serverUrl}/api/log`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            authenticate: `Bearer ${configData.apiToken}`,
+          },
           credentials: "include",
           body: JSON.stringify({
             log: error,
@@ -104,7 +109,59 @@ const FinancialTable = () => {
     } catch (error) {
       const log = await fetch(`${configData.serverUrl}/api/log`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          authenticate: `Bearer ${configData.apiToken}`,
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          log: error,
+        }),
+      });
+      const data = await log.json();
+      setStatusMessage(data.message);
+    }
+  };
+
+  const shareTable = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+
+    const userEmail = formData.get("email");
+
+    try {
+      const response = await fetch(
+        `${configData.serverUrl}/api/share-financial-table`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authenticate: `Bearer ${configData.apiToken}`,
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            tableUuid: tableData.uuid,
+            inviterUserUuid: userInfo.uuid,
+            invitedUserEmail: userEmail,
+          }),
+        }
+      );
+
+      const dataJson = await response.json();
+
+      if (response.status === 200) {
+        setStatusMessage(dataJson.message);
+        setReRender(!reRender);
+        setIsSharePopupOpened(false);
+      }
+    } catch (error) {
+      const log = await fetch(`${configData.serverUrl}/api/log`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authenticate: `Bearer ${configData.apiToken}`,
+        },
         credentials: "include",
         body: JSON.stringify({
           log: error,
@@ -156,6 +213,14 @@ const FinancialTable = () => {
                   </div>
                 </>
               )}
+            </div>
+            <div
+              className="financial-table__form-container--share"
+              onClick={() => {
+                setIsSharePopupOpened(true);
+              }}
+            >
+              Share with others
             </div>
             <div className="financial-table__form-container--controllers">
               <div
@@ -219,6 +284,24 @@ const FinancialTable = () => {
             />
           ) : null}
         </>
+      ) : null}
+      {isSharePopupOpened ? (
+        <div className="popup-container share-popup">
+          <div
+            className="popup-container--close"
+            onClick={() => {
+              setIsSharePopupOpened(false);
+            }}
+          >
+            X
+          </div>
+          <div className="popup-container--text">Share this table with:</div>
+          <form onSubmit={shareTable}>
+            <label htmlFor="email">Email</label>
+            <input id="email" type="email" name="email" required />
+            <button type="submit">Send</button>
+          </form>
+        </div>
       ) : null}
     </div>
   );

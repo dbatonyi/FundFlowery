@@ -35,4 +35,6 @@ module.exports = function (app) {
   app.post("/api/edit-income-card", apiController.editIncomeCard);
 
   app.post("/api/edit-outgoing-card", apiController.editOutgoingCard);
+
+  app.post("/api/share-financial-table", apiController.shareFinancialTable);
 };

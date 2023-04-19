@@ -45,7 +45,10 @@ const FinancialTable = (props) => {
     } catch (error) {
       const log = await fetch(`${configData.serverUrl}/api/log`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          authenticate: `Bearer ${configData.apiToken}`,
+        },
         credentials: "include",
         body: JSON.stringify({
           log: error,
@@ -81,7 +84,10 @@ const FinancialTable = (props) => {
     } catch (error) {
       const log = await fetch(`${configData.serverUrl}/api/log`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          authenticate: `Bearer ${configData.apiToken}`,
+        },
         credentials: "include",
         body: JSON.stringify({
           log: error,
@@ -120,7 +126,10 @@ const FinancialTable = (props) => {
       } catch (error) {
         const log = await fetch(`${configData.serverUrl}/api/log`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            authenticate: `Bearer ${configData.apiToken}`,
+          },
           credentials: "include",
           body: JSON.stringify({
             log: error,

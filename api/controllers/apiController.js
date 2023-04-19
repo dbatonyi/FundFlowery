@@ -425,3 +425,72 @@ exports.editIncomeCard = async function (req, res) {
     return res.status(500).send({ message: "Something went wrong!" });
   }
 };
+
+exports.shareFinancialTable = async function (req, res) {
+  const { User, UserFinancialTableInvitation } = require("../models");
+  let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+
+  const authenticateToken = req.headers["authenticate"];
+
+  if (!authenticateToken || config.apiToken !== authenticateToken.slice(7)) {
+    utils.writeToLogFile(`IP: ${ip} -- (API token not valid!)`, "warning");
+    return res.status(403).send({ message: "API token not valid!" });
+  }
+
+  const { tableUuid, inviterUserUuid, invitedUserEmail } = req.body;
+
+  async function findUser(email) {
+    try {
+      const user = await User.findOne({
+        where: { email },
+        attributes: ["uuid"],
+        raw: true,
+      });
+
+      if (!user) {
+        return res.status(200).send({
+          message: "User not found!",
+        });
+      }
+
+      return user.uuid;
+    } catch (error) {
+      utils.writeToLogFile(`IP: ${ip} -- ${error}`, "error");
+      return res.status(500).send({ message: "Something went wrong!" });
+    }
+  }
+
+  async function shareTable(tableUuid, inviterUserUuid, invitedUserUuid) {
+    try {
+      const existingInvitation = await UserFinancialTableInvitation.findOne({
+        where: {
+          financialTableId: tableUuid,
+          userId: invitedUserUuid,
+          invitedBy: inviterUserUuid,
+        },
+      });
+
+      if (existingInvitation) {
+        return res.status(400).send({ message: "Invitation already exists!" });
+      }
+
+      const userFinancialTableInvitation =
+        await UserFinancialTableInvitation.create({
+          financialTableId: tableUuid,
+          userId: invitedUserUuid,
+          invitedBy: inviterUserUuid,
+          invitationStatus: "pending",
+        });
+
+      return res.status(200).send({
+        message: "Your invitation request has been sent!",
+      });
+    } catch (error) {
+      utils.writeToLogFile(`IP: ${ip} -- ${error}`, "error");
+      return res.status(500).send({ message: "Something went wrong!" });
+    }
+  }
+
+  const invitedUserUuid = await findUser(invitedUserEmail);
+  await shareTable(tableUuid, inviterUserUuid, invitedUserUuid);
+};

@@ -6,7 +6,9 @@ module.exports = (sequelize, DataTypes) => {
       // Define association here
       this.belongsTo(User, { foreignKey: "userId" });
       this.belongsTo(User, { foreignKey: "invitedBy", as: "inviter" });
-      this.belongsTo(FinancialTable, { foreignKey: "financialTableId" });
+      this.belongsTo(FinancialTable, {
+        foreignKey: "financialTableId",
+      });
     }
   }
 

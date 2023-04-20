@@ -494,3 +494,85 @@ exports.shareFinancialTable = async function (req, res) {
   const invitedUserUuid = await findUser(invitedUserEmail);
   await shareTable(tableUuid, inviterUserUuid, invitedUserUuid);
 };
+
+exports.getInvitesList = async function (req, res) {
+  const {
+    UserFinancialTableInvitation,
+    User,
+    FinancialTable,
+  } = require("../models");
+  let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+
+  const authenticateToken = req.headers["authenticate"];
+
+  if (!authenticateToken || config.apiToken !== authenticateToken.slice(7)) {
+    utils.writeToLogFile(`IP: ${ip} -- (API token not valid!)`, "warning");
+    return res.status(403).send({ message: "API token not valid!" });
+  }
+
+  const getDataByInvitationArray = async (invitationArray) => {
+    try {
+      const financialTableIds = invitationArray.map(
+        (data) => data.financialTableId
+      );
+      const financialTables = await FinancialTable.findAll({
+        where: {
+          uuid: financialTableIds,
+        },
+        attributes: ["uuid", "userId", "tableName"],
+        raw: true,
+      });
+
+      const userIds = financialTables.map((financialTable) => {
+        const user = User.findOne({
+          where: {
+            uuid: invitationArray.find(
+              (item) => item.financialTableId === financialTable.uuid
+            ).invitedBy,
+          },
+          attributes: ["uuid", "firstname", "lastname"],
+          raw: true,
+        });
+
+        return user.then((user) => {
+          return {
+            name: user.firstname + " " + user.lastname,
+            tableName: financialTable ? financialTable.tableName : null,
+            invitationTableUuid: invitationArray.find(
+              (item) => item.financialTableId === financialTable.uuid
+            ).uuid,
+          };
+        });
+      });
+
+      return Promise.all(userIds);
+    } catch (error) {
+      utils.writeToLogFile(`IP: ${ip} -- ${error}`, "error");
+      return res.status(500).send({ message: "Something went wrong!" });
+    }
+  };
+
+  const { userUuid } = req.body;
+
+  try {
+    const userFinancialTableInvitations =
+      await UserFinancialTableInvitation.findAll({
+        where: {
+          userId: userUuid,
+          invitationStatus: "pending",
+        },
+        raw: true,
+      });
+
+    const inviterData = await getDataByInvitationArray(
+      userFinancialTableInvitations
+    );
+
+    return res.status(200).send({
+      data: [...inviterData],
+    });
+  } catch (error) {
+    utils.writeToLogFile(`IP: ${ip} -- ${error}`, "error");
+    return res.status(500).send({ message: "Something went wrong!" });
+  }
+};

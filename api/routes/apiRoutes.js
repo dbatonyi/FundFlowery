@@ -39,4 +39,8 @@ module.exports = function (app) {
   app.post("/api/share-financial-table", apiController.shareFinancialTable);
 
   app.post("/api/get-invites-list", apiController.getInvitesList);
+
+  app.post("/api/accept-invitation", apiController.acceptInvitation);
+
+  app.post("/api/delete-invitation", apiController.deleteInvitation);
 };

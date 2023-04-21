@@ -5,6 +5,7 @@ import InviteCard from "./InviteCard";
 
 const Notifications = () => {
   const { setStatusMessage, userInfo } = useContext(AuthContext);
+  const [reRender, setReRender] = useState(false);
 
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -12,7 +13,6 @@ const Notifications = () => {
 
   useEffect(() => {
     const fetchInvites = async () => {
-      console.log(userInfo.uuid);
       try {
         const response = await fetch(
           `${configData.serverUrl}/api/get-invites-list`,
@@ -51,7 +51,7 @@ const Notifications = () => {
     };
 
     fetchInvites();
-  }, []);
+  }, [reRender]);
 
   return (
     <div className="notifications">
@@ -68,7 +68,12 @@ const Notifications = () => {
           {notifications.length > 0 ? (
             <>
               {notifications.map((item, index) => (
-                <InviteCard notificationsData={item} key={index} />
+                <InviteCard
+                  notificationsData={item}
+                  reRender={reRender}
+                  setReRender={setReRender}
+                  key={index}
+                />
               ))}
             </>
           ) : (

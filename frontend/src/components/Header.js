@@ -7,7 +7,7 @@ const Header = ({ auth, logout }) => {
     <header>
       <LanguageSwitcher />
       <MainNavigation auth={auth} logout={logout} />
-      <Notifications />
+      {auth ? <Notifications /> : null}
     </header>
   );
 };

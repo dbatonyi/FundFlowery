@@ -576,3 +576,64 @@ exports.getInvitesList = async function (req, res) {
     return res.status(500).send({ message: "Something went wrong!" });
   }
 };
+
+exports.acceptInvitation = async function (req, res) {
+  const { UserFinancialTableInvitation } = require("../models");
+  let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+
+  const authenticateToken = req.headers["authenticate"];
+
+  if (!authenticateToken || config.apiToken !== authenticateToken.slice(7)) {
+    utils.writeToLogFile(`IP: ${ip} -- (API token not valid!)`, "warning");
+    return res.status(403).send({ message: "API token not valid!" });
+  }
+
+  const { invitationUuid } = req.body;
+
+  try {
+    const invitationData = await UserFinancialTableInvitation.update(
+      {
+        invitationStatus: "accepted",
+      },
+      {
+        where: { uuid: invitationUuid },
+      }
+    );
+
+    return res.status(200).send({
+      message: "Invitation accepted!",
+    });
+  } catch (error) {
+    utils.writeToLogFile(`IP: ${ip} -- ${error}`, "error");
+    return res.status(500).send({ message: "Something went wrong!" });
+  }
+};
+
+exports.deleteInvitation = async function (req, res) {
+  const { UserFinancialTableInvitation } = require("../models");
+  let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+
+  const authenticateToken = req.headers["authenticate"];
+
+  if (!authenticateToken || config.apiToken !== authenticateToken.slice(7)) {
+    utils.writeToLogFile(`IP: ${ip} -- (API token not valid!)`, "warning");
+    return res.status(403).send({ message: "API token not valid!" });
+  }
+
+  const { invitationUuid } = req.body;
+
+  try {
+    const invitationData = await UserFinancialTableInvitation.findOne({
+      where: { uuid: invitationUuid },
+    });
+
+    await invitationData.destroy();
+
+    return res.status(200).send({
+      message: "Invitation declined!",
+    });
+  } catch (error) {
+    utils.writeToLogFile(`IP: ${ip} -- ${error}`, "error");
+    return res.status(500).send({ message: "Something went wrong!" });
+  }
+};

@@ -43,4 +43,9 @@ module.exports = function (app) {
   app.post("/api/accept-invitation", apiController.acceptInvitation);
 
   app.post("/api/delete-invitation", apiController.deleteInvitation);
+
+  app.post(
+    "/api/get-financial-table-permission",
+    apiController.financialTablePermission
+  );
 };

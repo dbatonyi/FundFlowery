@@ -15,6 +15,9 @@ const FinancialTable = () => {
 
   const { setStatusMessage, userInfo } = useContext(AuthContext);
 
+  const [permission, setPermission] = useState(false);
+  const [permissionLevel, setPermissionLevel] = useState(null);
+
   const [tableData, setTableData] = useState(null);
   const [incomes, setIncomes] = useState(null);
   const [filteredIncomes, setFilteredIncomes] = useState(null);
@@ -28,35 +31,11 @@ const FinancialTable = () => {
 
   const [isSharePopupOpened, setIsSharePopupOpened] = useState(false);
 
-  useEffect(() => {
-    const fetchFinancialTable = async () => {
-      try {
-        const response = await fetch(
-          `${configData.serverUrl}/api/get-financial-table-data`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              authenticate: `Bearer ${configData.apiToken}`,
-            },
-            credentials: "include",
-            body: JSON.stringify({
-              tableUuid: urlParam,
-            }),
-          }
-        );
-        const dataJson = await response.json();
-
-        if (response.status === 200) {
-          console.log(dataJson.data[0]);
-          setTableData(dataJson.data[0]);
-          setIncomes(dataJson.data[0].incomes);
-          setFilteredIncomes(dataJson.data[0].incomes);
-          setOutgoings(dataJson.data[0].outgoings);
-          setFilteredOutgoings(dataJson.data[0].outgoings);
-        }
-      } catch (error) {
-        const log = await fetch(`${configData.serverUrl}/api/log`, {
+  const getPermissionData = async () => {
+    try {
+      const response = await fetch(
+        `${configData.serverUrl}/api/get-financial-table-permission`,
+        {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -64,16 +43,73 @@ const FinancialTable = () => {
           },
           credentials: "include",
           body: JSON.stringify({
-            log: error,
+            userUuid: userInfo.uuid,
+            tableUuid: urlParam,
           }),
-        });
-        const data = await log.json();
-        setStatusMessage(data.message);
-      }
-    };
+        }
+      );
+      const dataJson = await response.json();
 
-    fetchFinancialTable();
-  }, [reRender]);
+      return dataJson?.data;
+    } catch (error) {
+      const log = await fetch(`${configData.serverUrl}/api/log`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authenticate: `Bearer ${configData.apiToken}`,
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          log: error,
+        }),
+      });
+      const data = await log.json();
+      setStatusMessage(data.message);
+    }
+  };
+
+  const fetchFinancialTable = async () => {
+    try {
+      const response = await fetch(
+        `${configData.serverUrl}/api/get-financial-table-data`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authenticate: `Bearer ${configData.apiToken}`,
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            tableUuid: urlParam,
+          }),
+        }
+      );
+      const dataJson = await response.json();
+
+      if (response.status === 200) {
+        console.log(dataJson.data[0]);
+        setTableData(dataJson.data[0]);
+        setIncomes(dataJson.data[0].incomes);
+        setFilteredIncomes(dataJson.data[0].incomes);
+        setOutgoings(dataJson.data[0].outgoings);
+        setFilteredOutgoings(dataJson.data[0].outgoings);
+      }
+    } catch (error) {
+      const log = await fetch(`${configData.serverUrl}/api/log`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authenticate: `Bearer ${configData.apiToken}`,
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          log: error,
+        }),
+      });
+      const data = await log.json();
+      setStatusMessage(data.message);
+    }
+  };
 
   const editTitle = async (e) => {
     e.preventDefault();
@@ -172,137 +208,161 @@ const FinancialTable = () => {
     }
   };
 
+  useEffect(() => {
+    const tableDataController = async () => {
+      const permissionData = await getPermissionData();
+
+      if (permissionData?.permission) {
+        await fetchFinancialTable();
+        setPermissionLevel(permissionData.permissionLevel);
+        setPermission(true);
+      } else {
+        await router.push("/dashboard");
+      }
+    };
+
+    tableDataController();
+  }, [reRender]);
+
   return (
     <div className="financial-table">
-      {tableData ? (
+      {permission ? (
         <>
-          <div className="financial-table__form-container">
-            <div className="financial-table__form-container--title">
-              {!titleForm ? (
-                <>
-                  {tableData.tableName}
+          {tableData ? (
+            <>
+              <div className="financial-table__form-container">
+                <div className="financial-table__form-container--title">
+                  {!titleForm ? (
+                    <>
+                      {tableData.tableName}
+                      <div
+                        className="edit-title"
+                        onClick={() => {
+                          setTitleForm(true);
+                        }}
+                      >
+                        Edit
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <form onSubmit={editTitle}>
+                        <input
+                          className="text"
+                          placeholder={tableData.tableName}
+                          name="table-title"
+                          type="text"
+                        />
+                        <button className="btn" type="submit">
+                          Save
+                        </button>
+                      </form>
+                      <div
+                        className="edit-close"
+                        onClick={() => {
+                          setTitleForm(false);
+                        }}
+                      >
+                        x
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div
+                  className="financial-table__form-container--share"
+                  onClick={() => {
+                    setIsSharePopupOpened(true);
+                  }}
+                >
+                  Share with others
+                </div>
+                <div className="financial-table__form-container--controllers">
                   <div
-                    className="edit-title"
+                    className="add-new-income-item"
                     onClick={() => {
-                      setTitleForm(true);
+                      setOpenedForm("income");
                     }}
                   >
-                    Edit
+                    + Add new income item
                   </div>
-                </>
-              ) : (
-                <>
-                  <form onSubmit={editTitle}>
-                    <input
-                      className="text"
-                      placeholder={tableData.tableName}
-                      name="table-title"
-                      type="text"
-                    />
-                    <button className="btn" type="submit">
-                      Save
-                    </button>
-                  </form>
                   <div
-                    className="edit-close"
+                    className="add-new-outgoing-item"
                     onClick={() => {
-                      setTitleForm(false);
+                      setOpenedForm("outgoing");
                     }}
                   >
-                    x
+                    + Add new outgoing item
                   </div>
-                </>
-              )}
-            </div>
-            <div
-              className="financial-table__form-container--share"
-              onClick={() => {
-                setIsSharePopupOpened(true);
-              }}
-            >
-              Share with others
-            </div>
-            <div className="financial-table__form-container--controllers">
-              <div
-                className="add-new-income-item"
-                onClick={() => {
-                  setOpenedForm("income");
-                }}
-              >
-                + Add new income item
+                </div>
+                <div className="financial-table__list">
+                  <div className="financial-table__list--incomes">
+                    Income list:
+                    {filteredIncomes && filteredIncomes.length > 0 ? (
+                      <IncomeCard
+                        incomeData={filteredIncomes}
+                        reRender={reRender}
+                        setReRender={setReRender}
+                      />
+                    ) : (
+                      <div className="no-result">There is no incomes</div>
+                    )}
+                  </div>
+                  <div className="financial-table__list--outgoings">
+                    Outgoing list:
+                    {filteredOutgoings && filteredOutgoings.length > 0 ? (
+                      <OutgoingCard
+                        outgoingData={filteredOutgoings}
+                        reRender={reRender}
+                        setReRender={setReRender}
+                      />
+                    ) : (
+                      <div className="no-result">There is no outgoings</div>
+                    )}
+                  </div>
+                </div>
               </div>
-              <div
-                className="add-new-outgoing-item"
-                onClick={() => {
-                  setOpenedForm("outgoing");
-                }}
-              >
-                + Add new outgoing item
-              </div>
-            </div>
-            <div className="financial-table__list">
-              <div className="financial-table__list--incomes">
-                Income list:
-                {filteredIncomes && filteredIncomes.length > 0 ? (
-                  <IncomeCard
-                    incomeData={filteredIncomes}
-                    reRender={reRender}
-                    setReRender={setReRender}
-                  />
-                ) : (
-                  <div className="no-result">There is no incomes</div>
-                )}
-              </div>
-              <div className="financial-table__list--outgoings">
-                Outgoing list:
-                {filteredOutgoings && filteredOutgoings.length > 0 ? (
-                  <OutgoingCard
-                    outgoingData={filteredOutgoings}
-                    reRender={reRender}
-                    setReRender={setReRender}
-                  />
-                ) : (
-                  <div className="no-result">There is no outgoings</div>
-                )}
-              </div>
-            </div>
-          </div>
-          {openedForm === "income" ? (
-            <NewIncomeForm
-              tableUuid={urlParam}
-              setOpenedForm={setOpenedForm}
-              reRender={reRender}
-              setReRender={setReRender}
-            />
+              {openedForm === "income" ? (
+                <NewIncomeForm
+                  tableUuid={urlParam}
+                  setOpenedForm={setOpenedForm}
+                  reRender={reRender}
+                  setReRender={setReRender}
+                />
+              ) : null}
+              {openedForm === "outgoing" ? (
+                <NewOutgoingForm
+                  tableUuid={urlParam}
+                  setOpenedForm={setOpenedForm}
+                  reRender={reRender}
+                  setReRender={setReRender}
+                />
+              ) : null}
+            </>
           ) : null}
-          {openedForm === "outgoing" ? (
-            <NewOutgoingForm
-              tableUuid={urlParam}
-              setOpenedForm={setOpenedForm}
-              reRender={reRender}
-              setReRender={setReRender}
-            />
+          {isSharePopupOpened ? (
+            <div className="popup-container share-popup">
+              <div
+                className="popup-container--close"
+                onClick={() => {
+                  setIsSharePopupOpened(false);
+                }}
+              >
+                X
+              </div>
+              <div className="popup-container--text">
+                Share this table with:
+              </div>
+              <form onSubmit={shareTable}>
+                <label htmlFor="email">Email</label>
+                <input id="email" type="email" name="email" required />
+                <button type="submit">Send</button>
+              </form>
+            </div>
           ) : null}
         </>
-      ) : null}
-      {isSharePopupOpened ? (
-        <div className="popup-container share-popup">
-          <div
-            className="popup-container--close"
-            onClick={() => {
-              setIsSharePopupOpened(false);
-            }}
-          >
-            X
-          </div>
-          <div className="popup-container--text">Share this table with:</div>
-          <form onSubmit={shareTable}>
-            <label htmlFor="email">Email</label>
-            <input id="email" type="email" name="email" required />
-            <button type="submit">Send</button>
-          </form>
-        </div>
-      ) : null}
+      ) : (
+        <div className="fetching-in-progress">Fetching in progress..</div>
+      )}
     </div>
   );
 };

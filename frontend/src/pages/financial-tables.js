@@ -20,6 +20,45 @@ const FinancialTable = (props) => {
 
   //Functions
 
+  const fetchFinancialTableList = async () => {
+    try {
+      const response = await fetch(
+        `${configData.serverUrl}/api/get-financial-tables`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authenticate: `Bearer ${configData.apiToken}`,
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            userId: userInfo.uuid,
+          }),
+        }
+      );
+      const dataJson = await response.json();
+
+      if (response.status === 200) {
+        setFinancialTableList(dataJson.data);
+        setFilteredFinancialTableList(dataJson.data);
+      }
+    } catch (error) {
+      const log = await fetch(`${configData.serverUrl}/api/log`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authenticate: `Bearer ${configData.apiToken}`,
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          log: error,
+        }),
+      });
+      const data = await log.json();
+      setStatusMessage(data.message);
+    }
+  };
+
   const createNewFinancialTable = async (tableName) => {
     try {
       const response = await fetch(
@@ -101,45 +140,6 @@ const FinancialTable = (props) => {
   //useEffects
 
   useEffect(() => {
-    const fetchFinancialTableList = async () => {
-      try {
-        const response = await fetch(
-          `${configData.serverUrl}/api/get-financial-tables`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              authenticate: `Bearer ${configData.apiToken}`,
-            },
-            credentials: "include",
-            body: JSON.stringify({
-              userId: userInfo.uuid,
-            }),
-          }
-        );
-        const dataJson = await response.json();
-
-        if (response.status === 200) {
-          setFinancialTableList(dataJson.data);
-          setFilteredFinancialTableList(dataJson.data);
-        }
-      } catch (error) {
-        const log = await fetch(`${configData.serverUrl}/api/log`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            authenticate: `Bearer ${configData.apiToken}`,
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            log: error,
-          }),
-        });
-        const data = await log.json();
-        setStatusMessage(data.message);
-      }
-    };
-
     fetchFinancialTableList();
   }, [reRender]);
 
@@ -203,6 +203,7 @@ const FinancialTable = (props) => {
           )}
         </div>
       </div>
+      <div className="financial-table-list__shared-container"></div>
       {showCreatePopup ? (
         <div className="popup-container">
           <div

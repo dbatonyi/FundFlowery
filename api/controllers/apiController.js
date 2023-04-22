@@ -637,3 +637,56 @@ exports.deleteInvitation = async function (req, res) {
     return res.status(500).send({ message: "Something went wrong!" });
   }
 };
+
+exports.financialTablePermission = async function (req, res) {
+  const { FinancialTable, UserFinancialTableInvitation } = require("../models");
+  let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+
+  const authenticateToken = req.headers["authenticate"];
+
+  if (!authenticateToken || config.apiToken !== authenticateToken.slice(7)) {
+    utils.writeToLogFile(`IP: ${ip} -- (API token not valid!)`, "warning");
+    return res.status(403).send({ message: "API token not valid!" });
+  }
+
+  const { userUuid, tableUuid } = req.body;
+
+  async function checkOwnership(userUuid, tableUuid) {
+    try {
+      const financialTable = await FinancialTable.findOne({
+        where: { uuid: tableUuid, userId: userUuid },
+      });
+
+      if (financialTable) {
+        return res.status(200).send({
+          data: { permission: true, permissionLevel: "Owner" },
+        });
+      }
+
+      const invitationFinancialTable =
+        await UserFinancialTableInvitation.findOne({
+          where: {
+            invitationStatus: "accepted",
+            financialTableId: tableUuid,
+            userId: userUuid,
+          },
+        });
+
+      if (invitationFinancialTable) {
+        return res.status(200).send({
+          data: { permission: true, permissionLevel: "Member" },
+        });
+      }
+
+      return res.status(403).send({
+        data: { permission: false, permissionLevel: null },
+        message: "User has no rights!",
+      });
+    } catch (error) {
+      utils.writeToLogFile(`IP: ${ip} -- ${error}`, "error");
+      return res.status(500).send({ message: "Something went wrong!" });
+    }
+  }
+
+  await checkOwnership(userUuid, tableUuid);
+};

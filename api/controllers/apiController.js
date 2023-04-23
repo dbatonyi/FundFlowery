@@ -690,3 +690,70 @@ exports.financialTablePermission = async function (req, res) {
 
   await checkOwnership(userUuid, tableUuid);
 };
+
+exports.getSharedFinancialTables = async function (req, res) {
+  const { UserFinancialTableInvitation, FinancialTable } = require("../models");
+  let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+
+  const authenticateToken = req.headers["authenticate"];
+
+  if (!authenticateToken || config.apiToken !== authenticateToken.slice(7)) {
+    utils.writeToLogFile(`IP: ${ip} -- (API token not valid!)`, "warning");
+    return res.status(403).send({ message: "API token not valid!" });
+  }
+
+  const { userId } = req.body;
+
+  try {
+    const sharedFinancialTables = await UserFinancialTableInvitation.findAll({
+      where: { userId, invitationStatus: "accepted" },
+      raw: true,
+    });
+
+    const financialTableIds = sharedFinancialTables.map(
+      (item) => item.financialTableId
+    );
+
+    const financialTables = await FinancialTable.findAll({
+      where: { uuid: financialTableIds },
+      raw: true,
+    });
+
+    return res.status(200).send({
+      data: financialTables,
+      message: "Financial data retrieved successfully!",
+    });
+  } catch (error) {
+    utils.writeToLogFile(`IP: ${ip} -- ${error}`, "error");
+    return res.status(500).send({ message: "Something went wrong!" });
+  }
+};
+
+exports.leaveSharedFinancialTable = async function (req, res) {
+  const { UserFinancialTableInvitation } = require("../models");
+  let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+
+  const authenticateToken = req.headers["authenticate"];
+
+  if (!authenticateToken || config.apiToken !== authenticateToken.slice(7)) {
+    utils.writeToLogFile(`IP: ${ip} -- (API token not valid!)`, "warning");
+    return res.status(403).send({ message: "API token not valid!" });
+  }
+
+  const { userId, tableUuid } = req.body;
+
+  try {
+    const invitationData = await UserFinancialTableInvitation.findOne({
+      where: { userId, financialTableId: tableUuid },
+    });
+
+    await invitationData.destroy();
+
+    return res.status(200).send({
+      message: "Successfully left the board!",
+    });
+  } catch (error) {
+    utils.writeToLogFile(`IP: ${ip} -- ${error}`, "error");
+    return res.status(500).send({ message: "Something went wrong!" });
+  }
+};

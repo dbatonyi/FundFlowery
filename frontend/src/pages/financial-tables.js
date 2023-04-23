@@ -13,10 +13,19 @@ const FinancialTable = (props) => {
   const [filteredFinancialTableList, setFilteredFinancialTableList] =
     useState(null);
 
+  const [sharedFinancialTableList, setSharedFinancialTableList] =
+    useState(null);
+  const [
+    filteredSharedFinancialTableList,
+    setFilteredSharedFinancialTableList,
+  ] = useState(null);
+
   const [selectedTableUuid, setSelectedTableUuid] = useState(null);
+  const [selectedSharedTableUuid, setSelectedSharedTableUuid] = useState(null);
 
   const [showCreatePopup, setShowCreatePopup] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const [showLeavePopup, setShowLeavePopup] = useState(false);
 
   //Functions
 
@@ -41,6 +50,45 @@ const FinancialTable = (props) => {
       if (response.status === 200) {
         setFinancialTableList(dataJson.data);
         setFilteredFinancialTableList(dataJson.data);
+      }
+    } catch (error) {
+      const log = await fetch(`${configData.serverUrl}/api/log`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authenticate: `Bearer ${configData.apiToken}`,
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          log: error,
+        }),
+      });
+      const data = await log.json();
+      setStatusMessage(data.message);
+    }
+  };
+
+  const fetchSharedFinancialTableList = async () => {
+    try {
+      const response = await fetch(
+        `${configData.serverUrl}/api/get-shared-financial-tables`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authenticate: `Bearer ${configData.apiToken}`,
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            userId: userInfo.uuid,
+          }),
+        }
+      );
+      const dataJson = await response.json();
+
+      if (response.status === 200) {
+        setSharedFinancialTableList(dataJson.data);
+        setFilteredSharedFinancialTableList(dataJson.data);
       }
     } catch (error) {
       const log = await fetch(`${configData.serverUrl}/api/log`, {
@@ -137,10 +185,51 @@ const FinancialTable = (props) => {
     }
   };
 
+  const leaveSharedFinancialTable = async (tableUuid) => {
+    try {
+      const response = await fetch(
+        `${configData.serverUrl}/api/leave-shared-financial-table`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authenticate: `Bearer ${configData.apiToken}`,
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            userId: userInfo.uuid,
+            tableUuid,
+          }),
+        }
+      );
+      const dataJson = await response.json();
+
+      if (response.status === 200) {
+        setStatusMessage(dataJson.message);
+        setReRender(!reRender);
+      }
+    } catch (error) {
+      const log = await fetch(`${configData.serverUrl}/api/log`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authenticate: `Bearer ${configData.apiToken}`,
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          log: error,
+        }),
+      });
+      const data = await log.json();
+      setStatusMessage(data.message);
+    }
+  };
+
   //useEffects
 
   useEffect(() => {
     fetchFinancialTableList();
+    fetchSharedFinancialTableList();
   }, [reRender]);
 
   //Handlers
@@ -203,7 +292,34 @@ const FinancialTable = (props) => {
           )}
         </div>
       </div>
-      <div className="financial-table-list__shared-container"></div>
+      <div className="financial-table-list__shared-container">
+        {filteredSharedFinancialTableList &&
+        filteredSharedFinancialTableList.length > 0 ? (
+          <>
+            {filteredSharedFinancialTableList.map((table) => {
+              return (
+                <div
+                  key={table.uuid}
+                  className="financial-table-list__container-list--item"
+                >
+                  <Link href={`/financial-table/${table.uuid}`}>
+                    {table.tableName}
+                  </Link>
+                  <div
+                    className="leave-table"
+                    onClick={() => {
+                      setSelectedSharedTableUuid(table.uuid);
+                      setShowLeavePopup(true);
+                    }}
+                  >
+                    Leave
+                  </div>
+                </div>
+              );
+            })}
+          </>
+        ) : null}
+      </div>
       {showCreatePopup ? (
         <div className="popup-container">
           <div
@@ -252,6 +368,41 @@ const FinancialTable = (props) => {
               onClick={() => {
                 deleteFinancialTable(selectedTableUuid);
                 setShowDeletePopup(false);
+              }}
+            >
+              Yes
+            </div>
+          </div>
+        </div>
+      ) : null}
+      {showLeavePopup ? (
+        <div className="popup-container">
+          <div
+            className="popup-container--close"
+            onClick={() => {
+              setShowLeavePopup(false);
+            }}
+          >
+            X
+          </div>
+          <div className="popup-container--title">
+            You really want to leave the table?
+          </div>
+          <div className="popup-container--controllers">
+            <div
+              className="cancel"
+              onClick={() => {
+                setShowLeavePopup(false);
+                setSelectedSharedTableUuid(null);
+              }}
+            >
+              No
+            </div>
+            <div
+              className="accept"
+              onClick={() => {
+                leaveSharedFinancialTable(selectedSharedTableUuid);
+                setShowLeavePopup(false);
               }}
             >
               Yes

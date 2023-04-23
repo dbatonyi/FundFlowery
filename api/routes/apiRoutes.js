@@ -48,4 +48,14 @@ module.exports = function (app) {
     "/api/get-financial-table-permission",
     apiController.financialTablePermission
   );
+
+  app.post(
+    "/api/get-shared-financial-tables",
+    apiController.getSharedFinancialTables
+  );
+
+  app.post(
+    "/api/leave-shared-financial-table",
+    apiController.leaveSharedFinancialTable
+  );
 };

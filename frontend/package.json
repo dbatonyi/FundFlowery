@@ -8,13 +8,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "build:styles": "tailwindcss -i ./src/styles/globals.css -o ./src/styles/output.css"
+    "lint": "next lint"
   },
   "dependencies": {
     "next": "13.1.6",
     "next-translate": "^2.0.2",
     "react": "18.2.0",
+    "react-datepicker": "^4.11.0",
     "react-dom": "18.2.0",
     "sass": "^1.61.0"
   },

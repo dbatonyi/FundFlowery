@@ -32,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         allowNull: false,
       },
+      outgoingCurrency: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       outgoingCategory: {
         type: DataTypes.STRING,
         allowNull: false,

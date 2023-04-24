@@ -2,11 +2,29 @@ import React, { useContext, useState } from "react";
 import configData from "../../config";
 import { AuthContext } from "@/layouts/Layout";
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 const IncomeCard = ({ incomeData, reRender, setReRender }) => {
   const { setStatusMessage } = useContext(AuthContext);
 
+  const [selectedDate, setSelectedDate] = useState(
+    new Date(incomeData[0].incomeDate)
+  );
+  const [selectedCurrency, setSelectedCurrency] = useState(
+    incomeData[0].incomeCurrency
+  );
+
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const handleOptionChange = (event) => {
+    setSelectedCurrency(event.target.value);
+  };
 
   const editIncomeCard = async (e) => {
     e.preventDefault();
@@ -31,11 +49,19 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
           credentials: "include",
           body: JSON.stringify({
             incomeId: incomeData[0].incomeId,
-            incomeTitle,
-            incomeAmount,
-            incomeCategory,
-            incomeOrigin,
-            description,
+            incomeTitle: incomeTitle ? incomeTitle : incomeData[0].incomeTitle,
+            incomeDate: selectedDate,
+            incomeAmount: incomeAmount
+              ? incomeAmount
+              : incomeData[0].incomeAmount,
+            incomeCurrency: selectedCurrency,
+            incomeCategory: incomeCategory
+              ? incomeCategory
+              : incomeData[0].incomeCategory,
+            incomeOrigin: incomeOrigin
+              ? incomeOrigin
+              : incomeData[0].incomeOrigin,
+            description: description ? description : incomeData[0].description,
           }),
         }
       );
@@ -168,6 +194,14 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
                         type="text"
                       />
                     </div>
+                    <div className="financial-table__income-card--date">
+                      <DatePicker
+                        selected={selectedDate}
+                        onChange={handleDateChange}
+                        dateFormat="yyyy-MM-dd"
+                        placeholderText="Select a date"
+                      />
+                    </div>
                     <div className="financial-table__income-card--amount">
                       <label htmlFor="income-amount">Amount:</label>
                       <input
@@ -176,6 +210,17 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
                         name="income-amount"
                         type="number"
                       />
+                    </div>
+                    <div className="financial-table__income-card--currency">
+                      <select
+                        value={selectedCurrency}
+                        onChange={handleOptionChange}
+                      >
+                        <option value="">Select an option</option>
+                        <option value="HUF">HUF</option>
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                      </select>
                     </div>
                     <div className="financial-table__income-card--category">
                       <label htmlFor="income-category">Category:</label>

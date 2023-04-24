@@ -169,6 +169,7 @@ exports.createIncomeItem = async function (req, res) {
     incomeDate,
     incomeTitle,
     incomeAmount,
+    incomeCurrency,
     incomeCategory,
     incomeOrigin,
     description,
@@ -180,6 +181,7 @@ exports.createIncomeItem = async function (req, res) {
       incomeDate,
       incomeTitle,
       incomeAmount,
+      incomeCurrency,
       incomeCategory,
       incomeOrigin,
       description,
@@ -210,6 +212,7 @@ exports.createOutgoingItem = async function (req, res) {
     outgoingDate,
     outgoingTitle,
     outgoingAmount,
+    outgoingCurrency,
     outgoingCategory,
     outgoingOrigin,
     outgoingLocation,
@@ -223,6 +226,7 @@ exports.createOutgoingItem = async function (req, res) {
       outgoingDate,
       outgoingTitle,
       outgoingAmount,
+      outgoingCurrency,
       outgoingCategory,
       outgoingOrigin,
       outgoingLocation,
@@ -350,7 +354,9 @@ exports.editOutgoingCard = async function (req, res) {
   const {
     outgoingId,
     outgoingTitle,
+    outgoingDate,
     outgoingAmount,
+    outgoingCurrency,
     outgoingCategory,
     outgoingOrigin,
     outgoingLocation,
@@ -362,7 +368,9 @@ exports.editOutgoingCard = async function (req, res) {
     const outgoingCard = await Outgoings.update(
       {
         outgoingTitle,
+        outgoingDate,
         outgoingAmount,
+        outgoingCurrency,
         outgoingCategory,
         outgoingOrigin,
         outgoingLocation,
@@ -397,7 +405,9 @@ exports.editIncomeCard = async function (req, res) {
   const {
     incomeId,
     incomeTitle,
+    incomeDate,
     incomeAmount,
+    incomeCurrency,
     incomeCategory,
     incomeOrigin,
     description,
@@ -407,7 +417,9 @@ exports.editIncomeCard = async function (req, res) {
     const incomeCard = await Incomes.update(
       {
         incomeTitle,
+        incomeDate,
         incomeAmount,
+        incomeCurrency,
         incomeCategory,
         incomeOrigin,
         description,

@@ -2,8 +2,18 @@ import React, { useContext, useState } from "react";
 import configData from "../../config";
 import { AuthContext } from "@/layouts/Layout";
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
   const { setStatusMessage } = useContext(AuthContext);
+
+  const [selectedDate, setSelectedDate] = useState(
+    new Date(outgoingData[0].outgoingDate)
+  );
+  const [selectedCurrency, setSelectedCurrency] = useState(
+    outgoingData[0].outgoingCurrency
+  );
 
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
@@ -11,6 +21,14 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
   const [isOnSaleChecked, setIsOnSaleChecked] = useState(
     outgoingData[0].outgoingOnSale
   );
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const handleOptionChange = (event) => {
+    setSelectedCurrency(event.target.value);
+  };
 
   const handleOnSaleCheckboxChange = (event) => {
     setIsOnSaleChecked(event.target.checked);
@@ -40,13 +58,27 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
           credentials: "include",
           body: JSON.stringify({
             outgoingId: outgoingData[0].outgoingId,
-            outgoingTitle,
-            outgoingAmount,
-            outgoingCategory,
-            outgoingOrigin,
-            outgoingLocation,
+            outgoingTitle: outgoingTitle
+              ? outgoingTitle
+              : outgoingData[0].outgoingTitle,
+            outgoingDate: selectedDate,
+            outgoingAmount: outgoingAmount
+              ? outgoingAmount
+              : outgoingData[0].outgoingAmount,
+            outgoingCurrency: selectedCurrency,
+            outgoingCategory: outgoingCategory
+              ? outgoingCategory
+              : outgoingData[0].outgoingCategory,
+            outgoingOrigin: outgoingOrigin
+              ? outgoingOrigin
+              : outgoingData[0].outgoingOrigin,
+            outgoingLocation: outgoingLocation
+              ? outgoingLocation
+              : outgoingData[0].outgoingLocation,
             outgoingOnSale: isOnSaleChecked,
-            description,
+            description: description
+              ? description
+              : outgoingData[0].description,
           }),
         }
       );
@@ -182,6 +214,14 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
                         type="text"
                       />
                     </div>
+                    <div className="financial-table__outgoing-card--date">
+                      <DatePicker
+                        selected={selectedDate}
+                        onChange={handleDateChange}
+                        dateFormat="yyyy-MM-dd"
+                        placeholderText="Select a date"
+                      />
+                    </div>
                     <div className="financial-table__outgoing-card--amount">
                       <label htmlFor="outgoing-amount">Amount:</label>
                       <input
@@ -190,6 +230,17 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
                         name="outgoing-amount"
                         type="number"
                       />
+                    </div>
+                    <div className="financial-table__outgoing-card--currency">
+                      <select
+                        value={selectedCurrency}
+                        onChange={handleOptionChange}
+                      >
+                        <option value="">Select an option</option>
+                        <option value="HUF">HUF</option>
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                      </select>
                     </div>
                     <div className="financial-table__outgoing-card--category">
                       <label htmlFor="outgoing-category">Category:</label>

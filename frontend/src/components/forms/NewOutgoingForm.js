@@ -2,6 +2,9 @@ import React, { useContext, useState } from "react";
 import configData from "../../../config";
 import { AuthContext } from "@/layouts/Layout";
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 const NewOutgoingForm = ({
   tableUuid,
   setOpenedForm,
@@ -10,7 +13,18 @@ const NewOutgoingForm = ({
 }) => {
   const { setStatusMessage } = useContext(AuthContext);
 
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedCurrency, setSelectedCurrency] = useState("");
+
   const [isOnSaleChecked, setIsOnSaleChecked] = useState(false);
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const handleOptionChange = (event) => {
+    setSelectedCurrency(event.target.value);
+  };
 
   const handleOnSaleCheckboxChange = (event) => {
     setIsOnSaleChecked(event.target.checked);
@@ -21,7 +35,6 @@ const NewOutgoingForm = ({
 
     const formData = new FormData(e.currentTarget);
 
-    const currentDate = new Date();
     const outgoingTitle = formData.get("outgoing-title");
     const outgoingAmount = formData.get("outgoing-amount");
     const outgoingCategory = formData.get("outgoing-category");
@@ -40,9 +53,10 @@ const NewOutgoingForm = ({
           },
           credentials: "include",
           body: JSON.stringify({
-            outgoingDate: currentDate,
+            outgoingDate: selectedDate,
             outgoingTitle,
             outgoingAmount,
+            outgoingCurrency: selectedCurrency,
             outgoingCategory: outgoingCategory.toLowerCase(),
             outgoingOrigin: outgoingOrigin.toLowerCase(),
             outgoingLocation: outgoingLocation.toLowerCase(),
@@ -91,8 +105,22 @@ const NewOutgoingForm = ({
       <form onSubmit={submitHandler}>
         <label htmlFor="outgoing-title">Outgoing title</label>
         <input className="text" name="outgoing-title" type="text" required />
+        <div className="new-outgoing-popup--date">
+          <DatePicker
+            selected={selectedDate}
+            onChange={handleDateChange}
+            dateFormat="yyyy-MM-dd"
+            placeholderText="Select a date"
+          />
+        </div>
         <label htmlFor="outgoing-amount">Outgoing amount</label>
         <input className="text" name="outgoing-amount" type="number" required />
+        <select value={selectedCurrency} onChange={handleOptionChange}>
+          <option value="">Select an option</option>
+          <option value="HUF">HUF</option>
+          <option value="EUR">EUR</option>
+          <option value="USD">USD</option>
+        </select>
         <label htmlFor="outgoing-category">Outgoing category</label>
         <input className="text" name="outgoing-category" type="text" required />
         <label htmlFor="outgoing-origin">Outgoing origin</label>

@@ -24,3 +24,69 @@ utils.writeToLogFile = function (data, level) {
 
   fs.appendFileSync(fileName, logMessage);
 };
+
+utils.updateCurrencyExchanges = function() {
+  const { CurrencyExchangeRates } = require("../models");
+
+  const saveExchangeRates = async (
+    currencyExchangeBase,
+    currencyExchangeTarget,
+    currencyExchangeRate
+  ) => {
+    try {
+      const exchangeRate = await CurrencyExchangeRates.create({
+        currencyExchangeBase,
+        currencyExchangeTarget,
+        currencyExchangeRate,
+      });
+
+      return exchangeRate;
+    } catch (error) {
+      return utils.writeToLogFile(error, "error");
+    }
+  };
+
+  const getExchangeRates = async () => {
+    try {
+      const currencyResponse = await fetch(
+        "https://api.apilayer.com/exchangerates_data/latest?symbols=HUF%2C%20EUR%2C%20USD&base=HUF",
+        {
+          headers: {
+            apikey: config.api.exchangeRatesDataAPI,
+          },
+        }
+      );
+
+      const currencyData = await currencyResponse.json();
+
+      const hufUsdRate = currencyData.rates.USD;
+      const hufEurRate = currencyData.rates.EUR;
+      const usdHufRate = 1 / hufUsdRate;
+      const eurHufRate = 1 / hufEurRate;
+      const eurUsdRate = hufEurRate / hufUsdRate;
+      const usdEurRate = hufUsdRate / hufEurRate;
+
+      await saveExchangeRates("HUF", "EUR", hufEurRate);
+      await saveExchangeRates("HUF", "USD", hufUsdRate);
+      await saveExchangeRates("USD", "HUF", usdHufRate);
+      await saveExchangeRates("EUR", "HUF", eurHufRate);
+      await saveExchangeRates("EUR", "USD", eurUsdRate);
+      await saveExchangeRates("USD", "EUR", usdEurRate);
+    } catch (error) {
+      return utils.writeToLogFile(error, "error");
+    }
+  };
+
+  try {
+    const count = await CurrencyExchangeRates.count();
+    if (count > 0) {
+      await CurrencyExchangeRate.drop();
+      utils.writeToLogFile(`Currencies table successfully deleted!`, "info");
+    }
+
+    await getExchangeRates();
+    return utils.writeToLogFile(`Currencies successfully created!`, "info");
+  } catch (error) {
+    return utils.writeToLogFile(error, "error");
+  }
+}

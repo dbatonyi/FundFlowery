@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const cron = require("node-cron");
 const config = require("./config")["api"];
 let utils = require("./helpers/utils");
 let dbSync = require("./helpers/dbSync");
@@ -25,6 +26,13 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+//Cron
+const cronSchedule = "0 0 0,12 * * *";
+const cronJobs = () => {
+  utils.updateCurrencyExchanges();
+  utils.utils.writeToLogFile("Cron job executed at 12:00 and 00:00", "info");
+};
+
 //Models
 const models = require("./models");
 
@@ -33,6 +41,7 @@ const models = require("./models");
   try {
     const syncDB = await models.sequelize.sync();
     dbSync.populateDBTables();
+    cron.schedule(cronSchedule, cronJobs);
   } catch (error) {
     utils.writeToLogFile(error, "error");
     console.log(error, "Something went wrong with the Database Update!");

@@ -19,6 +19,7 @@ module.exports = {
     smtpPassword: "",
     jwtkey: "",
     apiToken: "",
+    exchangeRatesDataAPI: "",
     maintenanceMode: false,
   },
 };

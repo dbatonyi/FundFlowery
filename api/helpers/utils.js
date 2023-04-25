@@ -80,7 +80,7 @@ utils.updateCurrencyExchanges = function() {
   try {
     const count = await CurrencyExchangeRates.count();
     if (count > 0) {
-      await CurrencyExchangeRate.drop();
+      await CurrencyExchangeRates.drop();
       utils.writeToLogFile(`Currencies table successfully deleted!`, "info");
     }
 

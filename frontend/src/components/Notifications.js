@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import configData from "../../config";
-import { AuthContext } from "@/layouts/Layout";
+
 import InviteCard from "./InviteCard";
 
-const Notifications = () => {
-  const { setStatusMessage, userInfo } = useContext(AuthContext);
+const Notifications = ({ userInfo, setStatusMessage }) => {
   const [reRender, setReRender] = useState(false);
 
   const [showDropdown, setShowDropdown] = useState(false);

@@ -1,13 +1,24 @@
+import React, { useContext } from "react";
+
 import LanguageSwitcher from "./LanguageSwitcher";
 import MainNavigation from "./MainNavigation";
 import Notifications from "./Notifications";
 
+import { AuthContext } from "@/layouts/Layout";
+
 const Header = ({ auth, logout }) => {
+  const { setStatusMessage, userInfo } = useContext(AuthContext);
+
   return (
     <header>
       <LanguageSwitcher />
       <MainNavigation auth={auth} logout={logout} />
-      {auth ? <Notifications /> : null}
+      {auth && userInfo ? (
+        <Notifications
+          userInfo={userInfo}
+          setStatusMessage={setStatusMessage}
+        />
+      ) : null}
     </header>
   );
 };

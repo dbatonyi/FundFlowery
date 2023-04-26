@@ -25,7 +25,7 @@ utils.writeToLogFile = function (data, level) {
   fs.appendFileSync(fileName, logMessage);
 };
 
-utils.updateCurrencyExchanges = function() {
+utils.updateCurrencyExchanges = async () => {
   const { CurrencyExchangeRates } = require("../models");
 
   const saveExchangeRates = async (
@@ -89,4 +89,4 @@ utils.updateCurrencyExchanges = function() {
   } catch (error) {
     return utils.writeToLogFile(error, "error");
   }
-}
+};

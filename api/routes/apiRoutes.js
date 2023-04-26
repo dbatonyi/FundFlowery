@@ -58,4 +58,9 @@ module.exports = function (app) {
     "/api/leave-shared-financial-table",
     apiController.leaveSharedFinancialTable
   );
+
+  app.get(
+    "/api/get-currency-exchange-rates",
+    apiController.getCurrencyExchangeRates
+  );
 };

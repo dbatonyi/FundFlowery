@@ -769,3 +769,27 @@ exports.leaveSharedFinancialTable = async function (req, res) {
     return res.status(500).send({ message: "Something went wrong!" });
   }
 };
+
+exports.getCurrencyExchangeRates = async function (req, res) {
+  const { CurrencyExchangeRates } = require("../models");
+  let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+
+  const authenticateToken = req.headers["authenticate"];
+
+  if (!authenticateToken || config.apiToken !== authenticateToken.slice(7)) {
+    utils.writeToLogFile(`IP: ${ip} -- (API token not valid!)`, "warning");
+    return res.status(403).send({ message: "API token not valid!" });
+  }
+
+  try {
+    const currencyExchangeRates = await CurrencyExchangeRates.findAll();
+
+    return res.status(200).send({
+      data: currencyExchangeRates,
+      message: "Successfully left the board!",
+    });
+  } catch (error) {
+    utils.writeToLogFile(`IP: ${ip} -- ${error}`, "error");
+    return res.status(500).send({ message: "Something went wrong!" });
+  }
+};

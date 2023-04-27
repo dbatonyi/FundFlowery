@@ -13,7 +13,7 @@ const Header = ({ auth, logout }) => {
     <header>
       <LanguageSwitcher />
       <MainNavigation auth={auth} logout={logout} />
-      {auth && userInfo ? (
+      {auth && userInfo?.uuid ? (
         <Notifications
           userInfo={userInfo}
           setStatusMessage={setStatusMessage}

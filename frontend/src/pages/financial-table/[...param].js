@@ -18,15 +18,19 @@ const FinancialTable = () => {
   const [permission, setPermission] = useState(false);
   const [permissionLevel, setPermissionLevel] = useState(null);
 
-  const [currencyExchangeRates, setCurrencyExchangeRates] = useState(null);
-
   const [tableData, setTableData] = useState(null);
+
   const [incomes, setIncomes] = useState(null);
   const [summedIncomeAmount, setSummedIncomeAmount] = useState(null);
+  const [convertedIncomeAmount, setConvertedIncomeAmount] = useState(null);
   const [filteredIncomes, setFilteredIncomes] = useState(null);
+
   const [outgoings, setOutgoings] = useState(null);
   const [summedOutgoingAmount, setSummedOutgoingAmount] = useState(null);
+  const [convertedOutgoingAmount, setConvertedOutgoingAmount] = useState(null);
   const [filteredOutgoings, setFilteredOutgoings] = useState(null);
+
+  const [selectedCurrency, setSelectedCurrency] = useState("HUF");
 
   const [reRender, setReRender] = useState(false);
 
@@ -34,6 +38,12 @@ const FinancialTable = () => {
   const [titleForm, setTitleForm] = useState(false);
 
   const [isSharePopupOpened, setIsSharePopupOpened] = useState(false);
+
+  const handleCurrencyChange = (event) => {
+    setSelectedCurrency(event.target.value);
+
+    summaryController(event.target.value, incomes, outgoings);
+  };
 
   const getPermissionData = async () => {
     try {
@@ -87,7 +97,7 @@ const FinancialTable = () => {
       );
       const dataJson = await response.json();
 
-      return setCurrencyExchangeRates(dataJson?.data);
+      return dataJson?.data;
     } catch (error) {
       const log = await fetch(`${configData.serverUrl}/api/log`, {
         method: "POST",
@@ -106,34 +116,6 @@ const FinancialTable = () => {
   };
 
   const fetchFinancialTable = async () => {
-    const sumIncomeAmounts = async (incomeArray) => {
-      const sumByCurrency = {};
-
-      incomeArray.forEach((income) => {
-        if (sumByCurrency[income.incomeCurrency]) {
-          sumByCurrency[income.incomeCurrency] += income.incomeAmount;
-        } else {
-          sumByCurrency[income.incomeCurrency] = income.incomeAmount;
-        }
-      });
-
-      setSummedIncomeAmount(sumByCurrency);
-    };
-
-    const sumOutgoingAmounts = async (outgoingArray) => {
-      const sumByCurrency = {};
-
-      outgoingArray.forEach((outgoing) => {
-        if (sumByCurrency[outgoing.outgoingCurrency]) {
-          sumByCurrency[outgoing.outgoingCurrency] += outgoing.outgoingAmount;
-        } else {
-          sumByCurrency[outgoing.outgoingCurrency] = outgoing.outgoingAmount;
-        }
-      });
-
-      setSummedOutgoingAmount(sumByCurrency);
-    };
-
     try {
       const response = await fetch(
         `${configData.serverUrl}/api/get-financial-table-data`,
@@ -155,11 +137,15 @@ const FinancialTable = () => {
         console.log(dataJson.data[0]);
         setTableData(dataJson.data[0]);
         setIncomes(dataJson.data[0].incomes);
-        sumIncomeAmounts(dataJson.data[0].incomes);
         setFilteredIncomes(dataJson.data[0].incomes);
         setOutgoings(dataJson.data[0].outgoings);
-        sumOutgoingAmounts(dataJson.data[0].outgoings);
         setFilteredOutgoings(dataJson.data[0].outgoings);
+
+        summaryController(
+          selectedCurrency,
+          dataJson.data[0].incomes,
+          dataJson.data[0].outgoings
+        );
       }
     } catch (error) {
       const log = await fetch(`${configData.serverUrl}/api/log`, {
@@ -275,10 +261,85 @@ const FinancialTable = () => {
     }
   };
 
+  const summaryController = async (
+    selectedCurrency,
+    incomesData,
+    outgoingsData
+  ) => {
+    const currencyExchangeRates = await getCurrencyExchangeRates();
+
+    const sumIncomeAmounts = async (incomeArray) => {
+      const sumByCurrency = { HUF: 0, EUR: 0, USD: 0 };
+
+      incomeArray.forEach((income) => {
+        if (sumByCurrency[income.incomeCurrency]) {
+          sumByCurrency[income.incomeCurrency] += income.incomeAmount;
+        } else {
+          sumByCurrency[income.incomeCurrency] = income.incomeAmount;
+        }
+      });
+
+      setSummedIncomeAmount(sumByCurrency);
+      return sumByCurrency;
+    };
+
+    const sumOutgoingAmounts = async (outgoingArray) => {
+      const sumByCurrency = { HUF: 0, EUR: 0, USD: 0 };
+
+      outgoingArray.forEach((outgoing) => {
+        if (sumByCurrency[outgoing.outgoingCurrency]) {
+          sumByCurrency[outgoing.outgoingCurrency] += outgoing.outgoingAmount;
+        } else {
+          sumByCurrency[outgoing.outgoingCurrency] = outgoing.outgoingAmount;
+        }
+      });
+
+      setSummedOutgoingAmount(sumByCurrency);
+      return sumByCurrency;
+    };
+
+    const incomeAmounts = await sumIncomeAmounts(incomesData);
+    const outgoingAmounts = await sumOutgoingAmounts(outgoingsData);
+
+    const sumIncAmount = { ...incomeAmounts };
+
+    for (const currency of Object.keys(incomeAmounts)) {
+      if (currency === selectedCurrency) continue;
+      const exchangeRateObj = currencyExchangeRates.find(
+        (rate) =>
+          rate.currencyExchangeBase === currency &&
+          rate.currencyExchangeTarget === selectedCurrency
+      );
+      if (exchangeRateObj) {
+        sumIncAmount[selectedCurrency] +=
+          sumIncAmount[currency] * exchangeRateObj.currencyExchangeRate;
+        delete sumIncAmount[currency];
+      }
+    }
+
+    const sumOutAmount = { ...outgoingAmounts };
+
+    for (const currency of Object.keys(outgoingAmounts)) {
+      if (currency === selectedCurrency) continue;
+      const exchangeRateObj = currencyExchangeRates.find(
+        (rate) =>
+          rate.currencyExchangeBase === currency &&
+          rate.currencyExchangeTarget === selectedCurrency
+      );
+      if (exchangeRateObj) {
+        sumOutAmount[selectedCurrency] +=
+          sumOutAmount[currency] * exchangeRateObj.currencyExchangeRate;
+        delete sumOutAmount[currency];
+      }
+    }
+
+    setConvertedIncomeAmount(sumIncAmount[selectedCurrency]);
+    setConvertedOutgoingAmount(sumOutAmount[selectedCurrency]);
+  };
+
   useEffect(() => {
     const tableDataController = async () => {
       const permissionData = await getPermissionData();
-      await getCurrencyExchangeRates();
 
       if (permissionData?.permission) {
         await fetchFinancialTable();
@@ -408,43 +469,61 @@ const FinancialTable = () => {
                   <div className="details">
                     {summedIncomeAmount?.HUF ? (
                       <div className="details--huf">
-                        {summedIncomeAmount.HUF} HUF
+                        {summedIncomeAmount.HUF.toFixed(2)} HUF
                       </div>
                     ) : null}
                     {summedIncomeAmount?.EUR ? (
                       <div className="details--eur">
-                        {summedIncomeAmount.EUR} EUR
+                        {summedIncomeAmount.EUR.toFixed(2)} EUR
                       </div>
                     ) : null}
 
                     {summedIncomeAmount?.USD ? (
                       <div className="details--usd">
-                        {summedIncomeAmount.USD} USD
+                        {summedIncomeAmount.USD.toFixed(2)} USD
                       </div>
                     ) : null}
                   </div>
-                  <div className="converted-details"></div>
+                  <div className="converted-details">
+                    Your income summary is: {convertedIncomeAmount.toFixed(2)}{" "}
+                    {selectedCurrency}
+                  </div>
                 </div>
                 <div className="financial-table__summary--outgoing">
                   <div className="details">
                     {summedOutgoingAmount?.HUF ? (
                       <div className="details--huf">
-                        {summedOutgoingAmount.HUF} HUF
+                        {summedOutgoingAmount.HUF.toFixed(2)} HUF
                       </div>
                     ) : null}
                     {summedOutgoingAmount?.EUR ? (
                       <div className="details--eur">
-                        {summedOutgoingAmount.EUR} EUR
+                        {summedOutgoingAmount.EUR.toFixed(2)} EUR
                       </div>
                     ) : null}
 
                     {summedOutgoingAmount?.USD ? (
                       <div className="details--usd">
-                        {summedOutgoingAmount.USD} USD
+                        {summedOutgoingAmount.USD.toFixed(2)} USD
                       </div>
                     ) : null}
                   </div>
-                  <div className="converted-details"></div>
+                  <div className="converted-details">
+                    Your outgoings summary is:{" "}
+                    {convertedOutgoingAmount.toFixed(2)} {selectedCurrency}
+                  </div>
+                </div>
+                <div className="financial-table__summary--controller">
+                  <label htmlFor="currency-select">Select Currency:</label>
+                  <select
+                    id="currency-select"
+                    value={selectedCurrency}
+                    onChange={handleCurrencyChange}
+                  >
+                    <option value="HUF">HUF</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                  </select>
                 </div>
               </div>
               {openedForm === "income" ? (

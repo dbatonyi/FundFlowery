@@ -126,10 +126,6 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
     }
   };
 
-  useEffect(() => {
-    console.log(showDeletePopup);
-  }, [showDeletePopup]);
-
   const date = new Date(incomeData.incomeDate);
   const isoString = date.toISOString();
   const formattedDate = isoString.slice(0, 10);

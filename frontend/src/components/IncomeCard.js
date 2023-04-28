@@ -140,7 +140,10 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
                 {incomeData.incomeTitle}
               </div>
               <div className="financial-table__income-card--amount">
-                {incomeData.incomeAmount} {incomeData.incomeCurrency}
+                {incomeData.incomeAmount
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                {incomeData.incomeCurrency}
               </div>
               <div className="financial-table__income-card--date">
                 {formattedDate}

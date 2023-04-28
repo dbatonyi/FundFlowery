@@ -159,7 +159,10 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
                 {outgoingData.outgoingTitle}
               </div>
               <div className="financial-table__outgoing-card--amount">
-                {outgoingData.outgoingAmount} {outgoingData.outgoingCurrency}
+                {outgoingData.outgoingAmount
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                {outgoingData.outgoingCurrency}
               </div>
               <div className="financial-table__outgoing-card--date">
                 {formattedDate}

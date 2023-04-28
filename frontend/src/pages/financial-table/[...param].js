@@ -6,12 +6,17 @@ import NewIncomeForm from "@/components/forms/NewIncomeForm";
 import NewOutgoingForm from "@/components/forms/NewOutgoingForm";
 import IncomeCard from "@/components/IncomeCard";
 import OutgoingCard from "@/components/OutgoingCard";
+import YearPicker from "@/components/YearPicker";
+import MonthPicker from "@/components/MonthPicker";
 
 const configData = require("../../../config");
 
 const FinancialTable = () => {
   const router = useRouter();
   const urlParam = router.query.param;
+
+  const currentDate = new Date();
+  const monthNumber = (currentDate.getMonth() + 1).toString().padStart(2, "0");
 
   const { setStatusMessage, userInfo } = useContext(AuthContext);
 
@@ -32,6 +37,9 @@ const FinancialTable = () => {
 
   const [selectedCurrency, setSelectedCurrency] = useState("HUF");
 
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState(monthNumber);
+
   const [reRender, setReRender] = useState(false);
 
   const [openedForm, setOpenedForm] = useState(null);
@@ -43,6 +51,15 @@ const FinancialTable = () => {
     setSelectedCurrency(event.target.value);
 
     summaryController(event.target.value, incomes, outgoings);
+  };
+
+  const handleYearChange = (year) => {
+    console.log(year);
+    setSelectedYear(year);
+  };
+
+  const handleMonthChange = (event) => {
+    setSelectedMonth(event.target.value);
   };
 
   const getPermissionData = async () => {
@@ -137,14 +154,46 @@ const FinancialTable = () => {
         console.log(dataJson.data[0]);
         setTableData(dataJson.data[0]);
         setIncomes(dataJson.data[0].incomes);
-        setFilteredIncomes(dataJson.data[0].incomes);
         setOutgoings(dataJson.data[0].outgoings);
-        setFilteredOutgoings(dataJson.data[0].outgoings);
+
+        const filteredIncomesArray = dataJson.data[0].incomes.filter(
+          (income) => {
+            const incomeDate = new Date(income.incomeDate);
+            const incomeYear = incomeDate.getFullYear();
+            const incomeMonthNumber = (incomeDate.getMonth() + 1)
+              .toString()
+              .padStart(2, "0");
+
+            return (
+              incomeYear === Number(selectedYear) &&
+              incomeMonthNumber === selectedMonth
+            );
+          }
+        );
+
+        setFilteredIncomes(filteredIncomesArray);
+
+        const filteredOutgoingsArray = dataJson.data[0].outgoings.filter(
+          (outgoing) => {
+            const outgoingDate = new Date(outgoing.outgoingDate);
+            const outgoingYear = outgoingDate.getFullYear();
+            const outgoingMonthNumber = (outgoingDate.getMonth() + 1)
+              .toString()
+              .padStart(2, "0");
+
+            return (
+              outgoingYear === Number(selectedYear) &&
+              outgoingMonthNumber === selectedMonth
+            );
+          }
+        );
+
+        setFilteredOutgoings(filteredOutgoingsArray);
 
         summaryController(
           selectedCurrency,
-          dataJson.data[0].incomes,
-          dataJson.data[0].outgoings
+          filteredIncomesArray,
+          filteredOutgoingsArray
         );
       }
     } catch (error) {
@@ -353,6 +402,48 @@ const FinancialTable = () => {
     tableDataController();
   }, [reRender]);
 
+  useEffect(() => {
+    if (incomes) {
+      const filteredIncomesArray = incomes.filter((income) => {
+        const incomeDate = new Date(income.incomeDate);
+        const incomeYear = incomeDate.getFullYear();
+        const incomeMonthNumber = (incomeDate.getMonth() + 1)
+          .toString()
+          .padStart(2, "0");
+
+        return (
+          incomeYear === Number(selectedYear) &&
+          incomeMonthNumber === selectedMonth
+        );
+      });
+
+      setFilteredIncomes(filteredIncomesArray);
+    }
+
+    if (outgoings) {
+      const filteredOutgoingsArray = outgoings.filter((outgoing) => {
+        const outgoingDate = new Date(outgoing.outgoingDate);
+        const outgoingYear = outgoingDate.getFullYear();
+        const outgoingMonthNumber = (outgoingDate.getMonth() + 1)
+          .toString()
+          .padStart(2, "0");
+
+        return (
+          outgoingYear === Number(selectedYear) &&
+          outgoingMonthNumber === selectedMonth
+        );
+      });
+
+      setFilteredOutgoings(filteredOutgoingsArray);
+    }
+  }, [selectedMonth, selectedYear]);
+
+  useEffect(() => {
+    if (filteredIncomes && filteredOutgoings) {
+      summaryController(selectedCurrency, filteredIncomes, filteredOutgoings);
+    }
+  }, [filteredIncomes, filteredOutgoings]);
+
   return (
     <div className="financial-table">
       {permission ? (
@@ -404,6 +495,18 @@ const FinancialTable = () => {
                   }}
                 >
                   Share with others
+                </div>
+                <div className="financial-table__form-container--date-pick">
+                  <YearPicker
+                    startYear={2000}
+                    endYear={2030}
+                    selectedYear={selectedYear}
+                    onYearChange={handleYearChange}
+                  />
+                  <MonthPicker
+                    selectedMonth={selectedMonth}
+                    handleMonthChange={handleMonthChange}
+                  />
                 </div>
                 <div className="financial-table__form-container--controllers">
                   <div
@@ -469,23 +572,38 @@ const FinancialTable = () => {
                   <div className="details">
                     {summedIncomeAmount?.HUF ? (
                       <div className="details--huf">
-                        {summedIncomeAmount.HUF.toFixed(2)} HUF
+                        {summedIncomeAmount.HUF.toFixed(2)
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                        HUF
                       </div>
                     ) : null}
                     {summedIncomeAmount?.EUR ? (
                       <div className="details--eur">
-                        {summedIncomeAmount.EUR.toFixed(2)} EUR
+                        {summedIncomeAmount.EUR.toFixed(2)
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                        EUR
                       </div>
                     ) : null}
 
                     {summedIncomeAmount?.USD ? (
                       <div className="details--usd">
-                        {summedIncomeAmount.USD.toFixed(2)} USD
+                        {summedIncomeAmount.USD.toFixed(2)
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                        USD
                       </div>
                     ) : null}
                   </div>
                   <div className="converted-details">
-                    Your income summary is: {convertedIncomeAmount.toFixed(2)}{" "}
+                    Your income summary is:{" "}
+                    {convertedIncomeAmount
+                      ? convertedIncomeAmount
+                          .toFixed(2)
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                      : 0}{" "}
                     {selectedCurrency}
                   </div>
                 </div>
@@ -493,24 +611,39 @@ const FinancialTable = () => {
                   <div className="details">
                     {summedOutgoingAmount?.HUF ? (
                       <div className="details--huf">
-                        {summedOutgoingAmount.HUF.toFixed(2)} HUF
+                        {summedOutgoingAmount.HUF.toFixed(2)
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                        HUF
                       </div>
                     ) : null}
                     {summedOutgoingAmount?.EUR ? (
                       <div className="details--eur">
-                        {summedOutgoingAmount.EUR.toFixed(2)} EUR
+                        {summedOutgoingAmount.EUR.toFixed(2)
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                        EUR
                       </div>
                     ) : null}
 
                     {summedOutgoingAmount?.USD ? (
                       <div className="details--usd">
-                        {summedOutgoingAmount.USD.toFixed(2)} USD
+                        {summedOutgoingAmount.USD.toFixed(2)
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                        USD
                       </div>
                     ) : null}
                   </div>
                   <div className="converted-details">
                     Your outgoings summary is:{" "}
-                    {convertedOutgoingAmount.toFixed(2)} {selectedCurrency}
+                    {convertedOutgoingAmount
+                      ? convertedOutgoingAmount
+                          .toFixed(2)
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                      : 0}{" "}
+                    {selectedCurrency}
                   </div>
                 </div>
                 <div className="financial-table__summary--controller">
@@ -524,6 +657,19 @@ const FinancialTable = () => {
                     <option value="USD">USD</option>
                     <option value="EUR">EUR</option>
                   </select>
+                </div>
+                <div className="financial-table__summary--total">
+                  Total:{" "}
+                  {convertedIncomeAmount >= 0 && convertedOutgoingAmount >= 0
+                    ? (
+                        (convertedIncomeAmount ? convertedIncomeAmount : 0) -
+                        (convertedOutgoingAmount ? convertedOutgoingAmount : 0)
+                      )
+                        .toFixed(2)
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    : 0}{" "}
+                  {selectedCurrency}
                 </div>
               </div>
               {openedForm === "income" ? (

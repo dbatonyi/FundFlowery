@@ -8,6 +8,7 @@ import IncomeCard from "@/components/IncomeCard";
 import OutgoingCard from "@/components/OutgoingCard";
 import YearPicker from "@/components/YearPicker";
 import MonthPicker from "@/components/MonthPicker";
+import CurrencyRatesTable from "@/components/CurrencyRatesTable";
 
 const configData = require("../../../config");
 
@@ -35,10 +36,13 @@ const FinancialTable = () => {
   const [convertedOutgoingAmount, setConvertedOutgoingAmount] = useState(null);
   const [filteredOutgoings, setFilteredOutgoings] = useState(null);
 
+  const [currencyRates, setCurrencyRates] = useState(null);
   const [selectedCurrency, setSelectedCurrency] = useState("HUF");
 
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(monthNumber);
+
+  const [overallTotal, setOverallTotal] = useState(0);
 
   const [reRender, setReRender] = useState(false);
 
@@ -50,11 +54,10 @@ const FinancialTable = () => {
   const handleCurrencyChange = (event) => {
     setSelectedCurrency(event.target.value);
 
-    summaryController(event.target.value, incomes, outgoings);
+    summaryController(event.target.value, filteredIncomes, filteredOutgoings);
   };
 
   const handleYearChange = (year) => {
-    console.log(year);
     setSelectedYear(year);
   };
 
@@ -156,6 +159,12 @@ const FinancialTable = () => {
         setIncomes(dataJson.data[0].incomes);
         setOutgoings(dataJson.data[0].outgoings);
 
+        overallTotalSummary(
+          selectedCurrency,
+          dataJson.data[0].incomes,
+          dataJson.data[0].outgoings
+        );
+
         const filteredIncomesArray = dataJson.data[0].incomes.filter(
           (income) => {
             const incomeDate = new Date(income.incomeDate);
@@ -189,12 +198,6 @@ const FinancialTable = () => {
         );
 
         setFilteredOutgoings(filteredOutgoingsArray);
-
-        summaryController(
-          selectedCurrency,
-          filteredIncomesArray,
-          filteredOutgoingsArray
-        );
       }
     } catch (error) {
       const log = await fetch(`${configData.serverUrl}/api/log`, {
@@ -386,6 +389,85 @@ const FinancialTable = () => {
     setConvertedOutgoingAmount(sumOutAmount[selectedCurrency]);
   };
 
+  const overallTotalSummary = async (
+    selectedCurrency,
+    incomesData,
+    outgoingsData
+  ) => {
+    const currencyExchangeRates = await getCurrencyExchangeRates();
+    setCurrencyRates(currencyExchangeRates);
+
+    const sumIncomeAmounts = async (incomeArray) => {
+      const sumByCurrency = { HUF: 0, EUR: 0, USD: 0 };
+
+      incomeArray.forEach((income) => {
+        if (sumByCurrency[income.incomeCurrency]) {
+          sumByCurrency[income.incomeCurrency] += income.incomeAmount;
+        } else {
+          sumByCurrency[income.incomeCurrency] = income.incomeAmount;
+        }
+      });
+
+      setSummedIncomeAmount(sumByCurrency);
+      return sumByCurrency;
+    };
+
+    const sumOutgoingAmounts = async (outgoingArray) => {
+      const sumByCurrency = { HUF: 0, EUR: 0, USD: 0 };
+
+      outgoingArray.forEach((outgoing) => {
+        if (sumByCurrency[outgoing.outgoingCurrency]) {
+          sumByCurrency[outgoing.outgoingCurrency] += outgoing.outgoingAmount;
+        } else {
+          sumByCurrency[outgoing.outgoingCurrency] = outgoing.outgoingAmount;
+        }
+      });
+
+      setSummedOutgoingAmount(sumByCurrency);
+      return sumByCurrency;
+    };
+
+    const incomeAmounts = await sumIncomeAmounts(incomesData);
+    const outgoingAmounts = await sumOutgoingAmounts(outgoingsData);
+
+    const sumIncAmount = { ...incomeAmounts };
+
+    for (const currency of Object.keys(incomeAmounts)) {
+      if (currency === selectedCurrency) continue;
+      const exchangeRateObj = currencyExchangeRates.find(
+        (rate) =>
+          rate.currencyExchangeBase === currency &&
+          rate.currencyExchangeTarget === selectedCurrency
+      );
+      if (exchangeRateObj) {
+        sumIncAmount[selectedCurrency] +=
+          sumIncAmount[currency] * exchangeRateObj.currencyExchangeRate;
+        delete sumIncAmount[currency];
+      }
+    }
+
+    const sumOutAmount = { ...outgoingAmounts };
+
+    for (const currency of Object.keys(outgoingAmounts)) {
+      if (currency === selectedCurrency) continue;
+      const exchangeRateObj = currencyExchangeRates.find(
+        (rate) =>
+          rate.currencyExchangeBase === currency &&
+          rate.currencyExchangeTarget === selectedCurrency
+      );
+      if (exchangeRateObj) {
+        sumOutAmount[selectedCurrency] +=
+          sumOutAmount[currency] * exchangeRateObj.currencyExchangeRate;
+        delete sumOutAmount[currency];
+      }
+    }
+
+    setOverallTotal(
+      (sumIncAmount[selectedCurrency] ? sumIncAmount[selectedCurrency] : 0) -
+        (sumOutAmount[selectedCurrency] ? sumOutAmount[selectedCurrency] : 0)
+    );
+  };
+
   useEffect(() => {
     const tableDataController = async () => {
       const permissionData = await getPermissionData();
@@ -450,121 +532,129 @@ const FinancialTable = () => {
         <>
           {tableData ? (
             <>
-              <div className="financial-table__form-container">
-                <div className="financial-table__form-container--title">
-                  {!titleForm ? (
-                    <>
-                      {tableData.tableName}
-                      <div
-                        className="edit-title"
-                        onClick={() => {
-                          setTitleForm(true);
-                        }}
-                      >
-                        Edit
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <form onSubmit={editTitle}>
-                        <input
-                          className="text"
-                          placeholder={tableData.tableName}
-                          name="table-title"
-                          type="text"
-                        />
-                        <button className="btn" type="submit">
-                          Save
-                        </button>
-                      </form>
-                      <div
-                        className="edit-close"
-                        onClick={() => {
-                          setTitleForm(false);
-                        }}
-                      >
-                        x
-                      </div>
-                    </>
-                  )}
-                </div>
-                <div
-                  className="financial-table__form-container--share"
-                  onClick={() => {
-                    setIsSharePopupOpened(true);
-                  }}
-                >
-                  Share with others
-                </div>
-                <div className="financial-table__form-container--date-pick">
-                  <YearPicker
-                    startYear={2000}
-                    endYear={2030}
-                    selectedYear={selectedYear}
-                    onYearChange={handleYearChange}
-                  />
-                  <MonthPicker
-                    selectedMonth={selectedMonth}
-                    handleMonthChange={handleMonthChange}
-                  />
-                </div>
-                <div className="financial-table__form-container--controllers">
-                  <div
-                    className="add-new-income-item"
-                    onClick={() => {
-                      setOpenedForm("income");
-                    }}
-                  >
-                    + Add new income item
-                  </div>
-                  <div
-                    className="add-new-outgoing-item"
-                    onClick={() => {
-                      setOpenedForm("outgoing");
-                    }}
-                  >
-                    + Add new outgoing item
-                  </div>
-                </div>
-                <div className="financial-table__list">
-                  <div className="financial-table__list--incomes">
-                    Income list:
-                    {filteredIncomes && filteredIncomes.length > 0 ? (
+              <div className="financial-table">
+                <div className="financial-table__main">
+                  <div className="financial-table__main--title">
+                    {!titleForm ? (
                       <>
-                        {filteredIncomes.map((incomeItem, index) => {
-                          return (
-                            <IncomeCard
-                              incomeData={incomeItem}
-                              reRender={reRender}
-                              setReRender={setReRender}
-                              key={index}
-                            />
-                          );
-                        })}
+                        {tableData.tableName}
+                        <div
+                          className="edit-title"
+                          onClick={() => {
+                            setTitleForm(true);
+                          }}
+                        >
+                          Edit
+                        </div>
                       </>
                     ) : (
-                      <div className="no-result">There is no incomes</div>
-                    )}
-                  </div>
-                  <div className="financial-table__list--outgoings">
-                    Outgoing list:
-                    {filteredOutgoings && filteredOutgoings.length > 0 ? (
                       <>
-                        {filteredOutgoings.map((outgoingItem, index) => {
-                          return (
-                            <OutgoingCard
-                              outgoingData={outgoingItem}
-                              reRender={reRender}
-                              setReRender={setReRender}
-                              key={index}
-                            />
-                          );
-                        })}
+                        <form onSubmit={editTitle}>
+                          <input
+                            className="text"
+                            placeholder={tableData.tableName}
+                            name="table-title"
+                            type="text"
+                          />
+                          <button className="btn" type="submit">
+                            Save
+                          </button>
+                        </form>
+                        <div
+                          className="edit-close"
+                          onClick={() => {
+                            setTitleForm(false);
+                          }}
+                        >
+                          x
+                        </div>
                       </>
-                    ) : (
-                      <div className="no-result">There is no outgoings</div>
                     )}
                   </div>
+                  <div
+                    className="financial-table--share"
+                    onClick={() => {
+                      setIsSharePopupOpened(true);
+                    }}
+                  >
+                    Share with others
+                  </div>
+                  <div className="financial-table__main--date-pick">
+                    <YearPicker
+                      startYear={2000}
+                      endYear={2030}
+                      selectedYear={selectedYear}
+                      onYearChange={handleYearChange}
+                    />
+                    <MonthPicker
+                      selectedMonth={selectedMonth}
+                      handleMonthChange={handleMonthChange}
+                    />
+                  </div>
+                  <div className="financial-table__main--controllers">
+                    <div
+                      className="add-new-income-item"
+                      onClick={() => {
+                        setOpenedForm("income");
+                      }}
+                    >
+                      + Add new income item
+                    </div>
+                    <div
+                      className="add-new-outgoing-item"
+                      onClick={() => {
+                        setOpenedForm("outgoing");
+                      }}
+                    >
+                      + Add new outgoing item
+                    </div>
+                  </div>
+                  <div className="financial-table__main--list">
+                    <div className="financial-table__list--incomes">
+                      Income list:
+                      {filteredIncomes && filteredIncomes.length > 0 ? (
+                        <>
+                          {filteredIncomes.map((incomeItem, index) => {
+                            return (
+                              <IncomeCard
+                                incomeData={incomeItem}
+                                reRender={reRender}
+                                setReRender={setReRender}
+                                key={index}
+                              />
+                            );
+                          })}
+                        </>
+                      ) : (
+                        <div className="no-result">There is no incomes</div>
+                      )}
+                    </div>
+                    <div className="financial-table__list--outgoings">
+                      Outgoing list:
+                      {filteredOutgoings && filteredOutgoings.length > 0 ? (
+                        <>
+                          {filteredOutgoings.map((outgoingItem, index) => {
+                            return (
+                              <OutgoingCard
+                                outgoingData={outgoingItem}
+                                reRender={reRender}
+                                setReRender={setReRender}
+                                key={index}
+                              />
+                            );
+                          })}
+                        </>
+                      ) : (
+                        <div className="no-result">There is no outgoings</div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="financial-table__sidebar">
+                  {currencyRates ? (
+                    <CurrencyRatesTable currencyRates={currencyRates} />
+                  ) : null}
                 </div>
               </div>
               <div className="financial-table__summary">
@@ -671,6 +761,14 @@ const FinancialTable = () => {
                     : 0}{" "}
                   {selectedCurrency}
                 </div>
+              </div>
+              <div className="financial-table__overall-summary">
+                Overall summary:{" "}
+                {overallTotal
+                  .toFixed(2)
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                {selectedCurrency}
               </div>
               {openedForm === "income" ? (
                 <NewIncomeForm

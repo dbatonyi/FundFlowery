@@ -1,10 +1,12 @@
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../layouts/Layout";
+import useTranslation from "next-translate/useTranslation";
 
 const configData = require("../../config");
 
 const FinancialTable = (props) => {
+  const { t } = useTranslation("financialTables");
   const { setStatusMessage, userInfo } = useContext(AuthContext);
 
   const [reRender, setReRender] = useState(false);
@@ -247,7 +249,7 @@ const FinancialTable = (props) => {
   return (
     <div className="financial-table-list">
       <div className="financial-table-list__container">
-        <h1>Financial Tables</h1>
+        <h1>{t("financialTablesTitle")}</h1>
         <div className="financial-table-list__container--controllers">
           <div
             className="create-new-table"
@@ -259,7 +261,7 @@ const FinancialTable = (props) => {
           </div>
         </div>
         <div className="financial-table-list__container-list">
-          The financial tables list goes here!
+          {t("financialTablesListText")}
           {filteredFinancialTableList &&
           filteredFinancialTableList.length > 0 ? (
             <>
@@ -279,7 +281,7 @@ const FinancialTable = (props) => {
                         setShowDeletePopup(true);
                       }}
                     >
-                      Delete
+                      {t("financialTablesCardDelete")}
                     </div>
                   </div>
                 );
@@ -287,12 +289,13 @@ const FinancialTable = (props) => {
             </>
           ) : (
             <div className="financial-table-list--no-result">
-              There is no financial table with this user.
+              {t("financialTablesNoResult")}
             </div>
           )}
         </div>
       </div>
       <div className="financial-table-list__shared-container">
+        {t("financialTablesSharedListText")}
         {filteredSharedFinancialTableList &&
         filteredSharedFinancialTableList.length > 0 ? (
           <>
@@ -330,12 +333,16 @@ const FinancialTable = (props) => {
           >
             X
           </div>
-          <div className="popup-container--title">Create new table</div>
+          <div className="popup-container--title">
+            {t("financialTablesCreateCardTitle")}
+          </div>
           <form onSubmit={submitHandler}>
-            <label htmlFor="table-name">Table name</label>
+            <label htmlFor="table-name">
+              {t("financialTablesCreateCardNameLabel")}
+            </label>
             <input className="text" name="table-name" type="text" required />
             <button className="submit-btn" type="submit">
-              Create
+              {t("financialTablesCreateCardSubmit")}
             </button>
           </form>
         </div>
@@ -351,7 +358,7 @@ const FinancialTable = (props) => {
             X
           </div>
           <div className="popup-container--title">
-            You really want to delete the table
+            {t("financialTablesDeleteCardTitle")}
           </div>
           <div className="popup-container--controllers">
             <div
@@ -361,7 +368,7 @@ const FinancialTable = (props) => {
                 setSelectedTableUuid(null);
               }}
             >
-              No
+              {t("financialTablesDeleteCardNo")}
             </div>
             <div
               className="accept"
@@ -370,7 +377,7 @@ const FinancialTable = (props) => {
                 setShowDeletePopup(false);
               }}
             >
-              Yes
+              {t("financialTablesDeleteCardYes")}
             </div>
           </div>
         </div>
@@ -386,7 +393,7 @@ const FinancialTable = (props) => {
             X
           </div>
           <div className="popup-container--title">
-            You really want to leave the table?
+            {t("financialTablesLeaveCardTitle")}
           </div>
           <div className="popup-container--controllers">
             <div
@@ -396,7 +403,7 @@ const FinancialTable = (props) => {
                 setSelectedSharedTableUuid(null);
               }}
             >
-              No
+              {t("financialTablesLeaveCardNo")}
             </div>
             <div
               className="accept"
@@ -405,7 +412,7 @@ const FinancialTable = (props) => {
                 setShowLeavePopup(false);
               }}
             >
-              Yes
+              {t("financialTablesLeaveCardYes")}
             </div>
           </div>
         </div>

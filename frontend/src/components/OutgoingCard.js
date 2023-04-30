@@ -4,8 +4,10 @@ import { AuthContext } from "@/layouts/Layout";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import useTranslation from "next-translate/useTranslation";
 
 const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
+  const { t } = useTranslation("outgoingCard");
   const { setStatusMessage } = useContext(AuthContext);
 
   const [selectedDate, setSelectedDate] = useState(
@@ -177,7 +179,8 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
                 {outgoingData.outgoingLocation}
               </div>
               <div className="financial-table__outgoing-card--on-sale">
-                It was on sale: {outgoingData.outgoingOnSale ? "Yes" : "No"}
+                {t("outgoingCardIsOnSaleText")}:{" "}
+                {outgoingData.outgoingOnSale ? "Yes" : "No"}
               </div>
             </div>
             <div className="financial-table__outgoing-card--controllers">
@@ -187,7 +190,7 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
                   setShowEditPopup(true);
                 }}
               >
-                Edit
+                {t("outgoingCardEditTitle")}
               </div>
               <div
                 className="financial-table__outgoing-card--delete"
@@ -195,7 +198,7 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
                   setShowDeletePopup(true);
                 }}
               >
-                Delete
+                {t("outgoingCardDeleteTitle")}
               </div>
             </div>
           </>
@@ -205,7 +208,9 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
             <form onSubmit={editOutgoingCard}>
               <div className="financial-table__outgoing-card--container">
                 <div className="financial-table__outgoing-card--title">
-                  <label htmlFor="outgoing-title">Title</label>
+                  <label htmlFor="outgoing-title">
+                    {t("outgoingCardEditTitleLabel")}:
+                  </label>
                   <input
                     className="text"
                     placeholder={outgoingData.outgoingTitle}
@@ -222,7 +227,9 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
                   />
                 </div>
                 <div className="financial-table__outgoing-card--amount">
-                  <label htmlFor="outgoing-amount">Amount:</label>
+                  <label htmlFor="outgoing-amount">
+                    {t("outgoingCardEditAmountLabel")}:
+                  </label>
                   <input
                     className="text"
                     placeholder={outgoingData.outgoingAmount}
@@ -235,14 +242,24 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
                     value={selectedCurrency}
                     onChange={handleOptionChange}
                   >
-                    <option value="">Select an option</option>
-                    <option value="HUF">HUF</option>
-                    <option value="EUR">EUR</option>
-                    <option value="USD">USD</option>
+                    <option value="">
+                      {t("outgoingCardEditSelectOptionTitle")}
+                    </option>
+                    <option value="HUF">
+                      {t("outgoingCardEditSelectHUF")}
+                    </option>
+                    <option value="EUR">
+                      {t("outgoingCardEditSelectEUR")}
+                    </option>
+                    <option value="USD">
+                      {t("outgoingCardEditSelectUSD")}
+                    </option>
                   </select>
                 </div>
                 <div className="financial-table__outgoing-card--category">
-                  <label htmlFor="outgoing-category">Category:</label>
+                  <label htmlFor="outgoing-category">
+                    {t("outgoingCardEditCategoryLabel")}:
+                  </label>
                   <input
                     className="text"
                     placeholder={outgoingData.outgoingCategory}
@@ -251,7 +268,9 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
                   />
                 </div>
                 <div className="financial-table__outgoing-card--origin">
-                  <label htmlFor="outgoing-origin">Origin:</label>
+                  <label htmlFor="outgoing-origin">
+                    {t("outgoingCardEditOriginLabel")}:
+                  </label>
                   <input
                     className="text"
                     placeholder={outgoingData.outgoingOrigin}
@@ -260,7 +279,9 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
                   />
                 </div>
                 <div className="financial-table__outgoing-card--location">
-                  <label htmlFor="outgoing-location">Location:</label>
+                  <label htmlFor="outgoing-location">
+                    {t("outgoingCardEditLocationLabel")}:
+                  </label>
                   <input
                     className="text"
                     placeholder={outgoingData.outgoingLocation}
@@ -275,11 +296,13 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
                       checked={isOnSaleChecked}
                       onChange={handleOnSaleCheckboxChange}
                     />
-                    On Sale
+                    {t("outgoingCardEditOnSaleLabel")}
                   </label>
                 </div>
                 <div className="financial-table__outgoing-card--description">
-                  <label htmlFor="outgoing-desc">Description:</label>
+                  <label htmlFor="outgoing-desc">
+                    {t("outgoingCardEditDescriptionLabel")}:
+                  </label>
                   <input
                     className="text"
                     placeholder={outgoingData.description}
@@ -288,7 +311,7 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
                   />
                 </div>
                 <button className="btn" type="submit">
-                  Save
+                  {t("outgoingCardEditSubmit")}
                 </button>
               </div>
             </form>
@@ -305,7 +328,7 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
         {!showEditPopup && showDeletePopup ? (
           <div className="income-card__popup">
             <div className="income-card__popup--text">
-              You definitely want to delete this item
+              {t("outgoingCardDeleteText")}
             </div>
             <div className="income-card__popup--controllers">
               <div
@@ -314,7 +337,7 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
                   setShowDeletePopup(false);
                 }}
               >
-                No
+                {t("outgoingCardDeleteNo")}
               </div>
               <div
                 className="accept"
@@ -322,7 +345,7 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
                   deleteOutgoingItem();
                 }}
               >
-                Yes
+                {t("outgoingCardDeleteYes")}
               </div>
             </div>
           </div>

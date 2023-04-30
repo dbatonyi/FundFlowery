@@ -1,11 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import configData from "../../config";
 import { AuthContext } from "@/layouts/Layout";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import useTranslation from "next-translate/useTranslation";
 
 const IncomeCard = ({ incomeData, reRender, setReRender }) => {
+  const { t } = useTranslation("incomeCard");
   const { setStatusMessage } = useContext(AuthContext);
 
   const [selectedDate, setSelectedDate] = useState(
@@ -165,7 +167,7 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
                   setShowEditPopup(true);
                 }}
               >
-                Edit
+                {t("incomeCardEditTitle")}
               </div>
               <div
                 className="financial-table__income-card--delete"
@@ -173,7 +175,7 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
                   setShowDeletePopup(true);
                 }}
               >
-                Delete
+                {t("incomeCardDeleteTitle")}
               </div>
             </div>
           </>
@@ -183,7 +185,9 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
             <form onSubmit={editIncomeCard}>
               <div className="financial-table__income-card--container">
                 <div className="financial-table__income-card--title">
-                  <label htmlFor="income-title">Title</label>
+                  <label htmlFor="income-title">
+                    {t("incomeCardEditTitleLabel")}:
+                  </label>
                   <input
                     className="text"
                     placeholder={incomeData.incomeTitle}
@@ -200,7 +204,9 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
                   />
                 </div>
                 <div className="financial-table__income-card--amount">
-                  <label htmlFor="income-amount">Amount:</label>
+                  <label htmlFor="income-amount">
+                    {t("incomeCardEditAmountLabel")}:
+                  </label>
                   <input
                     className="text"
                     placeholder={incomeData.incomeAmount}
@@ -213,14 +219,18 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
                     value={selectedCurrency}
                     onChange={handleOptionChange}
                   >
-                    <option value="">Select an option</option>
-                    <option value="HUF">HUF</option>
-                    <option value="EUR">EUR</option>
-                    <option value="USD">USD</option>
+                    <option value="">
+                      {t("incomeCardEditSelectOptionTitle")}
+                    </option>
+                    <option value="HUF">{t("incomeCardEditSelectHUF")}</option>
+                    <option value="EUR">{t("incomeCardEditSelectEUR")}</option>
+                    <option value="USD">{t("incomeCardEditSelectUSD")}</option>
                   </select>
                 </div>
                 <div className="financial-table__income-card--category">
-                  <label htmlFor="income-category">Category:</label>
+                  <label htmlFor="income-category">
+                    {t("incomeCardEditCategoryLabel")}:
+                  </label>
                   <input
                     className="text"
                     placeholder={incomeData.incomeCategory}
@@ -229,7 +239,9 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
                   />
                 </div>
                 <div className="financial-table__income-card--origin">
-                  <label htmlFor="income-origin">Origin:</label>
+                  <label htmlFor="income-origin">
+                    {t("incomeCardEditOriginLabel")}:
+                  </label>
                   <input
                     className="text"
                     placeholder={incomeData.incomeOrigin}
@@ -238,7 +250,9 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
                   />
                 </div>
                 <div className="financial-table__income-card--description">
-                  <label htmlFor="income-desc">Description:</label>
+                  <label htmlFor="income-desc">
+                    {t("incomeCardEditDescriptionLabel")}:
+                  </label>
                   <input
                     className="text"
                     placeholder={incomeData.description}
@@ -247,7 +261,7 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
                   />
                 </div>
                 <button className="btn" type="submit">
-                  Save
+                  {t("incomeCardEditSubmit")}
                 </button>
               </div>
             </form>
@@ -264,7 +278,7 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
         {!showEditPopup && showDeletePopup ? (
           <div className="income-card__popup">
             <div className="income-card__popup--text">
-              You definitely want to delete this item
+              {t("incomeCardDeleteText")}
             </div>
             <div className="income-card__popup--controllers">
               <div
@@ -273,7 +287,7 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
                   setShowDeletePopup(false);
                 }}
               >
-                No
+                {t("incomeCardDeleteNo")}
               </div>
               <div
                 className="accept"
@@ -281,7 +295,7 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
                   deleteIncomeItem();
                 }}
               >
-                Yes
+                {t("incomeCardDeleteYes")}
               </div>
             </div>
           </div>

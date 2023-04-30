@@ -13,6 +13,8 @@ import CurrencyRatesTable from "@/components/CurrencyRatesTable";
 const configData = require("../../../config");
 
 const FinancialTable = () => {
+  const { t } = useTranslation("financialTable");
+
   const router = useRouter();
   const urlParam = router.query.param;
 
@@ -544,7 +546,7 @@ const FinancialTable = () => {
                             setTitleForm(true);
                           }}
                         >
-                          Edit
+                          {t("financialTableEditTitle")}
                         </div>
                       </>
                     ) : (
@@ -557,7 +559,7 @@ const FinancialTable = () => {
                             type="text"
                           />
                           <button className="btn" type="submit">
-                            Save
+                            {t("financialTableSaveTitle")}
                           </button>
                         </form>
                         <div
@@ -577,7 +579,7 @@ const FinancialTable = () => {
                       setIsSharePopupOpened(true);
                     }}
                   >
-                    Share with others
+                    {t("financialTableShareWithOthersText")}
                   </div>
                   <div className="financial-table__main--date-pick">
                     <YearPicker
@@ -598,7 +600,7 @@ const FinancialTable = () => {
                         setOpenedForm("income");
                       }}
                     >
-                      + Add new income item
+                      {t("financialTableAddIncome")}
                     </div>
                     <div
                       className="add-new-outgoing-item"
@@ -606,12 +608,12 @@ const FinancialTable = () => {
                         setOpenedForm("outgoing");
                       }}
                     >
-                      + Add new outgoing item
+                      {t("financialTableAddOutgoing")}
                     </div>
                   </div>
                   <div className="financial-table__main--list">
                     <div className="financial-table__list--incomes">
-                      Income list:
+                      {t("financialTableIncomeListText")}:
                       {filteredIncomes && filteredIncomes.length > 0 ? (
                         <>
                           {filteredIncomes.map((incomeItem, index) => {
@@ -626,11 +628,13 @@ const FinancialTable = () => {
                           })}
                         </>
                       ) : (
-                        <div className="no-result">There is no incomes</div>
+                        <div className="no-result">
+                          {t("financialTableNoIncomes")}
+                        </div>
                       )}
                     </div>
                     <div className="financial-table__list--outgoings">
-                      Outgoing list:
+                      {t("financialTableOutgoingListText")}:
                       {filteredOutgoings && filteredOutgoings.length > 0 ? (
                         <>
                           {filteredOutgoings.map((outgoingItem, index) => {
@@ -645,7 +649,9 @@ const FinancialTable = () => {
                           })}
                         </>
                       ) : (
-                        <div className="no-result">There is no outgoings</div>
+                        <div className="no-result">
+                          {t("financialTableNoOutgoings")}
+                        </div>
                       )}
                     </div>
                   </div>
@@ -687,7 +693,7 @@ const FinancialTable = () => {
                     ) : null}
                   </div>
                   <div className="converted-details">
-                    Your income summary is:{" "}
+                    {t("financialTableIncomeSummary")}:{" "}
                     {convertedIncomeAmount
                       ? convertedIncomeAmount
                           .toFixed(2)
@@ -726,7 +732,7 @@ const FinancialTable = () => {
                     ) : null}
                   </div>
                   <div className="converted-details">
-                    Your outgoings summary is:{" "}
+                    {t("financialTableOutgoingSummary")}:{" "}
                     {convertedOutgoingAmount
                       ? convertedOutgoingAmount
                           .toFixed(2)
@@ -749,7 +755,7 @@ const FinancialTable = () => {
                   </select>
                 </div>
                 <div className="financial-table__summary--total">
-                  Total:{" "}
+                  {t("financialTableTotalTitle")}:{" "}
                   {convertedIncomeAmount >= 0 && convertedOutgoingAmount >= 0
                     ? (
                         (convertedIncomeAmount ? convertedIncomeAmount : 0) -
@@ -763,7 +769,7 @@ const FinancialTable = () => {
                 </div>
               </div>
               <div className="financial-table__overall-summary">
-                Overall summary:{" "}
+                {t("financialTableOverallTitle")}:{" "}
                 {overallTotal
                   .toFixed(2)
                   .toString()
@@ -799,18 +805,22 @@ const FinancialTable = () => {
                 X
               </div>
               <div className="popup-container--text">
-                Share this table with:
+                {t("financialTableShareTable")}:
               </div>
               <form onSubmit={shareTable}>
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email">
+                  {t("financialTableShareTableEmailLabel")}
+                </label>
                 <input id="email" type="email" name="email" required />
-                <button type="submit">Send</button>
+                <button type="submit">
+                  {t("financialTableShareTableSubmit")}
+                </button>
               </form>
             </div>
           ) : null}
         </>
       ) : (
-        <div className="fetching-in-progress">Fetching in progress..</div>
+        <div className="fetching-in-progress">{t("financialTableLoading")}</div>
       )}
     </div>
   );

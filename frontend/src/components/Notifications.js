@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import configData from "../../config";
+import useTranslation from "next-translate/useTranslation";
 
 import InviteCard from "./InviteCard";
 
 const Notifications = ({ userInfo, setStatusMessage }) => {
+  const { t } = useTranslation("notifications");
   const [reRender, setReRender] = useState(false);
 
   const [showDropdown, setShowDropdown] = useState(false);
@@ -76,7 +78,7 @@ const Notifications = ({ userInfo, setStatusMessage }) => {
               ))}
             </>
           ) : (
-            <div className="no-result">You have no notifications</div>
+            <div className="no-result">{t("notificationsNoResult")}</div>
           )}
         </div>
       ) : null}

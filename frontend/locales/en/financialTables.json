@@ -1,0 +1,16 @@
+{
+  "financialTablesTitle": "Financial Tables",
+  "financialTablesListText": "Your financial tables:",
+  "financialTablesSharedListText": "Shared financial tables:",
+  "financialTablesNoResult": "There is no table",
+  "financialTablesCardDelete": "Delete",
+  "financialTablesCreateCardTitle": "Create a new financial table",
+  "financialTablesCreateCardNameLabel": "Table name",
+  "financialTablesCreateCardSubmit": "Create",
+  "financialTablesDeleteCardTitle": "Do you really want to delete this table?",
+  "financialTablesDeleteCardNo": "No",
+  "financialTablesDeleteCardYes": "Yes",
+  "financialTablesLeaveCardTitle": "Do you really want to leave this table?",
+  "financialTablesLeaveCardNo": "No",
+  "financialTablesLeaveCardYes": "Yes"
+}

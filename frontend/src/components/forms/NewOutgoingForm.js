@@ -42,6 +42,10 @@ const NewOutgoingForm = ({
     const outgoingLocation = formData.get("outgoing-location");
     const description = formData.get("description");
 
+    if (!selectedDate) {
+      return;
+    }
+
     try {
       const response = await fetch(
         `${configData.serverUrl}/api/create-new-outgoing-item`,

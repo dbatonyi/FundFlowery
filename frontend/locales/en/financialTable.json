@@ -1,0 +1,19 @@
+{
+  "financialTableEditTitle": "Edit",
+  "financialTableSaveTitle": "Save",
+  "financialTableShareWithOthersText": "Share with others",
+  "financialTableAddIncome": "+ Add new income item",
+  "financialTableAddOutgoing": "+ Add new outgoing item",
+  "financialTableIncomeListText": "Income List",
+  "financialTableNoIncomes": "There is no incomes",
+  "financialTableOutgoingListText": "Outgoing list",
+  "financialTableNoOutgoings": "There is no outgoings",
+  "financialTableIncomeSummary": "Your income summary is",
+  "financialTableOutgoingSummary": "Your outgoings summary is",
+  "financialTableTotalTitle": "Total",
+  "financialTableOverallTitle": "Overall summary",
+  "financialTableShareTable": "Share this table with",
+  "financialTableShareTableEmailLabel": "Email",
+  "financialTableShareTableSubmit": "Send",
+  "financialTableLoading": "Fetching in progress.."
+}

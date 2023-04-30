@@ -1,4 +1,5 @@
 const fs = require("fs");
+const config = require("../config");
 
 var utils = (module.exports = {});
 

@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
 import configData from "../../config";
+import useTranslation from "next-translate/useTranslation";
 import { AuthContext } from "@/layouts/Layout";
 
 const InviteCard = ({ notificationsData, reRender, setReRender }) => {
+  const { t } = useTranslation("inviteCard");
   const { setStatusMessage } = useContext(AuthContext);
 
   const acceptInvitation = async () => {
@@ -86,8 +88,8 @@ const InviteCard = ({ notificationsData, reRender, setReRender }) => {
   return (
     <div className="notification-card">
       <div className="notification-card--text">
-        {notificationsData.name} invited you to join{" "}
-        {notificationsData.tableName} table
+        {notificationsData.name} {t("inviteCardText1")}{" "}
+        {notificationsData.tableName} {t("inviteCardText2")}
       </div>
       <div className="notification-card--controllers">
         <div

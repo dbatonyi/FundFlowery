@@ -1,0 +1,16 @@
+{
+  "financialTablesTitle": "Pénzügyi táblák",
+  "financialTablesListText": "A te pénzügyi tábláid:",
+  "financialTablesSharedListText": "Megosztott pénzügyi táblák:",
+  "financialTablesNoResult": "Nincsenek pénzügyi tábláid",
+  "financialTablesCardDelete": "Törlés",
+  "financialTablesCreateCardTitle": "Új pénzügyi tábla létrehozása",
+  "financialTablesCreateCardNameLabel": "Tábla neve",
+  "financialTablesCreateCardSubmit": "Létrehozás",
+  "financialTablesDeleteCardTitle": "Biztosan törölni akarod ezt a táblát?",
+  "financialTablesDeleteCardNo": "Nem",
+  "financialTablesDeleteCardYes": "Igen",
+  "financialTablesLeaveCardTitle": "Biztosan el akarod hagyni ezt a táblát?",
+  "financialTablesLeaveCardNo": "Nem",
+  "financialTablesLeaveCardYes": "Igen"
+}

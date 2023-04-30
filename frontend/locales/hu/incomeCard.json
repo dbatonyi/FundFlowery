@@ -1,0 +1,17 @@
+{
+  "incomeCardEditTitle": "Szerkesztés",
+  "incomeCardDeleteTitle": "Törlés",
+  "incomeCardEditTitleLabel": "Cím",
+  "incomeCardEditAmountLabel": "Összeg",
+  "incomeCardEditSelectOptionTitle": "Válassz egy opciót",
+  "incomeCardEditSelectHUF": "HUF",
+  "incomeCardEditSelectEUR": "EUR",
+  "incomeCardEditSelectUSD": "USD",
+  "incomeCardEditCategoryLabel": "Kategória",
+  "incomeCardEditOriginLabel": "Származás",
+  "incomeCardEditDescriptionLabel": "Leírás",
+  "incomeCardEditSubmit": "Mentés",
+  "incomeCardDeleteText": "Biztosan törölni akarja ezt az elemet?",
+  "incomeCardDeleteNo": "Nem",
+  "incomeCardDeleteYes": "Igen"
+}

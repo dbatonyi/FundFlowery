@@ -1,0 +1,19 @@
+{
+  "financialTableEditTitle": "Szerkesztés",
+  "financialTableSaveTitle": "Mentés",
+  "financialTableShareWithOthersText": "Megosztás másokkal",
+  "financialTableAddIncome": "+ Új bevételi tétel hozzáadása",
+  "financialTableAddOutgoing": "+ Új kiadás tétel hozzáadása",
+  "financialTableIncomeListText": "Bevételi lista",
+  "financialTableNoIncomes": "Nincsenek bevételeid",
+  "financialTableOutgoingListText": "Kiadási lista",
+  "financialTableNoOutgoings": "Nincsenek kiadásaid",
+  "financialTableIncomeSummary": "Az Ön jövedelemösszesítője",
+  "financialTableOutgoingSummary": "Az Ön kiadásösszesítője",
+  "financialTableTotalTitle": "Összesen",
+  "financialTableOverallTitle": "Összegzés",
+  "financialTableShareTable": "Tábla mágosztása",
+  "financialTableShareTableEmailLabel": "Email",
+  "financialTableShareTableSubmit": "Küldés",
+  "financialTableLoading": "Folyamatban lévő lekérdezés.."
+}

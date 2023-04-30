@@ -1,6 +1,9 @@
 import React from "react";
+import useTranslation from "next-translate/useTranslation";
 
 const CurrencyRatesTable = ({ currencyRates }) => {
+  const { t } = useTranslation("currencyRatesTable");
+
   const date = new Date(currencyRates[0].createdAt);
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -13,10 +16,10 @@ const CurrencyRatesTable = ({ currencyRates }) => {
   return (
     <div className="currency-table">
       <div className="currency-table--title">
-        <h3>Currency rates</h3>
+        <h3>{t("currencyRatesTableTitle")}</h3>
       </div>
       <div className="currency-table--updated-at">
-        Last updated at: {formattedDateTime}
+        {t("currencyRatesTableUpdatedAt")}: {formattedDateTime}
       </div>
       <div className="currency-table__list">
         {currencyRates.map((currency, index) => {

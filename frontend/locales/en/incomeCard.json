@@ -1,0 +1,17 @@
+{
+  "incomeCardEditTitle": "Edit",
+  "incomeCardDeleteTitle": "Delete",
+  "incomeCardEditTitleLabel": "Title",
+  "incomeCardEditAmountLabel": "Amount",
+  "incomeCardEditSelectOptionTitle": "Select an option",
+  "incomeCardEditSelectHUF": "HUF",
+  "incomeCardEditSelectEUR": "EUR",
+  "incomeCardEditSelectUSD": "USD",
+  "incomeCardEditCategoryLabel": "Category",
+  "incomeCardEditOriginLabel": "Origin",
+  "incomeCardEditDescriptionLabel": "Description",
+  "incomeCardEditSubmit": "Save",
+  "incomeCardDeleteText": "You definitely want to delete this item?",
+  "incomeCardDeleteNo": "No",
+  "incomeCardDeleteYes": "Yes"
+}

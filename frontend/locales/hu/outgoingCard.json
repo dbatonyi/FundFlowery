@@ -1,0 +1,20 @@
+{
+  "outgoingCardIsOnSaleText": "It was on sale",
+  "outgoingCardEditTitle": "Edit",
+  "outgoingCardDeleteTitle": "Delete",
+  "outgoingCardEditTitleLabel": "Title",
+  "outgoingCardEditAmountLabel": "Amount",
+  "outgoingCardEditSelectOptionTitle": "Select an option",
+  "outgoingCardEditSelectHUF": "HUF",
+  "outgoingCardEditSelectEUR": "EUR",
+  "outgoingCardEditSelectUSD": "USD",
+  "outgoingCardEditCategoryLabel": "Category",
+  "outgoingCardEditLocationLabel": "Location",
+  "outgoingCardEditOnSaleLabel": "On sale",
+  "outgoingCardEditOriginLabel": "Origin",
+  "outgoingCardEditDescriptionLabel": "Description",
+  "outgoingCardEditSubmit": "Save",
+  "outgoingCardDeleteText": "You definitely want to delete this item?",
+  "outgoingCardDeleteNo": "No",
+  "outgoingCardDeleteYes": "Yes"
+}

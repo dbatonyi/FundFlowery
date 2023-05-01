@@ -1,6 +1,6 @@
 {
   "name": "project_t",
-  "version": "0.8.5",
+  "version": "0.9.0",
   "description": "A open-source project with a Node.js backend and Next.js frontend",
   "author": "dbatonyi",
   "license": "ISC",

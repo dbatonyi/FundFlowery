@@ -1,0 +1,15 @@
+{
+  "newOutgoingFormTitleText": "Új kiadási tétel",
+  "newOutgoingFormTitleLabel": "Kiadás címe",
+  "newOutgoingFormSelectDate": "Válassz időpontot",
+  "newOutgoingFormAmountLabel": "Kiadás összege",
+  "newOutgoingFormSelectOptionTitle": "Válassz egy opciót",
+  "newOutgoingFormSelectHUF": "HUF",
+  "newOutgoingFormSelectEUR": "EUR",
+  "newOutgoingFormSelectUSD": "USD",
+  "newOutgoingFormCategoryLabel": "Kiadás kategória",
+  "newOutgoingFormOriginLabel": "Kiadás eredete",
+  "newOutgoingFormOnSale": "Leárazott",
+  "newOutgoingFormDescriptionLabel": "Leírás",
+  "newOutgoingFormSubmit": "Mentés"
+}

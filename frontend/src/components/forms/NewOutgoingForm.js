@@ -4,6 +4,7 @@ import { AuthContext } from "@/layouts/Layout";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import useTranslation from "next-translate/useTranslation";
 
 const NewOutgoingForm = ({
   tableUuid,
@@ -11,6 +12,7 @@ const NewOutgoingForm = ({
   reRender,
   setReRender,
 }) => {
+  const { t } = useTranslation("newOutgoingForm");
   const { setStatusMessage } = useContext(AuthContext);
 
   const [selectedDate, setSelectedDate] = useState(null);
@@ -105,31 +107,41 @@ const NewOutgoingForm = ({
       >
         X
       </div>
-      <div className="new-outgoing-popup--title">Add new outgoing item</div>
+      <div className="new-outgoing-popup--title">
+        {t("newOutgoingFormTitleText")}
+      </div>
       <form onSubmit={submitHandler}>
-        <label htmlFor="outgoing-title">Outgoing title</label>
+        <label htmlFor="outgoing-title">{t("newOutgoingFormTitleLabel")}</label>
         <input className="text" name="outgoing-title" type="text" required />
         <div className="new-outgoing-popup--date">
           <DatePicker
             selected={selectedDate}
             onChange={handleDateChange}
             dateFormat="yyyy-MM-dd"
-            placeholderText="Select a date"
+            placeholderText={t("newOutgoingFormSelectDate")}
           />
         </div>
-        <label htmlFor="outgoing-amount">Outgoing amount</label>
+        <label htmlFor="outgoing-amount">
+          {t("newOutgoingFormAmountLabel")}
+        </label>
         <input className="text" name="outgoing-amount" type="number" required />
         <select value={selectedCurrency} onChange={handleOptionChange}>
-          <option value="">Select an option</option>
-          <option value="HUF">HUF</option>
-          <option value="EUR">EUR</option>
-          <option value="USD">USD</option>
+          <option value="">{t("newOutgoingFormSelectOptionTitle")}</option>
+          <option value="HUF">{t("newOutgoingFormSelectHUF")}</option>
+          <option value="EUR">{t("newOutgoingFormSelectEUR")}</option>
+          <option value="USD">{t("newOutgoingFormSelectUSD")}</option>
         </select>
-        <label htmlFor="outgoing-category">Outgoing category</label>
+        <label htmlFor="outgoing-category">
+          {t("newOutgoingFormCategoryLabel")}
+        </label>
         <input className="text" name="outgoing-category" type="text" required />
-        <label htmlFor="outgoing-origin">Outgoing origin</label>
+        <label htmlFor="outgoing-origin">
+          {t("newOutgoingFormOriginLabel")}
+        </label>
         <input className="text" name="outgoing-origin" type="text" required />
-        <label htmlFor="outgoing-location">Outgoing location</label>
+        <label htmlFor="outgoing-location">
+          {t("newOutgoingFormLocationLabel")}
+        </label>
         <input className="text" name="outgoing-location" type="text" />
         <label>
           <input
@@ -137,13 +149,15 @@ const NewOutgoingForm = ({
             checked={isOnSaleChecked}
             onChange={handleOnSaleCheckboxChange}
           />
-          On Sale
+          {t("newOutgoingFormOnSale")}
         </label>
-        <label htmlFor="description">Description</label>
+        <label htmlFor="description">
+          {t("newOutgoingFormDescriptionLabel")}
+        </label>
         <input className="text" name="description" type="text" />
         <div className="submit-btn">
           <button className="btn" type="submit">
-            Save
+            {t("newOutgoingFormSubmit")}
           </button>
         </div>
       </form>

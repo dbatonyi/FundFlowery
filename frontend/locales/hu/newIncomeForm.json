@@ -1,0 +1,14 @@
+{
+  "newIncomeFormTitleText": "Új bevételi tétel",
+  "newIncomeFormTitleLabel": "Bevétel címe",
+  "newIncomeFormSelectDate": "Válassz időpontot",
+  "newIncomeFormAmountLabel": "Bevétel összege",
+  "newIncomeFormSelectOptionTitle": "Válassz egy opciót",
+  "newIncomeFormSelectHUF": "HUF",
+  "newIncomeFormSelectEUR": "EUR",
+  "newIncomeFormSelectUSD": "USD",
+  "newIncomeFormCategoryLabel": "Bevétel kategória",
+  "newIncomeFormOriginLabel": "Bevétel származása",
+  "newIncomeFormDescriptionLabel": "Leírás",
+  "newIncomeFormSubmit": "Mentés"
+}

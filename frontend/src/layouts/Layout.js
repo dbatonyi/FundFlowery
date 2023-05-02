@@ -120,20 +120,20 @@ const Layout = (props) => {
         >
           <div className="app-container">
             <Head>
-              <title>Project-T</title>
-              <meta name="description" content="Project-T" />
+              <title>FundFlowery</title>
+              <meta name="description" content="FundFlowery" />
               <link rel="icon" href="/favicon.ico" />
             </Head>
             <Header auth={auth} logout={logout} />
-            <main className="project-t-main">
+            <main className="fund-flowery-main">
               {props.children}
               {statusMessage ? (
-                <div className="project-t-system-message">
-                  <div className="project-t-system-message--message">
+                <div className="fund-flowery-system-message">
+                  <div className="fund-flowery-system-message--message">
                     {statusMessage}
                   </div>
                   <div
-                    className="project-t-system-message--close"
+                    className="fund-flowery-system-message--close"
                     onClick={() => {
                       setStatusMessage(null);
                     }}

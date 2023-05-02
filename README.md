@@ -30,8 +30,8 @@ The Financial Table App is built with the following technologies:
 To install the app, follow these steps:
 
 1. Clone the repository
-2. Install dependencies with `npm install`
-3. Start the server with `npm start`
+2. Install dependencies with `npm install-ff`
+3. Start the server with `npm start-ff`
 4. Visit `http://localhost:3000` to use the app
 
 ## License

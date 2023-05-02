@@ -5,7 +5,7 @@
   "author": "dbatonyi",
   "license": "ISC",
   "scripts": {
-    "install-pl": "concurrently \"cd api && npm install\" \"cd frontend && npm install\"",
-    "start-pl": "concurrently \"cd api && npm run start\" \"cd frontend && npm run dev\""
+    "install-ff": "concurrently \"cd api && npm install\" \"cd frontend && npm install\"",
+    "start-ff": "concurrently \"cd api && npm run start\" \"cd frontend && npm run dev\""
   }
 }

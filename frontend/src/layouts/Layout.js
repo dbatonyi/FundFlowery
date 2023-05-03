@@ -118,14 +118,14 @@ const Layout = (props) => {
             },
           }}
         >
-          <div className="app-container">
+          <div className="fund-flowery">
             <Head>
               <title>FundFlowery</title>
               <meta name="description" content="FundFlowery" />
               <link rel="icon" href="/favicon.ico" />
             </Head>
             <Header auth={auth} logout={logout} />
-            <main className="fund-flowery-main">
+            <main className="fund-flowery__main">
               {props.children}
               {statusMessage ? (
                 <div className="fund-flowery-system-message">
@@ -143,6 +143,18 @@ const Layout = (props) => {
                 </div>
               ) : null}
             </main>
+            <ul class="circles">
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+            </ul>
           </div>
         </AuthContext.Provider>
       )}

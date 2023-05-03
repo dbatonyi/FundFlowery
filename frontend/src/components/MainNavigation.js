@@ -10,44 +10,41 @@ const MainNavigation = ({ auth, logout }) => {
   const currentPath = router.asPath;
 
   return (
-    <>
+    <nav className="main-navigation">
       {auth ? (
-        <div className="main-navigation logged-in">
-          <Link href="/dashboard">
-            <div className="main-navigation--link">{t("navigationHome")}</div>
-          </Link>
-          <Link href="/financial-tables">
-            <div className="main-navigation--link">
+        <ul className="logged-in-menu">
+          <li className="main-navigation--link">
+            <Link href="/dashboard">{t("navigationHome")}</Link>
+          </li>
+          <li className="main-navigation--link">
+            <Link href="/financial-tables">
               {t("navigationFinancialTables")}
+            </Link>
+          </li>
+          <li className="main-navigation--link">
+            <div
+              onClick={() => {
+                logout();
+              }}
+            >
+              {t("navigationLogout")}
             </div>
-          </Link>
-          <div
-            className="main-navigation--link"
-            onClick={() => {
-              logout();
-            }}
-          >
-            {t("navigationLogout")}
-          </div>
-        </div>
+          </li>
+        </ul>
       ) : (
-        <div className="main-navigation logged-out">
+        <ul className="logged-out-menu">
           {currentPath === "/signin" ? (
-            <Link href="/signup">
-              <div className="main-navigation--link">
-                {t("navigationSignUp")}
-              </div>
-            </Link>
+            <li className="main-navigation--link">
+              <Link href="/signup">{t("navigationSignUp")}</Link>
+            </li>
           ) : (
-            <Link href="/signin">
-              <div className="main-navigation--link">
-                {t("navigationSignIn")}
-              </div>
-            </Link>
+            <li className="main-navigation--link">
+              <Link href="/signin">{t("navigationSignIn")}</Link>
+            </li>
           )}
-        </div>
+        </ul>
       )}
-    </>
+    </nav>
   );
 };
 

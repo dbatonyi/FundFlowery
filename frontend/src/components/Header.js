@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-
+import Link from "next/link";
 import LanguageSwitcher from "./LanguageSwitcher";
 import MainNavigation from "./MainNavigation";
 import Notifications from "./Notifications";
@@ -10,8 +10,10 @@ const Header = ({ auth, logout }) => {
   const { setStatusMessage, userInfo } = useContext(AuthContext);
 
   return (
-    <header>
-      <LanguageSwitcher />
+    <header className="fund-flowery__header">
+      <div className="fund-flowery__header--logo">
+        <Link href="/">FundFlowery</Link>
+      </div>
       <MainNavigation auth={auth} logout={logout} />
       {auth && userInfo?.uuid ? (
         <Notifications
@@ -19,6 +21,7 @@ const Header = ({ auth, logout }) => {
           setStatusMessage={setStatusMessage}
         />
       ) : null}
+      <LanguageSwitcher />
     </header>
   );
 };

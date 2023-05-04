@@ -1,5 +1,9 @@
 .language-selector {
   display: flex;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 2px solid;
 
   a {
     margin-right: 5px;
@@ -11,7 +15,7 @@
   }
 
   &--item {
-    font-size: 18px;
+    font-size: 16px;
     text-decoration: none;
     color: black;
     display: block;

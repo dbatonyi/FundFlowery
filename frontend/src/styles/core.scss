@@ -47,8 +47,6 @@ body {
 
 .fund-flowery {
   display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
   background: linear-gradient(
     109.6deg,
     rgb(204, 228, 247) 11.2%,
@@ -59,15 +57,18 @@ body {
 
   &__header {
     display: flex;
-    width: 100%;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 18%;
+    margin: 20px;
     background: rgba(255, 255, 255, 0.7);
-    padding: 30px;
+    padding: 20px;
+    border-radius: 13px;
     z-index: 2;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: flex-start;
 
     &--logo {
-      font-size: 20px;
+      font-size: 18dpx;
       font-weight: bold;
 
       a {
@@ -78,13 +79,14 @@ body {
   }
 
   &__main {
-    max-width: 100%;
-    margin: 30px;
+    width: 80%;
+    margin: 20px;
+    margin-left: 0;
     background: rgba(255, 255, 255, 0.8);
     padding: 50px;
     height: fit-content;
     z-index: 6;
-    border-radius: 3px;
+    border-radius: 13px;
     z-index: 2;
   }
 

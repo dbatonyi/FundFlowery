@@ -7,7 +7,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <Layout>
       <Component {...pageProps} />
-      <div className="app-version">{appVersion.version}</div>
+      <div className="app-version">v{appVersion.version}</div>
     </Layout>
   );
 }

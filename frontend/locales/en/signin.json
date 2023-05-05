@@ -4,6 +4,5 @@
   "signInEmail": "Email Address",
   "signInPassword": "Password",
   "signInSubmit": "Sign in",
-  "signInPassReset": "Reset password!",
-  "signInRegistration": "I don't have a user yet!"
+  "signInPassReset": "Reset password!"
 }

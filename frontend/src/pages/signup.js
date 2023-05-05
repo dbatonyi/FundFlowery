@@ -39,24 +39,44 @@ const SignUp = () => {
 
   return (
     <div className="signup">
-      <div className="signup-containerd">
+      <div className="signup-container">
         <form className="signup-container__form" onSubmit={submit}>
           <h1>{t("signupTitle")}</h1>
-
-          <label htmlFor="email">{t("signupEmail")}</label>
-          <input className="text" name="email" type="email" required />
-
-          <label htmlFor="firstname">{t("signupFirstName")}</label>
-          <input name="firstname" type="text" required className="text" />
-
-          <label htmlFor="lastname">{t("signupLastName")}</label>
-          <input name="lastname" type="text" required className="text" />
-
-          <label htmlFor="password">{t("signupPassword")}</label>
-          <input name="password" type="password" required className="text" />
-
-          <label htmlFor="repassword">{t("signupRePassword")}</label>
-          <input name="repassword" type="password" required className="text" />
+          <fieldset>
+            <label htmlFor="email">
+              {t("signupEmail")} <span>*</span>
+            </label>
+            <input className="text" name="email" type="email" required />
+          </fieldset>
+          <fieldset>
+            <label htmlFor="firstname">
+              {t("signupFirstName")} <span>*</span>
+            </label>
+            <input name="firstname" type="text" required className="text" />
+          </fieldset>
+          <fieldset>
+            <label htmlFor="lastname">
+              {t("signupLastName")} <span>*</span>
+            </label>
+            <input name="lastname" type="text" required className="text" />
+          </fieldset>
+          <fieldset>
+            <label htmlFor="password">
+              {t("signupPassword")} <span>*</span>
+            </label>
+            <input name="password" type="password" required className="text" />
+          </fieldset>
+          <fieldset>
+            <label htmlFor="repassword">
+              {t("signupRePassword")} <span>*</span>
+            </label>
+            <input
+              name="repassword"
+              type="password"
+              required
+              className="text"
+            />
+          </fieldset>
 
           <div className="submit-btn">
             <button className="btn" type="submit">

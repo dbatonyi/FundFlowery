@@ -37,29 +37,30 @@ const signIn = () => {
           ) : (
             ""
           )}
-          <label htmlFor="email">{t("signInEmail")}</label>
-          <input className="text" name="email" type="email" required />
-
-          <label htmlFor="password">{t("signInPassword")}</label>
-          <input
-            className="signin-password"
-            name="password"
-            type="password"
-            required
-          />
-
-          <div className="submit-btn">
-            <button className="btn" type="submit">
-              {t("signInSubmit")}
-            </button>
+          <fieldset>
+            <label htmlFor="email">{t("signInEmail")}</label>
+            <input className="text" name="email" type="email" required />
+          </fieldset>
+          <fieldset>
+            <label htmlFor="password">{t("signInPassword")}</label>
+            <input
+              className="signin-password"
+              name="password"
+              type="password"
+              required
+            />
+          </fieldset>
+          <div className="signin__form-container--controllers">
+            <div className="submit-btn">
+              <button className="btn" type="submit">
+                {t("signInSubmit")}
+              </button>
+            </div>
+            <div className="password-reset">
+              <Link href="/password/new">{t("signInPassReset")}</Link>
+            </div>
           </div>
         </form>
-        <div className="signin__form-container--password-reset">
-          <Link href="/password/new">{t("signInPassReset")}</Link>
-        </div>
-        <div className="signin__form-container--sign-up">
-          <Link href="/signup">{t("signInRegistration")}</Link>
-        </div>
       </div>
     </div>
   );

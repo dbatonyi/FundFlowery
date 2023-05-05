@@ -31,10 +31,10 @@ const NewPassword = () => {
       <div className="new-password__form-container">
         <form onSubmit={submit}>
           <h1>{t("newPassTitle")}</h1>
-
-          <label htmlFor="email">{t("newPassEmail")}</label>
-          <input name="email" type="email" required className="text" />
-
+          <fieldset>
+            <label htmlFor="email">{t("newPassEmail")}</label>
+            <input name="email" type="email" required className="text" />
+          </fieldset>
           <div className="submit-btn">
             <button className="btn" type="submit">
               {t("newPassSubmit")}

@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Header from "@/components/Header";
+import Notifications from "@/components/Notifications";
 
 const config = require("../../config");
 
@@ -143,7 +144,13 @@ const Layout = (props) => {
                 </div>
               ) : null}
             </main>
-            <ul class="circles">
+            {auth && userInfo?.uuid ? (
+              <Notifications
+                userInfo={userInfo}
+                setStatusMessage={setStatusMessage}
+              />
+            ) : null}
+            <ul className="circles">
               <li></li>
               <li></li>
               <li></li>

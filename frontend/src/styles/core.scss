@@ -10,6 +10,7 @@
 
 @import "./components/main-navigation.scss";
 @import "./components/language-selector.scss";
+@import "./components/notification.scss";
 
 // Pages
 
@@ -81,6 +82,7 @@ body {
 
   &__main {
     width: fit-content;
+    min-width: 500px;
     margin: 20px;
     margin-left: 0;
     background: rgba(255, 255, 255, 0.8);
@@ -99,6 +101,8 @@ body {
     height: 100%;
     overflow: hidden;
     z-index: 1;
+    margin: 0;
+    padding: 0;
   }
 
   > .circles li {

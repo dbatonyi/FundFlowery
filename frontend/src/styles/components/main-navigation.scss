@@ -1,5 +1,6 @@
 .main-navigation {
   margin-top: 40px;
+  margin-bottom: auto;
 
   ul {
     list-style: none;
@@ -34,6 +35,10 @@
       display: block;
       position: relative;
       padding: 4px 0;
+    }
+
+    div {
+      cursor: pointer;
     }
   }
 }

@@ -12,7 +12,9 @@ const LanguageSwitcher = () => {
     <div className="language-selector">
       <Link href={router.asPath} locale="en">
         <div
-          className="language-selector--item"
+          className={`language-selector--item${
+            router.locale === "en" ? " active" : ""
+          }`}
           onClick={() => handleLocaleChange("en")}
         >
           English
@@ -20,7 +22,9 @@ const LanguageSwitcher = () => {
       </Link>
       <Link href={router.asPath} locale="hu">
         <div
-          className="language-selector--item"
+          className={`language-selector--item${
+            router.locale === "hu" ? " active" : ""
+          }`}
           onClick={() => handleLocaleChange("hu")}
         >
           Magyar

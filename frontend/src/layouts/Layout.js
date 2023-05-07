@@ -119,7 +119,7 @@ const Layout = (props) => {
             },
           }}
         >
-          <div className="fund-flowery">
+          <div className={`fund-flowery${auth ? " logged-in" : ""}`}>
             <Head>
               <title>FundFlowery</title>
               <meta name="description" content="FundFlowery" />

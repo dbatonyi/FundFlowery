@@ -10,6 +10,8 @@
   "incomeCardEditCategoryLabel": "Category",
   "incomeCardEditOriginLabel": "Origin",
   "incomeCardEditDescriptionLabel": "Description",
+  "incomeCardShowMoreText": "Show more",
+  "incomeCardShowLessText": "Show less",
   "incomeCardEditSubmit": "Save",
   "incomeCardDeleteText": "You definitely want to delete this item?",
   "incomeCardDeleteNo": "No",

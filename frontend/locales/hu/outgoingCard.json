@@ -13,6 +13,8 @@
   "outgoingCardEditOnSaleLabel": "On sale",
   "outgoingCardEditOriginLabel": "Origin",
   "outgoingCardEditDescriptionLabel": "Description",
+  "outgoingCardShowMoreText": "Show more",
+  "outgoingCardShowLessText": "Show less",
   "outgoingCardEditSubmit": "Save",
   "outgoingCardDeleteText": "You definitely want to delete this item?",
   "outgoingCardDeleteNo": "No",

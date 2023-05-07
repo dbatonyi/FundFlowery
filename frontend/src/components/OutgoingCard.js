@@ -17,6 +17,7 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
     outgoingData.outgoingCurrency
   );
 
+  const [showMore, setShowMore] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
 
@@ -157,33 +158,51 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
         {!showEditPopup && !showDeletePopup ? (
           <>
             <div className="financial-table__outgoing-card--container">
-              <div className="financial-table__outgoing-card--title">
-                {outgoingData.outgoingTitle}
+              <div className="financial-table__outgoing-card--details">
+                <div className="financial-table__outgoing-card--title">
+                  {outgoingData.outgoingTitle}
+                </div>
+                <div className="financial-table__outgoing-card--amount">
+                  {outgoingData.outgoingAmount
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                  {outgoingData.outgoingCurrency}
+                </div>
+                <div className="financial-table__outgoing-card--date">
+                  {formattedDate}
+                </div>
               </div>
-              <div className="financial-table__outgoing-card--amount">
-                {outgoingData.outgoingAmount
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
-                {outgoingData.outgoingCurrency}
-              </div>
-              <div className="financial-table__outgoing-card--date">
-                {formattedDate}
-              </div>
-              <div className="financial-table__outgoing-card--category">
-                {outgoingData.outgoingCategory}
-              </div>
-              <div className="financial-table__outgoing-card--origin">
-                {outgoingData.outgoingOrigin}
-              </div>
-              <div className="financial-table__outgoing-card--location">
-                {outgoingData.outgoingLocation}
-              </div>
-              <div className="financial-table__outgoing-card--on-sale">
-                {t("outgoingCardIsOnSaleText")}:{" "}
-                {outgoingData.outgoingOnSale ? "Yes" : "No"}
+              <div
+                className={`financial-table__income-card--dropdown${
+                  showMore ? " opened" : ""
+                }`}
+              >
+                <div className="financial-table__outgoing-card--category">
+                  {outgoingData.outgoingCategory}
+                </div>
+                <div className="financial-table__outgoing-card--origin">
+                  {outgoingData.outgoingOrigin}
+                </div>
+                <div className="financial-table__outgoing-card--location">
+                  {outgoingData.outgoingLocation}
+                </div>
+                <div className="financial-table__outgoing-card--on-sale">
+                  {t("outgoingCardIsOnSaleText")}:{" "}
+                  {outgoingData.outgoingOnSale ? "Yes" : "No"}
+                </div>
               </div>
             </div>
             <div className="financial-table__outgoing-card--controllers">
+              <div
+                className="financial-table__outgoing-card--show-more"
+                onClick={() => {
+                  setShowMore(!showMore);
+                }}
+              >
+                {showMore
+                  ? t("outgoingCardShowMoreText")
+                  : t("outgoingCardShowLessText")}
+              </div>
               <div
                 className="financial-table__outgoing-card--edit"
                 onClick={() => {

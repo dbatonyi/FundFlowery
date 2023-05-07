@@ -10,6 +10,8 @@
   "incomeCardEditCategoryLabel": "Kategória",
   "incomeCardEditOriginLabel": "Származás",
   "incomeCardEditDescriptionLabel": "Leírás",
+  "incomeCardShowMoreText": "Mutass többet",
+  "incomeCardShowLessText": "Mutass kevesebbet",
   "incomeCardEditSubmit": "Mentés",
   "incomeCardDeleteText": "Biztosan törölni akarja ezt az elemet?",
   "incomeCardDeleteNo": "Nem",

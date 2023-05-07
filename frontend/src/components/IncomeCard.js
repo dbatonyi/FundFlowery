@@ -17,6 +17,7 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
     incomeData.incomeCurrency
   );
 
+  const [showMore, setShowMore] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
 
@@ -138,29 +139,47 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
         {!showEditPopup && !showDeletePopup ? (
           <>
             <div className="financial-table__income-card--container">
-              <div className="financial-table__income-card--title">
-                {incomeData.incomeTitle}
+              <div className="financial-table__income-card--details">
+                <div className="financial-table__income-card--title">
+                  {incomeData.incomeTitle}
+                </div>
+                <div className="financial-table__income-card--amount">
+                  {incomeData.incomeAmount
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                  {incomeData.incomeCurrency}
+                </div>
+                <div className="financial-table__income-card--date">
+                  {formattedDate}
+                </div>
               </div>
-              <div className="financial-table__income-card--amount">
-                {incomeData.incomeAmount
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
-                {incomeData.incomeCurrency}
-              </div>
-              <div className="financial-table__income-card--date">
-                {formattedDate}
-              </div>
-              <div className="financial-table__income-card--category">
-                {incomeData.incomeCategory}
-              </div>
-              <div className="financial-table__income-card--origin">
-                {incomeData.incomeOrigin}
-              </div>
-              <div className="financial-table__income-card--description">
-                {incomeData.description}
+              <div
+                className={`financial-table__income-card--dropdown${
+                  showMore ? " opened" : ""
+                }`}
+              >
+                <div className="financial-table__income-card--category">
+                  {incomeData.incomeCategory}
+                </div>
+                <div className="financial-table__income-card--origin">
+                  {incomeData.incomeOrigin}
+                </div>
+                <div className="financial-table__income-card--description">
+                  {incomeData.description}
+                </div>
               </div>
             </div>
             <div className="financial-table__income-card--controllers">
+              <div
+                className="financial-table__income-card--show-more"
+                onClick={() => {
+                  setShowMore(!showMore);
+                }}
+              >
+                {showMore
+                  ? t("incomeCardShowMoreText")
+                  : t("incomeCardShowLessText")}
+              </div>
               <div
                 className="financial-table__income-card--edit"
                 onClick={() => {

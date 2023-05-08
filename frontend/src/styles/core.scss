@@ -48,6 +48,8 @@ body {
 
 .fund-flowery {
   display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
   background: linear-gradient(
     109.6deg,
     rgb(204, 228, 247) 11.2%,
@@ -58,33 +60,38 @@ body {
 
   &__header {
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    width: 18%;
-    max-width: 160px;
-    margin: 20px;
-    background: rgba(255, 255, 255, 0.7);
-    padding: 20px;
-    border-radius: 13px;
-    z-index: 2;
-    justify-content: flex-start;
+    width: 100%;
+    margin: 0;
+
+    &--container {
+      display: flex;
+      justify-content: space-between;
+      max-width: 1440px;
+      width: 100%;
+      margin: 20px;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 20px;
+      border-radius: 13px;
+      z-index: 2;
+    }
 
     &--logo {
-      font-size: 18px;
-      font-weight: bold;
+      display: flex;
+      align-items: center;
 
       a {
         color: black;
         text-decoration: none;
+        font-size: 20px;
+        font-weight: bold;
       }
     }
   }
 
   &__main {
     width: fit-content;
-    min-width: 500px;
-    margin: 20px;
-    margin-left: 0;
+    max-width: 1440px;
+    margin: 20px auto;
     background: rgba(255, 255, 255, 0.8);
     padding: 50px;
     height: fit-content;

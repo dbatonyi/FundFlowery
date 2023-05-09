@@ -46,6 +46,10 @@ body {
   font-family: "Open Sans", sans-serif;
 }
 
+h1 {
+  margin: 20px 0;
+}
+
 .fund-flowery {
   display: flex;
   flex-wrap: wrap;
@@ -89,15 +93,21 @@ body {
   }
 
   &__main {
-    width: fit-content;
-    max-width: 1440px;
-    margin: 20px auto;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 50px;
-    height: fit-content;
-    z-index: 6;
-    border-radius: 13px;
-    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+
+    > div:first-of-type {
+      width: fit-content;
+      max-width: 1440px;
+      width: 75%;
+      margin: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 50px;
+      height: fit-content;
+      z-index: 6;
+      border-radius: 13px;
+      z-index: 2;
+    }
   }
 
   > .circles {

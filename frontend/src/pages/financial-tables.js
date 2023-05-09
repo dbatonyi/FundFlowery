@@ -295,10 +295,10 @@ const FinancialTable = (props) => {
         </div>
       </div>
       <div className="financial-table-list__shared-container">
-        {t("financialTablesSharedListText")}
         {filteredSharedFinancialTableList &&
         filteredSharedFinancialTableList.length > 0 ? (
           <>
+            {t("financialTablesSharedListText")}
             {filteredSharedFinancialTableList.map((table) => {
               return (
                 <div

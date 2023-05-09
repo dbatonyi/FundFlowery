@@ -128,6 +128,12 @@ const Layout = (props) => {
             <Header auth={auth} logout={logout} />
             <main className="fund-flowery__main">
               {props.children}
+              {auth && userInfo?.uuid ? (
+                <Notifications
+                  userInfo={userInfo}
+                  setStatusMessage={setStatusMessage}
+                />
+              ) : null}
               {statusMessage ? (
                 <div className="fund-flowery-system-message">
                   <div className="fund-flowery-system-message--message">
@@ -144,12 +150,6 @@ const Layout = (props) => {
                 </div>
               ) : null}
             </main>
-            {auth && userInfo?.uuid ? (
-              <Notifications
-                userInfo={userInfo}
-                setStatusMessage={setStatusMessage}
-              />
-            ) : null}
             <ul className="circles">
               <li></li>
               <li></li>

@@ -11,9 +11,10 @@
   &--link {
     padding: 10px 5px;
     margin: 5px 10px;
-    width: 100%;
+    width: fit-content;
     border-bottom: 3px solid transparent;
     transition: background-color 0.2s ease-in-out, padding 0.2s ease-in-out;
+    cursor: pointer;
 
     &.active-link {
       border-bottom: 3px solid rgb(161, 208, 247);
@@ -32,9 +33,18 @@
       display: block;
       position: relative;
       padding: 4px 0;
+      word-break: break-all;
     }
 
     div {
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      color: black;
+      display: block;
+      position: relative;
+      padding: 4px 0;
+      word-break: break-all;
       cursor: pointer;
     }
   }

@@ -167,7 +167,7 @@ const FinancialTable = (props) => {
       const dataJson = await response.json();
 
       if (response.status === 200) {
-        setStatusMessage(dataJson.message);
+        //TODO - Better status messages
         setReRender(!reRender);
       }
     } catch (error) {
@@ -207,7 +207,7 @@ const FinancialTable = (props) => {
       const dataJson = await response.json();
 
       if (response.status === 200) {
-        setStatusMessage(dataJson.message);
+        //TODO - Better status messages
         setReRender(!reRender);
       }
     } catch (error) {

@@ -68,7 +68,7 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
       const dataJson = await response.json();
 
       if (response.status === 200) {
-        setStatusMessage(dataJson.message);
+        //TODO - Better status messages
         setReRender(!reRender);
         setShowEditPopup(false);
       }
@@ -108,8 +108,8 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
       const dataJson = await response.json();
 
       if (response.status === 200) {
+        //TODO - Better status messages
         setShowDeletePopup(false);
-        setStatusMessage(dataJson.message);
         setReRender(!reRender);
       }
     } catch (error) {

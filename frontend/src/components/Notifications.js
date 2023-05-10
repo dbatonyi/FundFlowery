@@ -32,7 +32,7 @@ const Notifications = ({ userInfo, setStatusMessage }) => {
         const dataJson = await response.json();
 
         if (response.status === 200) {
-          setNotifications(dataJson.data);
+          //TODO - Better status messages
         }
       } catch (error) {
         const log = await fetch(`${configData.serverUrl}/api/log`, {

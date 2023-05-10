@@ -1,6 +1,6 @@
 {
   "name": "fund_flowery",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "A open-source project with a Node.js backend and Next.js frontend",
   "author": "dbatonyi",
   "license": "ISC",

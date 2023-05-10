@@ -76,7 +76,7 @@ const NewOutgoingForm = ({
       const dataJson = await response.json();
 
       if (response.status === 200) {
-        setStatusMessage(dataJson.message);
+        //TODO - Better status messages
         setReRender(!reRender);
         setOpenedForm(null);
       }

@@ -245,7 +245,7 @@ const FinancialTable = () => {
       const dataJson = await response.json();
 
       if (response.status === 200) {
-        setStatusMessage(dataJson.message);
+        //TODO - Better status messages
         setReRender(!reRender);
         setTitleForm(false);
       }
@@ -294,7 +294,7 @@ const FinancialTable = () => {
       const dataJson = await response.json();
 
       if (response.status === 200) {
-        setStatusMessage(dataJson.message);
+        //TODO - Better status messages
         setReRender(!reRender);
         setIsSharePopupOpened(false);
       }

@@ -15,5 +15,7 @@
   "financialTableShareTable": "Tábla mágosztása",
   "financialTableShareTableEmailLabel": "Email",
   "financialTableShareTableSubmit": "Küldés",
-  "financialTableLoading": "Folyamatban lévő lekérdezés.."
+  "financialTableLoading": "Folyamatban lévő lekérdezés..",
+  "financialTableEditResponse": "Tábla sikeresen szerkesztve",
+  "financialTableShareResponse": "Tábla sikeresen megosztva"
 }

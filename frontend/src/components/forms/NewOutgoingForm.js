@@ -73,10 +73,8 @@ const NewOutgoingForm = ({
         }
       );
 
-      const dataJson = await response.json();
-
       if (response.status === 200) {
-        //TODO - Better status messages
+        setStatusMessage(t("newOutgoingFormSubmittedResponse"));
         setReRender(!reRender);
         setOpenedForm(null);
       }

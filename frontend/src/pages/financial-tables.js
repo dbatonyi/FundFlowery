@@ -164,10 +164,9 @@ const FinancialTable = (props) => {
           }),
         }
       );
-      const dataJson = await response.json();
 
       if (response.status === 200) {
-        //TODO - Better status messages
+        setStatusMessage(t("financialTablesDeleteResponse"));
         setReRender(!reRender);
       }
     } catch (error) {
@@ -204,10 +203,9 @@ const FinancialTable = (props) => {
           }),
         }
       );
-      const dataJson = await response.json();
 
       if (response.status === 200) {
-        //TODO - Better status messages
+        setStatusMessage(t("financialTablesLeaveResponse"));
         setReRender(!reRender);
       }
     } catch (error) {

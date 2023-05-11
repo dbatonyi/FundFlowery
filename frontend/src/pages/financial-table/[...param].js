@@ -242,10 +242,8 @@ const FinancialTable = () => {
         }
       );
 
-      const dataJson = await response.json();
-
       if (response.status === 200) {
-        //TODO - Better status messages
+        setStatusMessage(t("financialTableEditResponse"));
         setReRender(!reRender);
         setTitleForm(false);
       }
@@ -294,7 +292,7 @@ const FinancialTable = () => {
       const dataJson = await response.json();
 
       if (response.status === 200) {
-        //TODO - Better status messages
+        setStatusMessage(t("financialTableShareResponse"));
         setReRender(!reRender);
         setIsSharePopupOpened(false);
       }

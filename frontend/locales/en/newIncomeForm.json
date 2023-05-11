@@ -10,5 +10,6 @@
   "newIncomeFormCategoryLabel": "Income category",
   "newIncomeFormOriginLabel": "Income origin",
   "newIncomeFormDescriptionLabel": "Description",
-  "newIncomeFormSubmit": "Save"
+  "newIncomeFormSubmit": "Save",
+  "newIncomeFormSubmittedResponse": "New income created"
 }

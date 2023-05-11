@@ -1,4 +1,6 @@
 {
   "inviteCardText1": "invited you to join",
-  "inviteCardText2": "table"
+  "inviteCardText2": "table",
+  "inviteCardAcceptedResponse": "Invitation accepted",
+  "inviteCardDeclinedResponse": "Invitation declined"
 }

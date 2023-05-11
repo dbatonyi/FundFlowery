@@ -15,5 +15,7 @@
   "incomeCardEditSubmit": "Mentés",
   "incomeCardDeleteText": "Biztosan törölni akarja ezt az elemet?",
   "incomeCardDeleteNo": "Nem",
-  "incomeCardDeleteYes": "Igen"
+  "incomeCardDeleteYes": "Igen",
+  "incomeCardEditResponse": "Bevétel kártya sikeresen szerkesztve",
+  "incomeCardDeleteResponse": "Bevétel kártya sikeresen törölve"
 }

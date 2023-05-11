@@ -12,5 +12,7 @@
   "financialTablesDeleteCardYes": "Igen",
   "financialTablesLeaveCardTitle": "Biztosan el akarod hagyni ezt a táblát?",
   "financialTablesLeaveCardNo": "Nem",
-  "financialTablesLeaveCardYes": "Igen"
+  "financialTablesLeaveCardYes": "Igen",
+  "financialTablesDeleteResponse": "Tábla sikeresen törölve",
+  "financialTablesLeaveResponse": "Tábla sikeresen elhagyva"
 }

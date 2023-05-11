@@ -10,5 +10,6 @@
   "newIncomeFormCategoryLabel": "Bevétel kategória",
   "newIncomeFormOriginLabel": "Bevétel származása",
   "newIncomeFormDescriptionLabel": "Leírás",
-  "newIncomeFormSubmit": "Mentés"
+  "newIncomeFormSubmit": "Mentés",
+  "newIncomeFormSubmittedResponse": "Új bevétel tétel létrehozva"
 }

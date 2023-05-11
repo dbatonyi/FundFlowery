@@ -23,10 +23,9 @@ const InviteCard = ({ notificationsData, reRender, setReRender }) => {
           }),
         }
       );
-      const dataJson = await response.json();
 
       if (response.status === 200) {
-        //TODO - Better status messages
+        setStatusMessage(t("inviteCardAcceptedResponse"));
         setReRender(!reRender);
       }
     } catch (error) {
@@ -62,10 +61,9 @@ const InviteCard = ({ notificationsData, reRender, setReRender }) => {
           }),
         }
       );
-      const dataJson = await response.json();
 
       if (response.status === 200) {
-        //TODO - Better status messages
+        setStatusMessage(t("inviteCardDeclinedResponse"));
         setReRender(!reRender);
       }
     } catch (error) {

@@ -59,10 +59,8 @@ const NewIncomeForm = ({ tableUuid, setOpenedForm, reRender, setReRender }) => {
         }
       );
 
-      const dataJson = await response.json();
-
       if (response.status === 200) {
-        //TODO - Better status messages
+        setStatusMessage(t("newIncomeFormSubmittedResponse"));
         setReRender(!reRender);
         setOpenedForm(null);
       }

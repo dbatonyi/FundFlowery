@@ -15,5 +15,7 @@
   "incomeCardEditSubmit": "Save",
   "incomeCardDeleteText": "You definitely want to delete this item?",
   "incomeCardDeleteNo": "No",
-  "incomeCardDeleteYes": "Yes"
+  "incomeCardDeleteYes": "Yes",
+  "incomeCardEditResponse": "Income card successfully edited",
+  "incomeCardDeleteResponse": "Income card successfully deleted"
 }

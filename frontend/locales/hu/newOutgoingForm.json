@@ -11,5 +11,6 @@
   "newOutgoingFormOriginLabel": "Kiadás eredete",
   "newOutgoingFormOnSale": "Leárazott",
   "newOutgoingFormDescriptionLabel": "Leírás",
-  "newOutgoingFormSubmit": "Mentés"
+  "newOutgoingFormSubmit": "Mentés",
+  "newOutgoingFormSubmittedResponse": "Új kiadási tétel létrehozva"
 }

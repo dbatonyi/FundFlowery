@@ -84,10 +84,8 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
         }
       );
 
-      const dataJson = await response.json();
-
       if (response.status === 200) {
-        //TODO - Better status messages
+        setStatusMessage(t("outgoingCardEditResponse"));
         setReRender(!reRender);
         setShowEditPopup(false);
       }
@@ -124,10 +122,9 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
           }),
         }
       );
-      const dataJson = await response.json();
 
       if (response.status === 200) {
-        //TODO - Better status messages
+        setStatusMessage(t("outgoingCardDeleteResponse"));
         setShowDeletePopup(false);
         setReRender(!reRender);
       }

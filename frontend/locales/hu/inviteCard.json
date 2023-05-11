@@ -1,4 +1,6 @@
 {
   "inviteCardText1": "meghovott a",
-  "inviteCardText2": "táblához"
+  "inviteCardText2": "táblához",
+  "inviteCardAcceptedResponse": "Meghívás elfogadva",
+  "inviteCardDeclinedResponse": "Meghívás elutasítva"
 }

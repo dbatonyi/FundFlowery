@@ -12,5 +12,7 @@
   "financialTablesDeleteCardYes": "Yes",
   "financialTablesLeaveCardTitle": "Do you really want to leave this table?",
   "financialTablesLeaveCardNo": "No",
-  "financialTablesLeaveCardYes": "Yes"
+  "financialTablesLeaveCardYes": "Yes",
+  "financialTablesDeleteResponse": "Table successfully deleted",
+  "financialTablesLeaveResponse": "You leave the table successfully"
 }

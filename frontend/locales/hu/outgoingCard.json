@@ -18,5 +18,7 @@
   "outgoingCardEditSubmit": "Save",
   "outgoingCardDeleteText": "You definitely want to delete this item?",
   "outgoingCardDeleteNo": "No",
-  "outgoingCardDeleteYes": "Yes"
+  "outgoingCardDeleteYes": "Yes",
+  "outgoingCardEditResponse": "Kiadás kártya sikeresen szerkesztve",
+  "outgoingCardDeleteResponse": "Kiadás kártya sikeresen törölve"
 }

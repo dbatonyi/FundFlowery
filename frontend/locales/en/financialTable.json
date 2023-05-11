@@ -15,5 +15,7 @@
   "financialTableShareTable": "Share this table with",
   "financialTableShareTableEmailLabel": "Email",
   "financialTableShareTableSubmit": "Send",
-  "financialTableLoading": "Fetching in progress.."
+  "financialTableLoading": "Fetching in progress..",
+  "financialTableEditResponse": "Table edited successfully",
+  "financialTableShareResponse": "Table shared succesfully"
 }

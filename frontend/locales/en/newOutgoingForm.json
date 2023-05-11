@@ -11,5 +11,6 @@
   "newOutgoingFormOriginLabel": "Outgoing origin",
   "newOutgoingFormOnSale": "On sale",
   "newOutgoingFormDescriptionLabel": "Description",
-  "newOutgoingFormSubmit": "Save"
+  "newOutgoingFormSubmit": "Save",
+  "newOutgoingFormSubmittedResponse": "New outgoing created"
 }

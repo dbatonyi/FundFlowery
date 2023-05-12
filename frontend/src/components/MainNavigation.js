@@ -29,11 +29,7 @@ const MainNavigation = ({ auth, logout }) => {
               {t("navigationFinancialTables")}
             </Link>
           </li>
-          <li
-            className={`main-navigation--link${
-              currentPath === "/financial-tables" ? " active-link" : ""
-            }`}
-          >
+          <li className={`main-navigation--link`}>
             <div
               onClick={() => {
                 logout();

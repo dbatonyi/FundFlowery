@@ -126,7 +126,6 @@ const FinancialTable = (props) => {
           }),
         }
       );
-      const dataJson = await response.json();
 
       if (response.status === 200) {
         setReRender(!reRender);
@@ -259,7 +258,7 @@ const FinancialTable = (props) => {
           </div>
         </div>
         <div className="financial-table-list__container-list">
-          {t("financialTablesListText")}
+          <h3>{t("financialTablesListText")}</h3>
           {filteredFinancialTableList &&
           filteredFinancialTableList.length > 0 ? (
             <>
@@ -296,7 +295,7 @@ const FinancialTable = (props) => {
         {filteredSharedFinancialTableList &&
         filteredSharedFinancialTableList.length > 0 ? (
           <>
-            {t("financialTablesSharedListText")}
+            <h3>{t("financialTablesSharedListText")}</h3>
             {filteredSharedFinancialTableList.map((table) => {
               return (
                 <div

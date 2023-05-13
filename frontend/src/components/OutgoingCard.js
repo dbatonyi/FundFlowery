@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import useTranslation from "next-translate/useTranslation";
 
+//TODO: Not working due to reorganisation of expenditure.
 const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
   const { t } = useTranslation("outgoingCard");
   const { setStatusMessage } = useContext(AuthContext);

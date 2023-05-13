@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import useTranslation from "next-translate/useTranslation";
 
+//TODO: Not working due to reorganisation of expenditure.
 const NewOutgoingForm = ({
   tableUuid,
   setOpenedForm,

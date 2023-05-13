@@ -277,6 +277,7 @@ exports.deleteIncomeItem = async function (req, res) {
   }
 };
 
+//TODO: Not working due to reorganisation of expenditure.
 exports.deleteOutgoingItem = async function (req, res) {
   const { Outgoings } = require("../models");
   let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
@@ -310,6 +311,7 @@ exports.deleteOutgoingItem = async function (req, res) {
   }
 };
 
+//TODO: Not working due to reorganisation of expenditure.
 exports.editFinancialTableTitle = async function (req, res) {
   const { FinancialTable } = require("../models");
   let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
@@ -340,6 +342,7 @@ exports.editFinancialTableTitle = async function (req, res) {
   }
 };
 
+//TODO: Not working due to reorganisation of expenditure.
 exports.editOutgoingCard = async function (req, res) {
   const { Outgoings } = require("../models");
   let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;

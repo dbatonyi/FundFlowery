@@ -17,6 +17,8 @@ The app is built on a user-friendly interface that makes it easy for users to ma
 
 In the future, the Financial Table App will introduce a complex statistical addon. This addon will provide more advanced analysis of user financial data, giving users a more in-depth understanding of their finances.
 
+Later plans to create a mobile version where machine learning will scan the receipt based on an image and populate the relevant items.
+
 ## Technology Stack
 
 The Financial Table App is built with the following technologies:

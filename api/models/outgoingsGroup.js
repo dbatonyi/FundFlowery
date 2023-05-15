@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class outgoingsGroup extends Model {
+  class OutgoingsGroup extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,15 +9,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({ FinancialTable, Outgoings }) {
       // Define association here
-      this.belongsTo(FinancialTable, { foreignKey: "financialTableId" });
+      this.belongsTo(FinancialTable, { foreignKey: "outgoingsGroupId" });
       this.hasMany(Outgoings, {
         as: "outgoings",
-        foreignKey: "outgoingsGroupId",
+        foreignKey: "outgoingKey",
       });
     }
   }
 
-  outgoingsGroup.init(
+  OutgoingsGroup.init(
     {
       uuid: {
         type: DataTypes.UUID,
@@ -36,8 +36,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       tableName: "outgoingsGroups",
-      modelName: "outgoingsGroup",
+      modelName: "OutgoingsGroup",
     }
   );
-  return outgoingsGroup;
+  return OutgoingsGroup;
 };

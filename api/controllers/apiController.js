@@ -101,7 +101,19 @@ exports.getFinancialTableDataByUuid = async function (req, res) {
       where: { uuid: tableUuid },
       include: [
         { model: Incomes, as: "incomes" },
-        { model: Outgoings, as: "outgoings" },
+        {
+          model: OutgoingsGroup,
+          as: "outgoingsGroup",
+          include: [
+            {
+              model: Outgoings,
+              as: "outgoings",
+              where: {
+                outgoingKey: Sequelize.col("outgoingsGroup.outgoingKey"),
+              },
+            },
+          ],
+        },
       ],
     });
 
@@ -131,19 +143,40 @@ exports.deleteFinancialTableByUuid = async function (req, res) {
   try {
     const financialTable = await FinancialTable.findOne({
       where: { uuid: tableUuid },
-      include: [Incomes, Outgoings],
+      include: [
+        { model: Incomes, as: "incomes" },
+        {
+          model: OutgoingsGroup,
+          as: "outgoingsGroup",
+          include: [{ model: Outgoings, as: "outgoings" }],
+        },
+      ],
     });
 
     if (financialTable) {
       await Promise.all([
         Incomes.destroy({ where: { financialTableId: financialTable.uuid } }),
-        Outgoings.destroy({ where: { financialTableId: financialTable.uuid } }),
+        Outgoings.destroy({
+          where: {
+            outgoingKey: financialTable.outgoingsGroup
+              .map((group) =>
+                group.outgoings.map((outgoing) => outgoing.outgoingId)
+              )
+              .flat(),
+          },
+        }),
+        OutgoingsGroup.destroy({
+          where: {
+            uuid: financialTable.outgoingsGroup.map((group) => group.uuid),
+          },
+        }),
       ]);
 
       await financialTable.destroy();
 
       return res.status(200).send({
-        message: "Financial table successfully deleted!",
+        message:
+          "Financial table and its associated data successfully deleted!",
       });
     }
 
@@ -218,7 +251,7 @@ exports.createOutgoingItem = async function (req, res) {
     outgoingLocation,
     outgoingOnSale,
     description,
-    tableUuid,
+    outgoingGroupUuid,
   } = req.body;
 
   try {
@@ -232,7 +265,7 @@ exports.createOutgoingItem = async function (req, res) {
       outgoingLocation,
       outgoingOnSale,
       description,
-      financialTableId: tableUuid,
+      outgoingKey: outgoingGroupUuid,
     });
 
     return res.status(200).send({
@@ -277,7 +310,6 @@ exports.deleteIncomeItem = async function (req, res) {
   }
 };
 
-//TODO: Not working due to reorganisation of expenditure.
 exports.deleteOutgoingItem = async function (req, res) {
   const { Outgoings } = require("../models");
   let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
@@ -311,7 +343,6 @@ exports.deleteOutgoingItem = async function (req, res) {
   }
 };
 
-//TODO: Not working due to reorganisation of expenditure.
 exports.editFinancialTableTitle = async function (req, res) {
   const { FinancialTable } = require("../models");
   let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
@@ -342,7 +373,6 @@ exports.editFinancialTableTitle = async function (req, res) {
   }
 };
 
-//TODO: Not working due to reorganisation of expenditure.
 exports.editOutgoingCard = async function (req, res) {
   const { Outgoings } = require("../models");
   let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;

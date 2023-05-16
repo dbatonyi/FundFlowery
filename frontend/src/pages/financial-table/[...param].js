@@ -783,8 +783,9 @@ const FinancialTable = () => {
                 />
               ) : null}
               {openedForm === "outgoing" ? (
+                //Change urlParam to outgoingGroupUuid
                 <NewOutgoingForm
-                  tableUuid={urlParam}
+                  outgoingGroupUuid={urlParam}
                   setOpenedForm={setOpenedForm}
                   reRender={reRender}
                   setReRender={setReRender}

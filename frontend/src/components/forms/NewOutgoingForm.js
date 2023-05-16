@@ -6,9 +6,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import useTranslation from "next-translate/useTranslation";
 
-//TODO: Not working due to reorganisation of expenditure.
 const NewOutgoingForm = ({
-  tableUuid,
+  outgoingGroupUuid,
   setOpenedForm,
   reRender,
   setReRender,
@@ -69,7 +68,7 @@ const NewOutgoingForm = ({
             outgoingLocation: outgoingLocation.toLowerCase(),
             outgoingOnSale: isOnSaleChecked,
             description,
-            tableUuid,
+            outgoingGroupUuid,
           }),
         }
       );

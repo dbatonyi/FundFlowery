@@ -3,7 +3,8 @@ import React, { useContext, useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { AuthContext } from "../../layouts/Layout";
 import NewIncomeForm from "@/components/forms/NewIncomeForm";
-import NewOutgoingForm from "@/components/forms/NewOutgoingForm";
+import NewOutgoingGroupForm from "@/components/forms/NewOutgoingGroupForm";
+//import NewOutgoingForm from "@/components/forms/NewOutgoingForm";
 import IncomeCard from "@/components/IncomeCard";
 import OutgoingCard from "@/components/OutgoingCard";
 import YearPicker from "@/components/YearPicker";
@@ -783,9 +784,8 @@ const FinancialTable = () => {
                 />
               ) : null}
               {openedForm === "outgoing" ? (
-                //Change urlParam to outgoingGroupUuid
-                <NewOutgoingForm
-                  outgoingGroupUuid={urlParam}
+                <NewOutgoingGroupForm
+                  financialTableUuid={urlParam}
                   setOpenedForm={setOpenedForm}
                   reRender={reRender}
                   setReRender={setReRender}

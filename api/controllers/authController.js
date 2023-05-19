@@ -16,6 +16,11 @@ exports.apiSignUp = async function (req, res) {
 
   function createNewUser(data) {
     User.create(data).then(function (newUser, created) {
+      if (!newUser) {
+        utils.writeToLogFile(`IP: ${ip} -- ${error}`, "warning");
+        return res.status(500).send({ message: "Something went wrong!" });
+      }
+
       const options = {
         viewEngine: {
           extname: ".hbs",
@@ -29,9 +34,9 @@ exports.apiSignUp = async function (req, res) {
 
       const transporter = nodemailer.createTransport({
         host: config.api.smtpHost,
-        port: 465,
-        service: "yahoo",
-        secure: false,
+        port: config.api.smptPort,
+        service: config.api.smptService,
+        secure: config.api.smtpSecure,
         auth: {
           user: config.api.smtpEmail,
           pass: config.api.smtpPassword,
@@ -44,7 +49,7 @@ exports.apiSignUp = async function (req, res) {
         {
           from: config.api.smtpEmail,
           to: data.email,
-          subject: "DDH registration!",
+          subject: "FundFlowery registration!",
           template: "registration",
           context: {
             user: data.firstname + " " + data.lastname,
@@ -61,14 +66,10 @@ exports.apiSignUp = async function (req, res) {
         }
       );
 
-      if (!newUser) {
-        res.json({ status: "Unexpected error!" });
-        return;
-      }
-      if (newUser) {
-        res.json({ status: "Successfully registered!" });
-        return;
-      }
+      return res.status(200).send({
+        message:
+          "Successful registration, please check your emails to confirm your account!",
+      });
     });
   }
 
@@ -80,8 +81,9 @@ exports.apiSignUp = async function (req, res) {
   const user = await User.findOne({ where: { email: email } });
 
   if (user) {
-    res.json({ status: "User already exist" });
-    return;
+    return res.status(200).send({
+      message: "Email already in use!",
+    });
   }
 
   const userPassword = generateHash(password);
@@ -101,6 +103,77 @@ exports.apiSignUp = async function (req, res) {
   };
 
   createNewUser(data);
+};
+
+exports.apiResendVerificationEmail = async function (req, res) {
+  const { User } = require("../models");
+  const { email } = req.body;
+
+  const user = await User.findOne({ where: { email: email } });
+
+  if (user) {
+    return res.status(200).send({
+      message: "Email already in use!",
+    });
+  }
+
+  //TODO: Custom verification email template for resending
+  async function reSendEmail(data) {
+    const options = {
+      viewEngine: {
+        extname: ".hbs",
+        layoutsDir: "views/email/",
+        defaultLayout: "registration",
+        partialsDir: "views/partials/",
+      },
+      viewPath: "views/email/",
+      extName: ".hbs",
+    };
+
+    const transporter = nodemailer.createTransport({
+      host: config.api.smtpHost,
+      port: config.api.smptPort,
+      service: config.api.smptService,
+      secure: config.api.smtpSecure,
+      auth: {
+        user: config.api.smtpEmail,
+        pass: config.api.smtpPassword,
+      },
+      logger: true,
+    });
+
+    transporter.use("compile", hbs(options));
+    transporter.sendMail(
+      {
+        from: config.api.smtpEmail,
+        to: data.email,
+        subject: "FundFlowery registration!",
+        template: "registration",
+        context: {
+          user: data.firstname + " " + data.lastname,
+          url: originUrl,
+          activationUrl:
+            config.database.host + `:5000/api/account-confirm/${data.reghash}`,
+        },
+      },
+      function (error, response) {
+        utils.writeToLogFile(error, "error");
+        console.log(error);
+        transporter.close();
+      }
+    );
+
+    return res.status(200).send({
+      message:
+        "Successful registration, please check your emails to confirm your account!",
+    });
+  }
+
+  const { firstname, lastname, reghash } = user;
+
+  const data = { email, firstname, lastname, reghash };
+
+  await reSendEmail(data);
 };
 
 exports.apiNewPassHandler = async function (req, res) {
@@ -136,9 +209,9 @@ exports.apiNewPassHandler = async function (req, res) {
 
         var transporter = nodemailer.createTransport({
           host: config.api.smtpHost,
-          port: 465,
-          service: "yahoo",
-          secure: false,
+          port: config.api.smptPort,
+          service: config.api.smptService,
+          secure: config.api.smtpSecure,
           auth: {
             user: config.api.smtpEmail,
             pass: config.api.smtpPassword,
@@ -151,7 +224,7 @@ exports.apiNewPassHandler = async function (req, res) {
           {
             from: config.api.smtpEmail,
             to: userEmail,
-            subject: "DDH Reset password!",
+            subject: "FundFlowery Reset password!",
             template: "passreset",
             context: {
               user: userName,
@@ -164,20 +237,23 @@ exports.apiNewPassHandler = async function (req, res) {
             transporter.close();
           }
         );
-        res.json({ status: "Your password has been reseted!" });
-        return;
+        return res.status(200).send({
+          message: "Your password has been reseted!",
+        });
       });
     } else {
-      res.json({ status: "Your password already reseted, try again later!" });
-      return;
+      return res.status(200).send({
+        message: "Your password already reseted, try again later!",
+      });
     }
   }
 
   const user = await User.findOne({ where: { email: userEmail } });
 
   if (!user) {
-    res.json({ status: "Wrong email address!" });
-    return;
+    return res.status(401).send({
+      message: "Wrong email address!",
+    });
   }
 
   setPassResetDate(user);
@@ -203,18 +279,19 @@ exports.apiResetPasswordHandler = async function (req, res) {
         { password: cryptedPassword },
         { where: { reghash: regHash } }
       ).then(function (newUser, created) {
-        res.json({
-          status: "You successfully reseted your password now you can login!",
+        return res.status(200).send({
+          message: "You successfully reseted your password now you can login!",
         });
-        return;
       });
     } else {
-      res.json({ status: "Something went wrong!" });
-      return;
+      return res.status(200).send({
+        message: "Something went wrong!",
+      });
     }
   } else {
-    res.json({ status: "Password must match!" });
-    return;
+    return res.status(200).send({
+      message: "Password must be match!",
+    });
   }
 };
 
@@ -229,18 +306,17 @@ exports.apiSignIn = async function (req, res) {
   const user = await User.findOne({ where: { email: email } });
 
   if (!user) {
-    res.status(401).send({ message: "Wrong email address." });
-    return;
+    return res.status(401).send({ message: "Wrong email address." });
   }
 
   if (!isValidPassword(user.password, password)) {
-    res.status(401).send({ message: "Incorrect password." });
-    return;
+    return res.status(401).send({ message: "Incorrect password." });
   }
 
   if (user.status === "inactive") {
-    res.status(401).send({ message: "Your account inactive, please active!" });
-    return;
+    return res
+      .status(401)
+      .send({ message: "Your account inactive, please active!" });
   }
 
   const userInfo = user.get();
@@ -303,8 +379,9 @@ exports.accountConfirm = async function (req, res) {
   const user = await User.findOne({ where: { reghash: regHash } });
 
   if (!user) {
-    res.json({ status: "Account not found!" });
-    return;
+    return res.status(404).send({
+      message: "Account not found!",
+    });
   }
 
   const updateUser = await User.update(
@@ -317,12 +394,15 @@ exports.accountConfirm = async function (req, res) {
     return;
   }
 
-  res.json({ status: "Account activated!" });
-  return;
+  return res.status(200).send({
+    message: "Account activated!",
+  });
 };
 
 exports.apiLogout = async function (req, res) {
   res.cookie("jwt", "", { maxAge: 0 });
 
-  res.send({ message: "Successfully logged out!" });
+  return res.status(200).send({
+    message: "Successfully logged out!",
+  });
 };

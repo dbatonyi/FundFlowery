@@ -5,6 +5,11 @@ module.exports = function (app) {
 
   app.post("/api/signup", authController.apiSignUp);
 
+  app.post(
+    "/api/resend-verification-email",
+    authController.apiResendVerificationEmail
+  );
+
   app.post("/api/password/new", authController.apiNewPassHandler);
 
   app.post("/api/password/reset/:id", authController.apiResetPasswordHandler);

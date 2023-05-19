@@ -15,8 +15,11 @@ module.exports = {
   api: {
     frontendUrl: "",
     smtpHost: "",
+    smptPort: 465,
+    smptService: "yahoo",
     smtpEmail: "",
     smtpPassword: "",
+    smtpSecure: false,
     jwtkey: "",
     apiToken: "",
     exchangeRatesDataAPI: "",

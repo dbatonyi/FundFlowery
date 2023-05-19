@@ -1,3 +1,3 @@
 module.exports = {
-  version: "0.9.5b",
+  version: "0.9.6",
 };

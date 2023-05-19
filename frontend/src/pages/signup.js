@@ -18,23 +18,24 @@ const SignUp = () => {
     const password = formData.get("password");
     const repassword = formData.get("repassword");
 
-    if (password === repassword) {
-      await fetch(`${config.serverUrl}/api/signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email,
-          firstname: firstName,
-          lastname: lastName,
-          password: password,
-        }),
-      });
-
-      await router.push("/signin");
-      return;
+    if (password !== repassword) {
+      return setStatusMessage("Passwords must be match!");
     }
 
-    return console.log("Password must be match");
+    const registrationResponse = await fetch(`${config.serverUrl}/api/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: email,
+        firstname: firstName,
+        lastname: lastName,
+        password: password,
+      }),
+    });
+
+    const data = await registrationResponse.json();
+    setStatusMessage(data.message);
+    router.push("/signin");
   };
 
   return (

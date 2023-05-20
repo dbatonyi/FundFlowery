@@ -91,3 +91,48 @@ utils.updateCurrencyExchanges = async () => {
     return utils.writeToLogFile(error, "error");
   }
 };
+
+utils.cleanUpUserDB = async () => {
+  const { User } = require("../models");
+
+  const date = new Date();
+  const currentDate = date.getTime();
+
+  const inactiveUsers = await User.findAll({
+    where: {
+      status: "inactive",
+      createdAt: {
+        [Op.lt]: new Date(currentDate - 24 * 60 * 60 * 1000), // Find users created more than 24 hours ago
+      },
+    },
+  });
+
+  const filteredData = inactiveUsers.map((user) => user.uuid);
+
+  if (filteredData.length > 0) {
+    await User.destroy({ where: { uuid: filteredData } });
+    return utils.writeToLogFile(
+      `Database cleaned - ${filteredData.length} account(s) deleted in the process!`,
+      "info"
+    );
+  }
+};
+
+utils.cleanUpExpiredEmailValidations = async () => {
+  EmailValidation.findAll({
+    where: {
+      expiresAt: {
+        [Op.lt]: new Date(), // Find records where the expiration time is less than the current date
+      },
+    },
+  }).then(function (expiredEmailValidations) {
+    expiredEmailValidations.forEach(function (emailValidation) {
+      emailValidation.destroy();
+    });
+  });
+
+  return utils.writeToLogFile(
+    `Database cleaned - Remove expired email validations`,
+    "info"
+  );
+};

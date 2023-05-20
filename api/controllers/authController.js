@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
 const config = require("../config");
@@ -9,62 +10,72 @@ let utils = require("../helpers/utils");
 var exports = (module.exports = {});
 
 exports.apiSignUp = async function (req, res) {
-  const { User } = require("../models");
+  const { User, EmailValidation } = require("../models");
 
   const originUrl = req.get("origin");
   const { email, password } = req.body;
 
   function createNewUser(data) {
+    const validationHash = crypto.randomBytes(20).toString("hex");
+    data.reghash = validationHash;
+
     User.create(data).then(function (newUser, created) {
       if (!newUser) {
         utils.writeToLogFile(`IP: ${ip} -- ${error}`, "warning");
         return res.status(500).send({ message: "Something went wrong!" });
       }
 
-      const options = {
-        viewEngine: {
-          extname: ".hbs",
-          layoutsDir: "views/email/",
-          defaultLayout: "registration",
-          partialsDir: "views/partials/",
-        },
-        viewPath: "views/email/",
-        extName: ".hbs",
-      };
-
-      const transporter = nodemailer.createTransport({
-        host: config.api.smtpHost,
-        port: config.api.smptPort,
-        service: config.api.smptService,
-        secure: config.api.smtpSecure,
-        auth: {
-          user: config.api.smtpEmail,
-          pass: config.api.smtpPassword,
-        },
-        logger: true,
-      });
-
-      transporter.use("compile", hbs(options));
-      transporter.sendMail(
-        {
-          from: config.api.smtpEmail,
-          to: data.email,
-          subject: "FundFlowery registration!",
-          template: "registration",
-          context: {
-            user: data.firstname + " " + data.lastname,
-            url: originUrl,
-            activationUrl:
-              config.database.host +
-              `:5000/api/account-confirm/${data.reghash}`,
+      EmailValidation.create({
+        code: validationHash,
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // Set expiration time (e.g., 24 hours from now)
+        userId: newUser.uuid,
+      }).then(function (emailValidation) {
+        const options = {
+          viewEngine: {
+            extname: ".hbs",
+            layoutsDir: "views/email/",
+            defaultLayout: "registration",
+            partialsDir: "views/partials/",
           },
-        },
-        function (error, response) {
-          utils.writeToLogFile(error, "error");
-          console.log(error);
-          transporter.close();
-        }
-      );
+          viewPath: "views/email/",
+          extName: ".hbs",
+        };
+
+        const redirectParam = config.api.frontendUrl;
+
+        const transporter = nodemailer.createTransport({
+          host: config.api.smtpHost,
+          port: config.api.smptPort,
+          service: config.api.smptService,
+          secure: config.api.smtpSecure,
+          auth: {
+            user: config.api.smtpEmail,
+            pass: config.api.smtpPassword,
+          },
+          logger: true,
+        });
+
+        transporter.use("compile", hbs(options));
+        transporter.sendMail(
+          {
+            from: config.api.smtpEmail,
+            to: data.email,
+            subject: "FundFlowery registration!",
+            template: "registration",
+            context: {
+              user: data.firstname + " " + data.lastname,
+              url: originUrl,
+              activationUrl:
+                config.api.frontendUrl +
+                `/api/api/account-confirm/${validationHash}?redirectParam=${redirectParam}`,
+            },
+          },
+          function (error, response) {
+            utils.writeToLogFile(error, "error");
+            transporter.close();
+          }
+        );
+      });
 
       return res.status(200).send({
         message:
@@ -229,6 +240,7 @@ exports.apiNewPassHandler = async function (req, res) {
             context: {
               user: userName,
               reghash: reghash,
+              frontendUrl: config.api.frontendUrl,
             },
           },
           function (error, response) {
@@ -371,32 +383,52 @@ exports.apiUser = async function (req, res) {
 };
 
 exports.accountConfirm = async function (req, res) {
-  const { User } = require("../models");
+  const { User, EmailValidation } = require("../models");
 
-  var regHash = req.params.id;
-  let redirectParam = req.query.redirectParam;
+  const regHash = req.params.id;
+  const redirectParam = req.query.redirectParam;
 
-  const user = await User.findOne({ where: { reghash: regHash } });
+  const emailValidation = await EmailValidation.findOne({
+    where: { code: regHash },
+  });
+
+  if (!emailValidation) {
+    res.json({ status: "Invalid validation code!" });
+    return;
+  }
+
+  if (emailValidation.expiresAt < new Date()) {
+    res.json({ status: "Validation code has expired!" });
+    return;
+  }
+
+  const user = await User.findOne({ where: { reghash: emailValidation.code } });
 
   if (!user) {
-    return res.status(404).send({
-      message: "Account not found!",
-    });
+    res.json({ status: "Account not found!" });
+    return;
+  }
+
+  if (user.reghash !== emailValidation.code) {
+    res.json({ status: "Invalid validation code for this account!" });
+    return;
   }
 
   const updateUser = await User.update(
     { status: "active" },
-    { where: { reghash: regHash } }
+    { where: { reghash: emailValidation.code } }
   );
 
+  // Delete the EmailValidation record
+  await emailValidation.destroy();
+
   if (redirectParam) {
-    window.location.replace(redirectParam + "/login");
+    res.redirect(redirectParam + "/login");
     return;
   }
 
-  return res.status(200).send({
-    message: "Account activated!",
-  });
+  res.json({ status: "Account activated!" });
+  return;
 };
 
 exports.apiLogout = async function (req, res) {

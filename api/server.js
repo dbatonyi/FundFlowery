@@ -28,9 +28,16 @@ app.use(bodyParser.json());
 
 //Cron
 const cronSchedule = "0 0 0,12 * * *";
-const cronJobs = () => {
-  utils.updateCurrencyExchanges();
-  utils.utils.writeToLogFile("Cron job executed at 12:00 and 00:00", "info");
+const cronJobs = async () => {
+  await utils.updateCurrencyExchanges();
+  await utils.utils.writeToLogFile(
+    "Cron job executed at 12:00 and 00:00",
+    "info"
+  );
+  await utils.writeToLogFile("Database cleanup started", "info");
+  await utils.cleanUpUserDB();
+  await utils.cleanUpExpiredEmailValidations();
+  await utils.writeToLogFile("Database cleanup ended", "info");
 };
 
 //Models

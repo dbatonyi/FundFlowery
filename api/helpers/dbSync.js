@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 const fetch = require("isomorphic-fetch");
 const config = require("../config");
 
@@ -34,9 +35,8 @@ async function createAdminUser() {
   };
 
   const userPassword = generateHash(config.adminCredentials.adminPassword);
-  const regHashRow = generateHash(
-    config.adminCredentials.adminEmail + config.adminCredentials.adminPassword
-  );
+
+  const regHashRow = crypto.randomBytes(20).toString("hex");
 
   const [admin, created] = await User.findOrCreate({
     where: { email: config.adminCredentials.adminEmail },

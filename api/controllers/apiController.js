@@ -230,6 +230,35 @@ exports.createIncomeItem = async function (req, res) {
   }
 };
 
+exports.createNewOutgoingGroupItem = async function (req, res) {
+  const { OutgoingsGroup } = require("../models");
+  let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+
+  const authenticateToken = req.headers["authenticate"];
+
+  if (!authenticateToken || config.apiToken !== authenticateToken.slice(7)) {
+    utils.writeToLogFile(`IP: ${ip} -- (API token not valid!)`, "warning");
+    return res.status(403).send({ message: "API token not valid!" });
+  }
+
+  const { outgoingsGroupTitle, outgoingsGroupDate, outgoingGroupId } = req.body;
+
+  try {
+    const outgoingGroup = await OutgoingsGroup.create({
+      outgoingsGroupTitle,
+      outgoingsGroupDate,
+      outgoingGroupId,
+    });
+
+    return res.status(200).send({
+      message: "Outgoing group successfully created!",
+    });
+  } catch (error) {
+    utils.writeToLogFile(`IP: ${ip} -- ${error}`, "error");
+    return res.status(500).send({ message: "Something went wrong!" });
+  }
+};
+
 exports.createOutgoingItem = async function (req, res) {
   const { Outgoings } = require("../models");
   let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;

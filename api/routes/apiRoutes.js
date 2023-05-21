@@ -21,6 +21,11 @@ module.exports = function (app) {
 
   app.post("/api/create-new-income-item", apiController.createIncomeItem);
 
+  app.post(
+    "/api/create-new-outgoing-group-item",
+    apiController.createNewOutgoingGroupItem
+  );
+
   app.post("/api/create-new-outgoing-item", apiController.createOutgoingItem);
 
   app.post("/api/delete-income-item", apiController.deleteIncomeItem);

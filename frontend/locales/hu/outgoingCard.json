@@ -13,12 +13,12 @@
   "outgoingCardEditOnSaleLabel": "On sale",
   "outgoingCardEditOriginLabel": "Origin",
   "outgoingCardEditDescriptionLabel": "Description",
-  "outgoingCardShowMoreText": "Show more",
-  "outgoingCardShowLessText": "Show less",
+  "outgoingCardShowMoreText": "Mutass többet",
+  "outgoingCardShowLessText": "Mutass kevesebbet",
   "outgoingCardEditSubmit": "Save",
-  "outgoingCardDeleteText": "You definitely want to delete this item?",
-  "outgoingCardDeleteNo": "No",
-  "outgoingCardDeleteYes": "Yes",
+  "outgoingCardDeleteText": "Biztosan törölni akarod ezt az elemet?",
+  "outgoingCardDeleteNo": "Nem",
+  "outgoingCardDeleteYes": "Igen",
   "outgoingCardEditResponse": "Kiadás kártya sikeresen szerkesztve",
   "outgoingCardDeleteResponse": "Kiadás kártya sikeresen törölve"
 }

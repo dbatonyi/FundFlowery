@@ -12,8 +12,7 @@ const NewOutgoingGroupForm = ({
   reRender,
   setReRender,
 }) => {
-  //TODO: Add translations
-  //const { t } = useTranslation("newOutgoingGroupForm");
+  const { t } = useTranslation("newOutgoingGroupForm");
   const { setStatusMessage } = useContext(AuthContext);
 
   const [selectedDate, setSelectedDate] = useState(null);
@@ -82,9 +81,13 @@ const NewOutgoingGroupForm = ({
       >
         X
       </div>
-      <div className="new-outgoing-popup--title">New outgoing group</div>
+      <div className="new-outgoing-popup--title">
+        {t("newOutgoingGroupFormTitle")}
+      </div>
       <form onSubmit={submitHandler}>
-        <label htmlFor="outgoing-group-title">Outgoing group name</label>
+        <label htmlFor="outgoing-group-title">
+          {t("newOutgoingGroupFormNameLabel")}
+        </label>
         <input
           className="text"
           name="outgoing-group-title"
@@ -101,7 +104,7 @@ const NewOutgoingGroupForm = ({
         </div>
         <div className="submit-btn">
           <button className="btn" type="submit">
-            Submit
+            {t("newOutgoingGroupFormSubmit")}
           </button>
         </div>
       </form>

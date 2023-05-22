@@ -1,0 +1,12 @@
+{
+  "outgoingGroupShowMore": "Show more",
+  "outgoingGroupShowLess": "Show less",
+  "outgoingGroupEditGroup": "Edit group",
+  "outgoingGroupDeleteGroup": "Delete group",
+  "outgoingGroupTitleLabel": "Outgoing group title",
+  "outgoingGroupSelectDate": "Select a date",
+  "outgoingGroupSubmit": "Submit",
+  "outgoingGroupDeleteText": "You definitely want to delete this item?",
+  "outgoingGroupDeleteNo": "No",
+  "outgoingGroupDeleteYes": "Yes"
+}

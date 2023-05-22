@@ -16,8 +16,10 @@ module.exports = {
       "financialTable",
       "monthPicker",
       "incomeCard",
+      "outgoingGroup",
       "outgoingCard",
       "newIncomeForm",
+      "newOutgoingGroupForm",
       "newOutgoingForm",
     ], // Namespaces that you want to import per page (we stick to one namespace for all the application in this tutorial)
   },

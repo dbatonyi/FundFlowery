@@ -4,11 +4,10 @@ import { AuthContext } from "@/layouts/Layout";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-//import useTranslation from "next-translate/useTranslation";
+import useTranslation from "next-translate/useTranslation";
 
 const OutgoingGroup = ({ outgoingGroupData, reRender, setReRender }) => {
-  //TODO: Add translations
-  //const { t } = useTranslation("outgoingGroup");
+  const { t } = useTranslation("outgoingGroup");
   const { setStatusMessage } = useContext(AuthContext);
 
   const [selectedDate, setSelectedDate] = useState(
@@ -142,7 +141,9 @@ const OutgoingGroup = ({ outgoingGroupData, reRender, setReRender }) => {
                   setShowMore(!showMore);
                 }}
               >
-                {showMore ? "Show more" : "Show less"}
+                {showMore
+                  ? t("outgoingGroupShowMore")
+                  : t("outgoingGroupShowLess")}
               </div>
               <div
                 className="financial-table__outgoing-group--edit"
@@ -150,7 +151,7 @@ const OutgoingGroup = ({ outgoingGroupData, reRender, setReRender }) => {
                   setShowEditPopup(true);
                 }}
               >
-                Edit group
+                {t("outgoingGroupEditGroup")}
               </div>
               <div
                 className="financial-table__outgoing-group--delete"
@@ -158,7 +159,7 @@ const OutgoingGroup = ({ outgoingGroupData, reRender, setReRender }) => {
                   setShowDeletePopup(true);
                 }}
               >
-                Delete group
+                {t("outgoingGroupDeleteGroup")}
               </div>
             </div>
           </>
@@ -169,7 +170,7 @@ const OutgoingGroup = ({ outgoingGroupData, reRender, setReRender }) => {
               <div className="financial-table__outgoing-group--container">
                 <div className="financial-table__outgoing-group--title">
                   <label htmlFor="outgoing-group-title">
-                    Outgoing group title:
+                    {t("outgoingGroupTitleLabel")}:
                   </label>
                   <input
                     className="text"
@@ -183,11 +184,11 @@ const OutgoingGroup = ({ outgoingGroupData, reRender, setReRender }) => {
                     selected={selectedDate}
                     onChange={handleDateChange}
                     dateFormat="yyyy-MM-dd"
-                    placeholderText="Select a date"
+                    placeholderText={t("outgoingGroupSelectDate")}
                   />
                 </div>
                 <button className="btn" type="submit">
-                  Submit
+                  {t("outgoingGroupSubmit")}
                 </button>
               </div>
             </form>
@@ -204,7 +205,7 @@ const OutgoingGroup = ({ outgoingGroupData, reRender, setReRender }) => {
         {!showEditPopup && showDeletePopup ? (
           <div className="income-group__popup">
             <div className="income-group__popup--text">
-              You will want to delete this item
+              {t("outgoingGroupDeleteText")}
             </div>
             <div className="income-group__popup--controllers">
               <div
@@ -213,7 +214,7 @@ const OutgoingGroup = ({ outgoingGroupData, reRender, setReRender }) => {
                   setShowDeletePopup(false);
                 }}
               >
-                No
+                {t("outgoingGroupDeleteNo")}
               </div>
               <div
                 className="accept"
@@ -221,7 +222,7 @@ const OutgoingGroup = ({ outgoingGroupData, reRender, setReRender }) => {
                   deleteOutgoingGroup();
                 }}
               >
-                Yes
+                {t("outgoingGroupDeleteYes")}
               </div>
             </div>
           </div>

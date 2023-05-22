@@ -1,0 +1,12 @@
+{
+  "outgoingGroupShowMore": "Mutass többet",
+  "outgoingGroupShowLess": "Mutass kevesebbet",
+  "outgoingGroupEditGroup": "Csoport szerkesztése",
+  "outgoingGroupDeleteGroup": "Csoport törlése",
+  "outgoingGroupTitleLabel": "Csoport címe",
+  "outgoingGroupSelectDate": "Válasszon dátumot",
+  "outgoingGroupSubmit": "Beküld",
+  "outgoingGroupDeleteText": "Biztosan törölni akarod ezt az elemet?",
+  "outgoingGroupDeleteNo": "Nem",
+  "outgoingGroupDeleteYes": "Igen"
+}

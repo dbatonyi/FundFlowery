@@ -6,7 +6,14 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import useTranslation from "next-translate/useTranslation";
 
-const OutgoingGroup = ({ outgoingGroupData, reRender, setReRender }) => {
+import NewOutgoingForm from "./forms/NewOutgoingForm";
+
+const OutgoingGroup = ({
+  outgoingGroupData,
+  setOpenedForm,
+  reRender,
+  setReRender,
+}) => {
   const { t } = useTranslation("outgoingGroup");
   const { setStatusMessage } = useContext(AuthContext);
 
@@ -17,6 +24,8 @@ const OutgoingGroup = ({ outgoingGroupData, reRender, setReRender }) => {
   const [showMore, setShowMore] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+
+  const [showAddPopup, setShowAddPopup] = useState(false);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -161,6 +170,14 @@ const OutgoingGroup = ({ outgoingGroupData, reRender, setReRender }) => {
               >
                 {t("outgoingGroupDeleteGroup")}
               </div>
+              <div
+                className="financial-table__outgoing-group--add"
+                onClick={() => {
+                  setShowAddPopup(true);
+                }}
+              >
+                {t("outgoingGroupAddOutgoing")}
+              </div>
             </div>
           </>
         ) : null}
@@ -203,11 +220,11 @@ const OutgoingGroup = ({ outgoingGroupData, reRender, setReRender }) => {
           </>
         ) : null}
         {!showEditPopup && showDeletePopup ? (
-          <div className="income-group__popup">
-            <div className="income-group__popup--text">
+          <div className="outgoing-group__popup">
+            <div className="outgoing-group__popup--text">
               {t("outgoingGroupDeleteText")}
             </div>
-            <div className="income-group__popup--controllers">
+            <div className="outgoing-group__popup--controllers">
               <div
                 className="cancel"
                 onClick={() => {
@@ -225,6 +242,16 @@ const OutgoingGroup = ({ outgoingGroupData, reRender, setReRender }) => {
                 {t("outgoingGroupDeleteYes")}
               </div>
             </div>
+          </div>
+        ) : null}
+        {showAddPopup ? (
+          <div className="income-group__popup">
+            <NewOutgoingForm
+              outgoingGroupUuid={outgoingGroupData.uuid}
+              setOpenedForm={setOpenedForm}
+              reRender={reRender}
+              setReRender={setReRender}
+            />
           </div>
         ) : null}
       </div>

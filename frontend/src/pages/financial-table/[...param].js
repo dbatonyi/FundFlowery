@@ -4,7 +4,6 @@ import useTranslation from "next-translate/useTranslation";
 import { AuthContext } from "../../layouts/Layout";
 import NewIncomeForm from "@/components/forms/NewIncomeForm";
 import NewOutgoingGroupForm from "@/components/forms/NewOutgoingGroupForm";
-//import NewOutgoingForm from "@/components/forms/NewOutgoingForm";
 import IncomeCard from "@/components/IncomeCard";
 import OutgoingCard from "@/components/OutgoingCard";
 import YearPicker from "@/components/YearPicker";

@@ -18,8 +18,8 @@ exports.apiLog = async function (req, res) {
 
   try {
     const log = await Log.create({
-      logMessage,
-      logLevel,
+      logMessage: logMessage ? logMessage : "Unknown error",
+      logLevel: logLevel ? logLevel : "error",
     });
 
     return res.status(200).send({
@@ -84,7 +84,13 @@ exports.getFinancialTablesByUser = async function (req, res) {
 };
 
 exports.getFinancialTableDataByUuid = async function (req, res) {
-  const { FinancialTable, Incomes, Outgoings } = require("../models");
+  let Sequelize = require("sequelize");
+  const {
+    FinancialTable,
+    Incomes,
+    Outgoings,
+    OutgoingsGroup,
+  } = require("../models");
   let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 
   const authenticateToken = req.headers["authenticate"];
@@ -109,7 +115,7 @@ exports.getFinancialTableDataByUuid = async function (req, res) {
               model: Outgoings,
               as: "outgoings",
               where: {
-                outgoingKey: Sequelize.col("outgoingsGroup.outgoingKey"),
+                outgoingKey: Sequelize.col("outgoingsGroup.uuid"),
               },
             },
           ],

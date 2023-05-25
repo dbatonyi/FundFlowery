@@ -5,7 +5,6 @@ import { AuthContext } from "../../layouts/Layout";
 import NewIncomeForm from "@/components/forms/NewIncomeForm";
 import NewOutgoingGroupForm from "@/components/forms/NewOutgoingGroupForm";
 import IncomeCard from "@/components/IncomeCard";
-import OutgoingCard from "@/components/OutgoingCard";
 import YearPicker from "@/components/YearPicker";
 import MonthPicker from "@/components/MonthPicker";
 import CurrencyRatesTable from "@/components/CurrencyRatesTable";
@@ -159,12 +158,17 @@ const FinancialTable = () => {
         console.log(dataJson.data[0]);
         setTableData(dataJson.data[0]);
         setIncomes(dataJson.data[0].incomes);
-        setOutgoings(dataJson.data[0].outgoings);
+        //TODO: Fix the outgoing issues
+        //setOutgoings(dataJson.data[0].outgoings);
+
+        console.log(dataJson.data[0]);
 
         overallTotalSummary(
           selectedCurrency,
           dataJson.data[0].incomes,
-          dataJson.data[0].outgoings
+          //TODO: Fix the outgoing issues
+          //dataJson.data[0].outgoings
+          0
         );
 
         const filteredIncomesArray = dataJson.data[0].incomes.filter(
@@ -184,7 +188,8 @@ const FinancialTable = () => {
 
         setFilteredIncomes(filteredIncomesArray);
 
-        const filteredOutgoingsArray = dataJson.data[0].outgoings.filter(
+        //TODO: Fix the outgoing issues
+        /* const filteredOutgoingsArray = dataJson.data[0].outgoings.filter(
           (outgoing) => {
             const outgoingDate = new Date(outgoing.outgoingDate);
             const outgoingYear = outgoingDate.getFullYear();
@@ -199,7 +204,7 @@ const FinancialTable = () => {
           }
         );
 
-        setFilteredOutgoings(filteredOutgoingsArray);
+        setFilteredOutgoings(filteredOutgoingsArray); */
       }
     } catch (error) {
       const log = await fetch(`${configData.serverUrl}/api/log`, {
@@ -428,7 +433,10 @@ const FinancialTable = () => {
     };
 
     const incomeAmounts = await sumIncomeAmounts(incomesData);
-    const outgoingAmounts = await sumOutgoingAmounts(outgoingsData);
+    //TODO: Fix outgoing amounts
+
+    //const outgoingAmounts = await sumOutgoingAmounts(outgoingsData);
+    const outgoingAmounts = { HUF: 0, EUR: 0, USD: 0 };
 
     const sumIncAmount = { ...incomeAmounts };
 
@@ -502,7 +510,8 @@ const FinancialTable = () => {
       setFilteredIncomes(filteredIncomesArray);
     }
 
-    if (outgoings) {
+    //TODO: Fix the outgoing issues
+    /* if (outgoings) {
       const filteredOutgoingsArray = outgoings.filter((outgoing) => {
         const outgoingDate = new Date(outgoing.outgoingDate);
         const outgoingYear = outgoingDate.getFullYear();
@@ -516,8 +525,8 @@ const FinancialTable = () => {
         );
       });
 
-      setFilteredOutgoings(filteredOutgoingsArray);
-    }
+      setFilteredOutgoings(filteredOutgoingsArray); 
+    }*/
   }, [selectedMonth, selectedYear]);
 
   useEffect(() => {
@@ -527,7 +536,7 @@ const FinancialTable = () => {
   }, [filteredIncomes, filteredOutgoings]);
 
   return (
-    <div className="financial-table">
+    <div className="financial-table-content">
       {permission ? (
         <>
           {tableData ? (
@@ -635,10 +644,10 @@ const FinancialTable = () => {
                       {t("financialTableOutgoingListText")}:
                       {filteredOutgoings && filteredOutgoings.length > 0 ? (
                         <>
-                          {filteredOutgoings.map((outgoingItem, index) => {
+                          {filteredOutgoings.map((outgoingGroup, index) => {
                             return (
-                              <OutgoingCard
-                                outgoingData={outgoingItem}
+                              <OutgoingGroup
+                                outgoingGroupData={outgoingGroup}
                                 reRender={reRender}
                                 setReRender={setReRender}
                                 key={index}

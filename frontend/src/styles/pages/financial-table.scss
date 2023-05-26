@@ -4,5 +4,42 @@
   .financial-table {
     max-height: 475px;
     overflow-y: auto;
+
+    &--share {
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    &__main {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      &--title {
+        width: 50%;
+        display: flex;
+        align-items: center;
+        font-size: 20px;
+        font-weight: 600;
+
+        .edit-title {
+          margin-left: 10px;
+          font-size: 16px;
+          font-weight: normal;
+          cursor: pointer;
+        }
+      }
+
+      &--date-pick {
+        width: 100%;
+        padding: 20px 0;
+      }
+
+      &--controllers {
+        width: 100%;
+        padding: 20px 0;
+        cursor: pointer;
+      }
+    }
   }
 }

@@ -7,7 +7,8 @@ const configData = require("../../config");
 
 const FinancialTable = (props) => {
   const { t } = useTranslation("financialTables");
-  const { setStatusMessage, userInfo } = useContext(AuthContext);
+  const { setStatusMessage, userInfo, setCurrencyRates } =
+    useContext(AuthContext);
 
   const [reRender, setReRender] = useState(false);
 
@@ -92,6 +93,38 @@ const FinancialTable = (props) => {
         setSharedFinancialTableList(dataJson.data);
         setFilteredSharedFinancialTableList(dataJson.data);
       }
+    } catch (error) {
+      const log = await fetch(`${configData.serverUrl}/api/log`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authenticate: `Bearer ${configData.apiToken}`,
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          log: error,
+        }),
+      });
+      const data = await log.json();
+      setStatusMessage(data.message);
+    }
+  };
+
+  const getCurrencyExchangeRates = async () => {
+    try {
+      const response = await fetch(
+        `${configData.serverUrl}/api/get-currency-exchange-rates`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authenticate: `Bearer ${configData.apiToken}`,
+          },
+          credentials: "include",
+        }
+      );
+      const dataJson = await response.json();
+      setCurrencyRates(dataJson?.data);
     } catch (error) {
       const log = await fetch(`${configData.serverUrl}/api/log`, {
         method: "POST",
@@ -229,6 +262,7 @@ const FinancialTable = (props) => {
   useEffect(() => {
     fetchFinancialTableList();
     fetchSharedFinancialTableList();
+    getCurrencyExchangeRates();
   }, [reRender]);
 
   //Handlers

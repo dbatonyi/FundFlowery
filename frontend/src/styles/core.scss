@@ -112,6 +112,10 @@ h1 {
     }
   }
 
+  &__sidebar {
+    width: 30%;
+  }
+
   > .circles {
     position: absolute;
     top: 0;
@@ -227,6 +231,7 @@ h1 {
 
 .app-version {
   position: absolute;
+  z-index: 6;
   bottom: 10px;
   right: 10px;
   font-weight: bold;

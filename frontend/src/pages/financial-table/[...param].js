@@ -7,7 +7,6 @@ import NewOutgoingGroupForm from "@/components/forms/NewOutgoingGroupForm";
 import IncomeCard from "@/components/IncomeCard";
 import YearPicker from "@/components/YearPicker";
 import MonthPicker from "@/components/MonthPicker";
-import CurrencyRatesTable from "@/components/CurrencyRatesTable";
 
 const configData = require("../../../config");
 
@@ -20,7 +19,8 @@ const FinancialTable = () => {
   const currentDate = new Date();
   const monthNumber = (currentDate.getMonth() + 1).toString().padStart(2, "0");
 
-  const { setStatusMessage, userInfo } = useContext(AuthContext);
+  const { setStatusMessage, userInfo, setCurrencyRates } =
+    useContext(AuthContext);
 
   const [permission, setPermission] = useState(false);
   const [permissionLevel, setPermissionLevel] = useState(null);
@@ -37,7 +37,6 @@ const FinancialTable = () => {
   const [convertedOutgoingAmount, setConvertedOutgoingAmount] = useState(null);
   const [filteredOutgoings, setFilteredOutgoings] = useState(null);
 
-  const [currencyRates, setCurrencyRates] = useState(null);
   const [selectedCurrency, setSelectedCurrency] = useState("HUF");
 
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -662,12 +661,6 @@ const FinancialTable = () => {
                       )}
                     </div>
                   </div>
-                </div>
-
-                <div className="financial-table__sidebar">
-                  {currencyRates ? (
-                    <CurrencyRatesTable currencyRates={currencyRates} />
-                  ) : null}
                 </div>
               </div>
               <div className="financial-table__summary">

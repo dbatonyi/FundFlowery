@@ -3,20 +3,25 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Header from "@/components/Header";
 import Notifications from "@/components/Notifications";
+import CurrencyRatesTable from "@/components/CurrencyRatesTable";
 
 const config = require("../../config");
+const appVersion = require("../../app-version");
 
 export const AuthContext = React.createContext(null);
 
 const Layout = (props) => {
   const router = useRouter();
   const getLocation = router.pathname;
+  const currentPath = router.asPath;
 
   const [isLoading, setIsLoading] = useState(true);
   const [auth, setAuth] = useState(false);
   const [authFailed, setAuthFailed] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const [statusMessage, setStatusMessage] = useState(null);
+
+  const [currencyRates, setCurrencyRates] = useState(null);
 
   useEffect(authentication, [router.route]);
 
@@ -113,6 +118,7 @@ const Layout = (props) => {
             authFailed,
             userInfo,
             setStatusMessage,
+            setCurrencyRates,
             actions: {
               logout,
               signIn,
@@ -128,12 +134,19 @@ const Layout = (props) => {
             <Header auth={auth} logout={logout} />
             <main className="fund-flowery__main">
               {props.children}
-              {auth && userInfo?.uuid ? (
-                <Notifications
-                  userInfo={userInfo}
-                  setStatusMessage={setStatusMessage}
-                />
-              ) : null}
+              <div className="fund-flowery__sidebar">
+                {auth && userInfo?.uuid ? (
+                  <Notifications
+                    userInfo={userInfo}
+                    setStatusMessage={setStatusMessage}
+                  />
+                ) : null}
+                {auth &&
+                currentPath.includes("financial-table") &&
+                currencyRates ? (
+                  <CurrencyRatesTable currencyRates={currencyRates} />
+                ) : null}
+              </div>
               {statusMessage ? (
                 <div className="fund-flowery-system-message">
                   <div className="fund-flowery-system-message--message">
@@ -150,6 +163,7 @@ const Layout = (props) => {
                 </div>
               ) : null}
             </main>
+            <div className="app-version">v{appVersion.version}</div>
             <ul className="circles">
               <li></li>
               <li></li>

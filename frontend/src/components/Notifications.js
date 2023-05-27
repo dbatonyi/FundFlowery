@@ -57,7 +57,7 @@ const Notifications = ({ userInfo, setStatusMessage }) => {
           setShowDropdown(!showDropdown);
         }}
       >
-        {t("notificationsTitle")}
+        <h3>{t("notificationsTitle")}</h3>
         <svg
           fill="#000000"
           height="800px"

@@ -1,0 +1,42 @@
+.currency-table {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  margin: 20px 20px 20px 0;
+  background: white;
+  padding: 20px;
+  border-radius: 13px;
+  height: -moz-fit-content;
+  height: fit-content;
+  width: 100%;
+  max-width: 250px;
+  z-index: 2;
+
+  &--updated-at {
+    display: flex;
+    flex-wrap: wrap;
+    font-weight: 600;
+    padding: 0 0 10px 0;
+    margin: 0 0 10px 0;
+    border-bottom: 2px solid rgb(161, 208, 247);
+
+    span {
+      padding-left: 2px;
+    }
+  }
+
+  &__list {
+    width: 100%;
+
+    &--card {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      padding: 20px 0;
+
+      .currency-title {
+        font-weight: 600;
+      }
+    }
+  }
+}

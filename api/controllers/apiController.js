@@ -850,7 +850,9 @@ exports.getCurrencyExchangeRates = async function (req, res) {
   }
 
   try {
-    const currencyExchangeRates = await CurrencyExchangeRates.findAll();
+    const currencyExchangeRates = await CurrencyExchangeRates.findAll({
+      order: [["currencyExchangeBase", "ASC"]],
+    });
 
     return res.status(200).send({
       data: currencyExchangeRates,

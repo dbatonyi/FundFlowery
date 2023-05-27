@@ -19,7 +19,7 @@ const CurrencyRatesTable = ({ currencyRates }) => {
         <h3>{t("currencyRatesTableTitle")}</h3>
       </div>
       <div className="currency-table--updated-at">
-        {t("currencyRatesTableUpdatedAt")}: {formattedDateTime}
+        {t("currencyRatesTableUpdatedAt")}: <span>{formattedDateTime}</span>
       </div>
       <div className="currency-table__list">
         {currencyRates.map((currency, index) => {

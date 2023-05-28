@@ -114,9 +114,7 @@ exports.getFinancialTableDataByUuid = async function (req, res) {
             {
               model: Outgoings,
               as: "outgoings",
-              where: {
-                outgoingKey: Sequelize.col("outgoingsGroup.uuid"),
-              },
+              required: false,
             },
           ],
         },
@@ -247,13 +245,14 @@ exports.createNewOutgoingGroupItem = async function (req, res) {
     return res.status(403).send({ message: "API token not valid!" });
   }
 
-  const { outgoingsGroupTitle, outgoingsGroupDate, outgoingGroupId } = req.body;
+  const { outgoingsGroupTitle, outgoingsGroupDate, financialTableId } =
+    req.body;
 
   try {
     const outgoingGroup = await OutgoingsGroup.create({
       outgoingsGroupTitle,
       outgoingsGroupDate,
-      outgoingGroupId,
+      financialTableId,
     });
 
     return res.status(200).send({

@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(User, { foreignKey: "userId" });
       this.hasMany(OutgoingsGroup, {
         as: "outgoingsGroup",
-        foreignKey: "outgoingGroupId",
+        foreignKey: "financialTableId",
       });
       this.hasMany(Incomes, { as: "incomes", foreignKey: "financialTableId" });
       this.hasMany(UserFinancialTableInvitation, {

@@ -32,10 +32,10 @@ const FinancialTable = () => {
   const [convertedIncomeAmount, setConvertedIncomeAmount] = useState(null);
   const [filteredIncomes, setFilteredIncomes] = useState(null);
 
-  const [outgoings, setOutgoings] = useState(null);
+  const [outgoingsGroup, setOutgoingsGroup] = useState(null);
   const [summedOutgoingAmount, setSummedOutgoingAmount] = useState(null);
   const [convertedOutgoingAmount, setConvertedOutgoingAmount] = useState(null);
-  const [filteredOutgoings, setFilteredOutgoings] = useState(null);
+  const [filteredOutgoingsGroup, setFilteredOutgoingsGroup] = useState(null);
 
   const [selectedCurrency, setSelectedCurrency] = useState("HUF");
 
@@ -54,7 +54,11 @@ const FinancialTable = () => {
   const handleCurrencyChange = (event) => {
     setSelectedCurrency(event.target.value);
 
-    summaryController(event.target.value, filteredIncomes, filteredOutgoings);
+    summaryController(
+      event.target.value,
+      filteredIncomes,
+      0 /* filteredOutgoings */
+    );
   };
 
   const handleYearChange = (year) => {
@@ -157,8 +161,7 @@ const FinancialTable = () => {
         console.log(dataJson.data[0]);
         setTableData(dataJson.data[0]);
         setIncomes(dataJson.data[0].incomes);
-        //TODO: Fix the outgoing issues
-        //setOutgoings(dataJson.data[0].outgoings);
+        setOutgoingsGroup(dataJson.data[0].outgoingsGroup);
 
         console.log(dataJson.data[0]);
 
@@ -187,23 +190,21 @@ const FinancialTable = () => {
 
         setFilteredIncomes(filteredIncomesArray);
 
-        //TODO: Fix the outgoing issues
-        /* const filteredOutgoingsArray = dataJson.data[0].outgoings.filter(
-          (outgoing) => {
-            const outgoingDate = new Date(outgoing.outgoingDate);
-            const outgoingYear = outgoingDate.getFullYear();
-            const outgoingMonthNumber = (outgoingDate.getMonth() + 1)
+        const filteredOutgoingsGroupArray =
+          dataJson.data[0].outgoingsGroup.filter((outgoing) => {
+            const outgoingGroupDate = new Date(outgoing.outgoingGroupDate);
+            const outgoingGroupYear = outgoingGroupDate.getFullYear();
+            const outgoingGroupMonthNumber = (outgoingGroupDate.getMonth() + 1)
               .toString()
               .padStart(2, "0");
 
             return (
-              outgoingYear === Number(selectedYear) &&
-              outgoingMonthNumber === selectedMonth
+              outgoingGroupYear === Number(selectedYear) &&
+              outgoingGroupMonthNumber === selectedMonth
             );
-          }
-        );
+          });
 
-        setFilteredOutgoings(filteredOutgoingsArray); */
+        setFilteredOutgoingsGroup(filteredOutgoingsGroupArray);
       }
     } catch (error) {
       const log = await fetch(`${configData.serverUrl}/api/log`, {
@@ -355,7 +356,8 @@ const FinancialTable = () => {
     };
 
     const incomeAmounts = await sumIncomeAmounts(incomesData);
-    const outgoingAmounts = await sumOutgoingAmounts(outgoingsData);
+    //TODO: fix this
+    //const outgoingAmounts = await sumOutgoingAmounts(outgoingsData);
 
     const sumIncAmount = { ...incomeAmounts };
 
@@ -373,7 +375,8 @@ const FinancialTable = () => {
       }
     }
 
-    const sumOutAmount = { ...outgoingAmounts };
+    //TODO: fix this
+    /* const sumOutAmount = { ...outgoingAmounts };
 
     for (const currency of Object.keys(outgoingAmounts)) {
       if (currency === selectedCurrency) continue;
@@ -387,10 +390,11 @@ const FinancialTable = () => {
           sumOutAmount[currency] * exchangeRateObj.currencyExchangeRate;
         delete sumOutAmount[currency];
       }
-    }
+    } */
 
     setConvertedIncomeAmount(sumIncAmount[selectedCurrency]);
-    setConvertedOutgoingAmount(sumOutAmount[selectedCurrency]);
+    //TODO: fix this
+    /* setConvertedOutgoingAmount(sumOutAmount[selectedCurrency]); */
   };
 
   const overallTotalSummary = async (
@@ -510,29 +514,35 @@ const FinancialTable = () => {
     }
 
     //TODO: Fix the outgoing issues
-    /* if (outgoings) {
-      const filteredOutgoingsArray = outgoings.filter((outgoing) => {
-        const outgoingDate = new Date(outgoing.outgoingDate);
-        const outgoingYear = outgoingDate.getFullYear();
-        const outgoingMonthNumber = (outgoingDate.getMonth() + 1)
-          .toString()
-          .padStart(2, "0");
+    if (outgoingsGroup) {
+      const filteredOutgoingsGroupArray = outgoingsGroup.filter(
+        (outgoingGroup) => {
+          const outgoingGroupDate = new Date(outgoingGroup.outgoingGroupDate);
+          const outgoingGroupYear = outgoingGroupDate.getFullYear();
+          const outgoingGroupMonthNumber = (outgoingGroupDate.getMonth() + 1)
+            .toString()
+            .padStart(2, "0");
 
-        return (
-          outgoingYear === Number(selectedYear) &&
-          outgoingMonthNumber === selectedMonth
-        );
-      });
+          return (
+            outgoingGroupYear === Number(selectedYear) &&
+            outgoingGroupMonthNumber === selectedMonth
+          );
+        }
+      );
 
-      setFilteredOutgoings(filteredOutgoingsArray); 
-    }*/
+      setFilteredOutgoingsGroup(filteredOutgoingsGroupArray);
+    }
   }, [selectedMonth, selectedYear]);
 
   useEffect(() => {
-    if (filteredIncomes && filteredOutgoings) {
-      summaryController(selectedCurrency, filteredIncomes, filteredOutgoings);
+    if (filteredIncomes && filteredOutgoingsGroup) {
+      summaryController(
+        selectedCurrency,
+        filteredIncomes,
+        0 /* filteredOutgoings */
+      );
     }
-  }, [filteredIncomes, filteredOutgoings]);
+  }, [filteredIncomes, filteredOutgoingsGroup]);
 
   return (
     <div className="financial-table-content">
@@ -641,18 +651,22 @@ const FinancialTable = () => {
                     </div>
                     <div className="financial-table__list--outgoings">
                       {t("financialTableOutgoingListText")}:
-                      {filteredOutgoings && filteredOutgoings.length > 0 ? (
+                      {filteredOutgoingsGroup &&
+                      filteredOutgoingsGroup.length > 0 ? (
                         <>
-                          {filteredOutgoings.map((outgoingGroup, index) => {
-                            return (
-                              <OutgoingGroup
-                                outgoingGroupData={outgoingGroup}
-                                reRender={reRender}
-                                setReRender={setReRender}
-                                key={index}
-                              />
-                            );
-                          })}
+                          {filteredOutgoingsGroup.map(
+                            (outgoingGroup, index) => {
+                              console.log(outgoingGroup);
+                              return (
+                                <OutgoingGroup
+                                  outgoingGroupData={outgoingGroup}
+                                  reRender={reRender}
+                                  setReRender={setReRender}
+                                  key={index}
+                                />
+                              );
+                            }
+                          )}
                         </>
                       ) : (
                         <div className="no-result">

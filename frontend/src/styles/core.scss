@@ -97,6 +97,7 @@ h1 {
 
   &__main {
     display: flex;
+    max-width: 1440px;
     justify-content: space-between;
 
     > div:first-of-type {
@@ -114,7 +115,7 @@ h1 {
   }
 
   &__sidebar {
-    width: 30%;
+    width: 23%;
   }
 
   > .circles {

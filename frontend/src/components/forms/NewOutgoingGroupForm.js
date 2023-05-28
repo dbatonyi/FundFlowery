@@ -45,7 +45,7 @@ const NewOutgoingGroupForm = ({
           body: JSON.stringify({
             outgoingsGroupTitle,
             outgoingsGroupDate: selectedDate,
-            outgoingGroupId: financialTableUuid,
+            financialTableId: financialTableUuid,
           }),
         }
       );

@@ -17,6 +17,7 @@ const OutgoingGroup = ({
   const { t } = useTranslation("outgoingGroup");
   const { setStatusMessage } = useContext(AuthContext);
 
+  console.log(outgoingGroupData);
   const [selectedDate, setSelectedDate] = useState(
     outgoingGroupData.outgoingsGroupDate
   );
@@ -119,7 +120,7 @@ const OutgoingGroup = ({
     }
   };
 
-  const date = new Date(outgoingGroupData.outgoingDate);
+  const date = new Date(outgoingGroupData.outgoingsGroupDate);
   const isoString = date.toISOString();
   const formattedDate = isoString.slice(0, 10);
 

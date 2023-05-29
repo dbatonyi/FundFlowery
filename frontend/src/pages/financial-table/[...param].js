@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { AuthContext } from "../../layouts/Layout";
 import NewIncomeForm from "@/components/forms/NewIncomeForm";
+import OutgoingGroup from "@/components/OutgoingGroup";
 import NewOutgoingGroupForm from "@/components/forms/NewOutgoingGroupForm";
 import IncomeCard from "@/components/IncomeCard";
 import YearPicker from "@/components/YearPicker";
@@ -191,16 +192,20 @@ const FinancialTable = () => {
         setFilteredIncomes(filteredIncomesArray);
 
         const filteredOutgoingsGroupArray =
-          dataJson.data[0].outgoingsGroup.filter((outgoing) => {
-            const outgoingGroupDate = new Date(outgoing.outgoingGroupDate);
-            const outgoingGroupYear = outgoingGroupDate.getFullYear();
-            const outgoingGroupMonthNumber = (outgoingGroupDate.getMonth() + 1)
+          dataJson.data[0].outgoingsGroup.filter((outgoingGroup) => {
+            const outgoingsGroupDate = new Date(
+              outgoingGroup.outgoingsGroupDate
+            );
+            const outgoingsGroupYear = outgoingsGroupDate.getFullYear();
+            const outgoingsGroupMonthNumber = (
+              outgoingsGroupDate.getMonth() + 1
+            )
               .toString()
               .padStart(2, "0");
 
             return (
-              outgoingGroupYear === Number(selectedYear) &&
-              outgoingGroupMonthNumber === selectedMonth
+              outgoingsGroupYear === Number(selectedYear) &&
+              outgoingsGroupMonthNumber === selectedMonth
             );
           });
 
@@ -517,15 +522,15 @@ const FinancialTable = () => {
     if (outgoingsGroup) {
       const filteredOutgoingsGroupArray = outgoingsGroup.filter(
         (outgoingGroup) => {
-          const outgoingGroupDate = new Date(outgoingGroup.outgoingGroupDate);
-          const outgoingGroupYear = outgoingGroupDate.getFullYear();
-          const outgoingGroupMonthNumber = (outgoingGroupDate.getMonth() + 1)
+          const outgoingsGroupDate = new Date(outgoingGroup.outgoingsGroupDate);
+          const outgoingsGroupYear = outgoingsGroupDate.getFullYear();
+          const outgoingsGroupMonthNumber = (outgoingsGroupDate.getMonth() + 1)
             .toString()
             .padStart(2, "0");
 
           return (
-            outgoingGroupYear === Number(selectedYear) &&
-            outgoingGroupMonthNumber === selectedMonth
+            outgoingsGroupYear === Number(selectedYear) &&
+            outgoingsGroupMonthNumber === selectedMonth
           );
         }
       );

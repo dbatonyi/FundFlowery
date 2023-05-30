@@ -17,7 +17,7 @@ The app is built on a user-friendly interface that makes it easy for users to ma
 
 In the future, the Financial Table App will introduce a complex statistical addon. This addon will provide more advanced analysis of user financial data, giving users a more in-depth understanding of their finances.
 
-Later plans to create a mobile version where machine learning will scan the receipt based on an image and populate the relevant items.
+Later plans include creating a mobile version where machine learning will scan the receipt based on an image and populate the relevant items.
 
 ## Technology Stack
 
@@ -35,6 +35,10 @@ To install the app, follow these steps:
 2. Install dependencies with `npm install-ff`
 3. Start the server with `npm start-ff`
 4. Visit `http://localhost:3000` to use the app
+
+## Initial API Setup
+
+During the first run of the API, it sets itself up and creates an admin user based on the configuration. Additionally, a cron job is set up to run every day and delete unauthenticated accounts. This ensures the security and integrity of the system.
 
 ## License
 

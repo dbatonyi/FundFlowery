@@ -2,18 +2,16 @@
   max-height: 700px;
 
   .financial-table {
-    max-height: 475px;
-    overflow-y: auto;
+    display: flex;
+    flex-wrap: wrap;
 
     &--share {
       font-size: 16px;
       cursor: pointer;
     }
 
-    &__main {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
+    &__header {
+      width: 100%;
 
       &--title {
         width: 50%;
@@ -40,6 +38,15 @@
         padding: 20px 0;
         cursor: pointer;
       }
+    }
+
+    &__main {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      justify-content: space-between;
+      max-height: 300px;
+      overflow-y: auto;
     }
   }
 }

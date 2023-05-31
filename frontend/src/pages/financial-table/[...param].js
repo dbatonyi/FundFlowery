@@ -556,8 +556,8 @@ const FinancialTable = () => {
           {tableData ? (
             <>
               <div className="financial-table">
-                <div className="financial-table__main">
-                  <div className="financial-table__main--title">
+                <div className="financial-table__header">
+                  <div className="financial-table__header--title">
                     {!titleForm ? (
                       <>
                         {tableData.tableName}
@@ -602,7 +602,7 @@ const FinancialTable = () => {
                   >
                     {t("financialTableShareWithOthersText")}
                   </div>
-                  <div className="financial-table__main--date-pick">
+                  <div className="financial-table__header--date-pick">
                     <YearPicker
                       startYear={2000}
                       endYear={2030}
@@ -614,7 +614,7 @@ const FinancialTable = () => {
                       handleMonthChange={handleMonthChange}
                     />
                   </div>
-                  <div className="financial-table__main--controllers">
+                  <div className="financial-table__header--controllers">
                     <div
                       className="add-new-income-item"
                       onClick={() => {
@@ -632,6 +632,8 @@ const FinancialTable = () => {
                       {t("financialTableAddOutgoing")}
                     </div>
                   </div>
+                </div>
+                <div className="financial-table__main">
                   <div className="financial-table__main--list">
                     <div className="financial-table__list--incomes">
                       {t("financialTableIncomeListText")}:

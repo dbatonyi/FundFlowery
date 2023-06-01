@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import configData from "../../../config";
 import { AuthContext } from "@/layouts/Layout";
 
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import useTranslation from "next-translate/useTranslation";
 
@@ -19,10 +18,6 @@ const NewOutgoingForm = ({
   const [selectedCurrency, setSelectedCurrency] = useState("");
 
   const [isOnSaleChecked, setIsOnSaleChecked] = useState(false);
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
 
   const handleOptionChange = (event) => {
     setSelectedCurrency(event.target.value);
@@ -59,7 +54,6 @@ const NewOutgoingForm = ({
           },
           credentials: "include",
           body: JSON.stringify({
-            outgoingDate: selectedDate,
             outgoingTitle,
             outgoingAmount,
             outgoingCurrency: selectedCurrency,
@@ -111,14 +105,6 @@ const NewOutgoingForm = ({
       <form onSubmit={submitHandler}>
         <label htmlFor="outgoing-title">{t("newOutgoingFormTitleLabel")}</label>
         <input className="text" name="outgoing-title" type="text" required />
-        <div className="new-outgoing-popup--date">
-          <DatePicker
-            selected={selectedDate}
-            onChange={handleDateChange}
-            dateFormat="yyyy-MM-dd"
-            placeholderText={t("newOutgoingFormSelectDate")}
-          />
-        </div>
         <label htmlFor="outgoing-amount">
           {t("newOutgoingFormAmountLabel")}
         </label>

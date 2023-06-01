@@ -20,10 +20,6 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      outgoingDate: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
       outgoingTitle: {
         type: DataTypes.STRING,
         allowNull: false,

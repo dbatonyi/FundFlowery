@@ -276,7 +276,6 @@ exports.createOutgoingItem = async function (req, res) {
   }
 
   const {
-    outgoingDate,
     outgoingTitle,
     outgoingAmount,
     outgoingCurrency,
@@ -290,7 +289,6 @@ exports.createOutgoingItem = async function (req, res) {
 
   try {
     const outgoingItem = await Outgoings.create({
-      outgoingDate,
       outgoingTitle,
       outgoingAmount,
       outgoingCurrency,
@@ -421,7 +419,6 @@ exports.editOutgoingCard = async function (req, res) {
   const {
     outgoingId,
     outgoingTitle,
-    outgoingDate,
     outgoingAmount,
     outgoingCurrency,
     outgoingCategory,
@@ -435,7 +432,6 @@ exports.editOutgoingCard = async function (req, res) {
     const outgoingCard = await Outgoings.update(
       {
         outgoingTitle,
-        outgoingDate,
         outgoingAmount,
         outgoingCurrency,
         outgoingCategory,

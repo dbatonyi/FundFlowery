@@ -132,7 +132,7 @@ const OutgoingGroup = ({
             <div className="financial-table__outgoing-group--container">
               <div className="financial-table__outgoing-group--details">
                 <div className="financial-table__outgoing-group--title">
-                  {outgoingGroupData.outgoingTitle}
+                  {outgoingGroupData.outgoingsGroupTitle}
                 </div>
                 <div className="financial-table__outgoing-group--date">
                   {formattedDate}

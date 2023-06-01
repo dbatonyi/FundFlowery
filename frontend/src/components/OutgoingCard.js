@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import configData from "../../config";
 import { AuthContext } from "@/layouts/Layout";
 
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import useTranslation from "next-translate/useTranslation";
 
@@ -11,9 +10,6 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
   const { t } = useTranslation("outgoingCard");
   const { setStatusMessage } = useContext(AuthContext);
 
-  const [selectedDate, setSelectedDate] = useState(
-    new Date(outgoingData.outgoingDate)
-  );
   const [selectedCurrency, setSelectedCurrency] = useState(
     outgoingData.outgoingCurrency
   );
@@ -25,10 +21,6 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
   const [isOnSaleChecked, setIsOnSaleChecked] = useState(
     outgoingData.outgoingOnSale
   );
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
 
   const handleOptionChange = (event) => {
     setSelectedCurrency(event.target.value);
@@ -65,7 +57,6 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
             outgoingTitle: outgoingTitle
               ? outgoingTitle
               : outgoingData.outgoingTitle,
-            outgoingDate: selectedDate,
             outgoingAmount: outgoingAmount
               ? outgoingAmount
               : outgoingData.outgoingAmount,
@@ -166,9 +157,6 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
                   {outgoingData.outgoingCurrency}
                 </div>
-                <div className="financial-table__outgoing-card--date">
-                  {formattedDate}
-                </div>
               </div>
               <div
                 className={`financial-table__income-card--dropdown${
@@ -233,14 +221,6 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
                     placeholder={outgoingData.outgoingTitle}
                     name="outgoing-title"
                     type="text"
-                  />
-                </div>
-                <div className="financial-table__outgoing-card--date">
-                  <DatePicker
-                    selected={selectedDate}
-                    onChange={handleDateChange}
-                    dateFormat="yyyy-MM-dd"
-                    placeholderText="Select a date"
                   />
                 </div>
                 <div className="financial-table__outgoing-card--amount">

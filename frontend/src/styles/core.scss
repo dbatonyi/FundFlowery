@@ -67,6 +67,7 @@ h1 {
 
   &__header {
     display: flex;
+    justify-content: center;
     width: 100%;
     margin: 0;
 
@@ -98,13 +99,14 @@ h1 {
   &__main {
     display: flex;
     max-width: 1440px;
+    width: 100%;
     justify-content: space-between;
+    margin: 0 auto;
 
     > div:first-of-type {
       width: fit-content;
       max-width: 1440px;
       width: 75%;
-      margin: 20px;
       background: rgba(255, 255, 255, 0.8);
       padding: 50px;
       height: fit-content;
@@ -116,6 +118,7 @@ h1 {
 
   &__sidebar {
     width: 21%;
+    margin-right: 20px;
   }
 
   > .circles {

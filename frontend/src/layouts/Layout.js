@@ -134,19 +134,21 @@ const Layout = (props) => {
             <Header auth={auth} logout={logout} />
             <main className="fund-flowery__main">
               {props.children}
-              <div className="fund-flowery__sidebar">
-                {auth && userInfo?.uuid ? (
-                  <Notifications
-                    userInfo={userInfo}
-                    setStatusMessage={setStatusMessage}
-                  />
-                ) : null}
-                {auth &&
-                currentPath.includes("financial-table") &&
-                currencyRates ? (
-                  <CurrencyRatesTable currencyRates={currencyRates} />
-                ) : null}
-              </div>
+              {auth ? (
+                <div className="fund-flowery__sidebar">
+                  {auth && userInfo?.uuid ? (
+                    <Notifications
+                      userInfo={userInfo}
+                      setStatusMessage={setStatusMessage}
+                    />
+                  ) : null}
+                  {auth &&
+                  currentPath.includes("financial-table") &&
+                  currencyRates ? (
+                    <CurrencyRatesTable currencyRates={currencyRates} />
+                  ) : null}
+                </div>
+              ) : null}
               {statusMessage ? (
                 <div className="fund-flowery-system-message">
                   <div className="fund-flowery-system-message--message">

@@ -72,16 +72,16 @@ const NewOutgoingGroupForm = ({
   };
 
   return (
-    <div className="new-outgoing-popup">
+    <div className="new-outgoing-group-popup">
       <div
-        className="new-outgoing-popup--close"
+        className="new-outgoing-group-popup--close"
         onClick={() => {
           setOpenedForm(null);
         }}
       >
         X
       </div>
-      <div className="new-outgoing-popup--title">
+      <div className="new-outgoing-group-popup--title">
         {t("newOutgoingGroupFormTitle")}
       </div>
       <form onSubmit={submitHandler}>
@@ -94,7 +94,7 @@ const NewOutgoingGroupForm = ({
           type="text"
           required
         />
-        <div className="new-outgoing-popup--date">
+        <div className="new-outgoing-group-popup--date">
           <DatePicker
             selected={selectedDate}
             onChange={handleDateChange}

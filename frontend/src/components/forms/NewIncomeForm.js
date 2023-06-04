@@ -95,34 +95,46 @@ const NewIncomeForm = ({ tableUuid, setOpenedForm, reRender, setReRender }) => {
         {t("newIncomeFormTitleText")}
       </div>
       <form onSubmit={submitHandler}>
-        <label htmlFor="income-title">{t("newIncomeFormTitleLabel")}</label>
-        <input className="text" name="income-title" type="text" required />
-        <div className="new-income-popup--date">
+        <fieldset>
+          <label htmlFor="income-title">{t("newIncomeFormTitleLabel")}</label>
+          <input className="text" name="income-title" type="text" required />
+        </fieldset>
+        <fieldset className="new-income-popup--date">
           <DatePicker
             selected={selectedDate}
             onChange={handleDateChange}
             dateFormat="yyyy-MM-dd"
             placeholderText={t("newIncomeFormSelectDate")}
           />
-        </div>
-        <label htmlFor="income-amount">{t("newIncomeFormAmountLabel")}</label>
-        <input className="text" name="income-amount" type="number" required />
-        <select value={selectedCurrency} onChange={handleOptionChange}>
-          <option value="">{t("newIncomeFormSelectOptionTitle")}</option>
-          <option value="HUF">{t("newIncomeFormSelectHUF")}</option>
-          <option value="EUR">{t("newIncomeFormSelectEUR")}</option>
-          <option value="USD">{t("newIncomeFormSelectUSD")}</option>
-        </select>
-        <label htmlFor="income-category">
-          {t("newIncomeFormCategoryLabel")}
-        </label>
-        <input className="text" name="income-category" type="text" required />
-        <label htmlFor="income-origin">{t("newIncomeFormOriginLabel")}</label>
-        <input className="text" name="income-origin" type="text" required />
-        <label htmlFor="description">
-          {t("newIncomeFormDescriptionLabel")}
-        </label>
-        <input className="text" name="description" type="text" />
+        </fieldset>
+        <fieldset>
+          <label htmlFor="income-amount">{t("newIncomeFormAmountLabel")}</label>
+          <input className="text" name="income-amount" type="number" required />
+        </fieldset>
+        <fieldset>
+          <select value={selectedCurrency} onChange={handleOptionChange}>
+            <option value="">{t("newIncomeFormSelectOptionTitle")}</option>
+            <option value="HUF">{t("newIncomeFormSelectHUF")}</option>
+            <option value="EUR">{t("newIncomeFormSelectEUR")}</option>
+            <option value="USD">{t("newIncomeFormSelectUSD")}</option>
+          </select>
+        </fieldset>
+        <fieldset>
+          <label htmlFor="income-category">
+            {t("newIncomeFormCategoryLabel")}
+          </label>
+          <input className="text" name="income-category" type="text" required />
+        </fieldset>
+        <fieldset>
+          <label htmlFor="income-origin">{t("newIncomeFormOriginLabel")}</label>
+          <input className="text" name="income-origin" type="text" required />
+        </fieldset>
+        <fieldset>
+          <label htmlFor="description">
+            {t("newIncomeFormDescriptionLabel")}
+          </label>
+          <input className="text" name="description" type="text" />
+        </fieldset>
         <div className="submit-btn">
           <button className="btn" type="submit">
             {t("newIncomeFormSubmit")}

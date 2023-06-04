@@ -103,42 +103,64 @@ const NewOutgoingForm = ({
         {t("newOutgoingFormTitleText")}
       </div>
       <form onSubmit={submitHandler}>
-        <label htmlFor="outgoing-title">{t("newOutgoingFormTitleLabel")}</label>
-        <input className="text" name="outgoing-title" type="text" required />
-        <label htmlFor="outgoing-amount">
-          {t("newOutgoingFormAmountLabel")}
-        </label>
-        <input className="text" name="outgoing-amount" type="number" required />
-        <select value={selectedCurrency} onChange={handleOptionChange}>
-          <option value="">{t("newOutgoingFormSelectOptionTitle")}</option>
-          <option value="HUF">{t("newOutgoingFormSelectHUF")}</option>
-          <option value="EUR">{t("newOutgoingFormSelectEUR")}</option>
-          <option value="USD">{t("newOutgoingFormSelectUSD")}</option>
-        </select>
-        <label htmlFor="outgoing-category">
-          {t("newOutgoingFormCategoryLabel")}
-        </label>
-        <input className="text" name="outgoing-category" type="text" required />
-        <label htmlFor="outgoing-origin">
-          {t("newOutgoingFormOriginLabel")}
-        </label>
-        <input className="text" name="outgoing-origin" type="text" required />
-        <label htmlFor="outgoing-location">
-          {t("newOutgoingFormLocationLabel")}
-        </label>
-        <input className="text" name="outgoing-location" type="text" />
-        <label>
+        <fieldset>
+          <label htmlFor="outgoing-title">
+            {t("newOutgoingFormTitleLabel")}
+          </label>
+          <input className="text" name="outgoing-title" type="text" required />
+        </fieldset>
+        <fieldset>
+          <label htmlFor="outgoing-amount">
+            {t("newOutgoingFormAmountLabel")}
+          </label>
           <input
-            type="checkbox"
-            checked={isOnSaleChecked}
-            onChange={handleOnSaleCheckboxChange}
+            className="text"
+            name="outgoing-amount"
+            type="number"
+            required
           />
-          {t("newOutgoingFormOnSale")}
-        </label>
-        <label htmlFor="description">
-          {t("newOutgoingFormDescriptionLabel")}
-        </label>
-        <input className="text" name="description" type="text" />
+        </fieldset>
+        <fieldset>
+          <select value={selectedCurrency} onChange={handleOptionChange}>
+            <option value="">{t("newOutgoingFormSelectOptionTitle")}</option>
+            <option value="HUF">{t("newOutgoingFormSelectHUF")}</option>
+            <option value="EUR">{t("newOutgoingFormSelectEUR")}</option>
+            <option value="USD">{t("newOutgoingFormSelectUSD")}</option>
+          </select>
+        </fieldset>
+        <fieldset>
+          <label htmlFor="outgoing-category">
+            {t("newOutgoingFormCategoryLabel")}
+          </label>
+          <input
+            className="text"
+            name="outgoing-category"
+            type="text"
+            required
+          />
+        </fieldset>
+        <fieldset>
+          <label htmlFor="outgoing-origin">
+            {t("newOutgoingFormOriginLabel")}
+          </label>
+          <input className="text" name="outgoing-origin" type="text" required />
+        </fieldset>
+        <fieldset>
+          <label>
+            <input
+              type="checkbox"
+              checked={isOnSaleChecked}
+              onChange={handleOnSaleCheckboxChange}
+            />
+            {t("newOutgoingFormOnSale")}
+          </label>
+        </fieldset>
+        <fieldset>
+          <label htmlFor="description">
+            {t("newOutgoingFormDescriptionLabel")}
+          </label>
+          <input className="text" name="description" type="text" />
+        </fieldset>
         <div className="submit-btn">
           <button className="btn" type="submit">
             {t("newOutgoingFormSubmit")}

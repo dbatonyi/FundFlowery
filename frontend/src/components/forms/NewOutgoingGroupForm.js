@@ -85,23 +85,25 @@ const NewOutgoingGroupForm = ({
         {t("newOutgoingGroupFormTitle")}
       </div>
       <form onSubmit={submitHandler}>
-        <label htmlFor="outgoing-group-title">
-          {t("newOutgoingGroupFormNameLabel")}
-        </label>
-        <input
-          className="text"
-          name="outgoing-group-title"
-          type="text"
-          required
-        />
-        <div className="new-outgoing-group-popup--date">
+        <fieldset>
+          <label htmlFor="outgoing-group-title">
+            {t("newOutgoingGroupFormNameLabel")}
+          </label>
+          <input
+            className="text"
+            name="outgoing-group-title"
+            type="text"
+            required
+          />
+        </fieldset>
+        <fieldset className="new-outgoing-group-popup--date">
           <DatePicker
             selected={selectedDate}
             onChange={handleDateChange}
             dateFormat="yyyy-MM-dd"
             placeholderText="Outgoing group date"
           />
-        </div>
+        </fieldset>
         <div className="submit-btn">
           <button className="btn" type="submit">
             {t("newOutgoingGroupFormSubmit")}

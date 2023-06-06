@@ -72,6 +72,46 @@ Make sure to replace `'your_username'`, `'your_password'`, and `'your_database'`
 
 During the first run of the API, it sets itself up and creates an admin user based on the configuration. Additionally, a cron job is set up to run every day and delete unauthenticated accounts. This ensures the security and integrity of the system.
 
+## Frontend Configuration
+
+To configure the frontend of the Financial Table App, follow these steps:
+
+1. After cloning the repository and setting up the backend API, navigate to the `frontend` folder.
+2. Inside the `frontend` folder, create a file named `config.js` based on the provided `config-example.js` file. You can use the following command to create the file:
+
+```bash
+cp config-example.js config.js
+```
+
+3. Open the `config.js` file in a text editor.
+4. Locate the following lines in the `config.js` file:
+
+```javascript
+// frontend/config.js
+
+const config = {
+  serverUrl: "YOUR_SERVER_URL",
+  apiToken: "YOUR_BACKEND_API_TOKEN",
+};
+
+export default config;
+```
+
+5. Replace `"YOUR_SERVER_URL"` with the URL of your backend server. For example, if your backend server is running at `http://localhost:8000`, the line should be:
+
+```javascript
+serverUrl: "http://localhost:8000",
+```
+
+6. Replace `"YOUR_BACKEND_API_TOKEN"` with the API token generated for your backend API. This token is used for authentication and authorization purposes.
+7. Save the `config.js` file.
+
+By completing these steps, you have successfully configured the frontend of the Financial Table App. The frontend will now communicate with the backend server using the provided server URL and API token.
+
+Remember to build and run the frontend application according to the installation instructions in the main README file.
+
+If you need further assistance, refer to the documentation or contact the app's author.
+
 ## License
 
 The Financial Table App is licensed under the MIT license.

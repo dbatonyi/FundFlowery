@@ -1,5 +1,7 @@
 {
   "newOutgoingGroupFormTitle": "Új kiadási csoport",
   "newOutgoingGroupFormNameLabel": "Kiadási csoport neve",
+  "newOutgoingGroupFormDateLabel": "Kiadási csoport dátuma",
+  "newOutgoingGroupFormDate": "Válassz egy dátumot",
   "newOutgoingGroupFormSubmit": "Beküld"
 }

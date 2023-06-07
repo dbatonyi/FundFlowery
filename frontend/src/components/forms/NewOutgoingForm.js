@@ -121,6 +121,9 @@ const NewOutgoingForm = ({
           />
         </fieldset>
         <fieldset>
+          <label htmlFor="outgoing-select-currency">
+            {t("newOutgoingFormCurrencyLabel")}
+          </label>
           <select value={selectedCurrency} onChange={handleOptionChange}>
             <option value="">{t("newOutgoingFormSelectOptionTitle")}</option>
             <option value="HUF">{t("newOutgoingFormSelectHUF")}</option>
@@ -145,7 +148,7 @@ const NewOutgoingForm = ({
           </label>
           <input className="text" name="outgoing-origin" type="text" required />
         </fieldset>
-        <fieldset>
+        <fieldset className="custom-checkbox">
           <label>
             <input
               type="checkbox"

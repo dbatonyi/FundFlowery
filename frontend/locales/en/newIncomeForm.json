@@ -1,8 +1,10 @@
 {
   "newIncomeFormTitleText": "Add new income item",
   "newIncomeFormTitleLabel": "Income title",
+  "newIncomeFormDateLabel": "Income date",
   "newIncomeFormSelectDate": "Select a date",
   "newIncomeFormAmountLabel": "Income amount",
+  "newIncomeFormCurrencyLabel": "Income currency",
   "newIncomeFormSelectOptionTitle": "Select an option",
   "newIncomeFormSelectHUF": "HUF",
   "newIncomeFormSelectEUR": "EUR",

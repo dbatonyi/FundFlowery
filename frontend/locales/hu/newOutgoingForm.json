@@ -3,6 +3,7 @@
   "newOutgoingFormTitleLabel": "Kiadás címe",
   "newOutgoingFormSelectDate": "Válassz időpontot",
   "newOutgoingFormAmountLabel": "Kiadás összege",
+  "newOutgoingFormCurrencyLabel": "Valuta",
   "newOutgoingFormSelectOptionTitle": "Válassz egy opciót",
   "newOutgoingFormSelectHUF": "HUF",
   "newOutgoingFormSelectEUR": "EUR",

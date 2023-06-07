@@ -1,7 +1,4 @@
-.popup-container,
-.new-income-popup,
-.new-outgoing-group-popup,
-.new-outgoing-popup {
+.popup-container {
   position: fixed;
   background: white;
   width: 45%;
@@ -52,6 +49,187 @@
         font-size: 16px;
         height: 40px;
       }
+
+      button {
+        height: 40px;
+        border: none;
+        padding: 10px 15px;
+        font-size: 18px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: rgb(161, 208, 247);
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.new-income-popup,
+.new-outgoing-popup {
+  position: fixed;
+  background: white;
+  width: 74%;
+  left: 20px;
+  padding: 60px;
+  border-radius: 13px;
+  height: 650px;
+  display: flex;
+  flex-wrap: wrap;
+  top: 17%;
+  border: 2px solid rgb(161, 208, 247);
+
+  &--close {
+    position: absolute;
+    right: 60px;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  &--title {
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+
+    fieldset {
+      border: none;
+      padding: 0;
+      margin: 20px 0;
+      display: flex;
+      flex-wrap: wrap;
+      width: 45%;
+      flex-direction: column;
+      justify-content: flex-end;
+
+      &.custom-checkbox {
+        label {
+          display: flex;
+          padding-bottom: 0;
+          align-items: center;
+
+          input {
+            width: 20px;
+            height: 20px;
+            margin-right: 20px;
+          }
+        }
+      }
+
+      label {
+        width: 100%;
+        font-size: 16px;
+        font-weight: 600;
+        padding-bottom: 10px;
+      }
+
+      input {
+        padding: 5px 10px;
+        font-size: 16px;
+        height: 40px;
+        width: 100%;
+      }
+
+      select {
+        padding: 5px;
+        height: 40px;
+        width: 100%;
+      }
+    }
+
+    .submit-btn {
+      margin-top: auto;
+
+      button {
+        height: 40px;
+        border: none;
+        padding: 10px 15px;
+        font-size: 18px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: rgb(161, 208, 247);
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.new-outgoing-group-popup {
+  position: fixed;
+  background: white;
+  width: 74%;
+  left: 20px;
+  padding: 60px;
+  border-radius: 13px;
+  height: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  top: 17%;
+  border: 2px solid rgb(161, 208, 247);
+
+  &--close {
+    position: absolute;
+    right: 60px;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  &--title {
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+
+    fieldset {
+      border: none;
+      padding: 0;
+      margin: 20px 0;
+      display: flex;
+      flex-wrap: wrap;
+      width: 45%;
+      flex-direction: column;
+      justify-content: flex-end;
+
+      label {
+        width: 100%;
+        font-size: 16px;
+        font-weight: 600;
+        padding-bottom: 10px;
+      }
+
+      input {
+        padding: 5px 10px;
+        font-size: 16px;
+        height: 40px;
+        width: 100%;
+      }
+
+      select {
+        padding: 5px;
+        height: 40px;
+        width: 100%;
+      }
+    }
+
+    .submit-btn {
+      margin-top: auto;
 
       button {
         height: 40px;

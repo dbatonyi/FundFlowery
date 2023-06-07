@@ -97,11 +97,14 @@ const NewOutgoingGroupForm = ({
           />
         </fieldset>
         <fieldset className="new-outgoing-group-popup--date">
+          <label htmlFor="outgoing-group-title">
+            {t("newOutgoingGroupFormDateLabel")}
+          </label>
           <DatePicker
             selected={selectedDate}
             onChange={handleDateChange}
             dateFormat="yyyy-MM-dd"
-            placeholderText="Outgoing group date"
+            placeholderText={t("newOutgoingGroupFormDate")}
           />
         </fieldset>
         <div className="submit-btn">

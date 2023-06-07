@@ -3,6 +3,7 @@
   "newOutgoingFormTitleLabel": "Outgoing title",
   "newOutgoingFormSelectDate": "Select a date",
   "newOutgoingFormAmountLabel": "Outgoing amount",
+  "newOutgoingFormCurrencyLabel": "Currency",
   "newOutgoingFormSelectOptionTitle": "Select an option",
   "newOutgoingFormSelectHUF": "HUF",
   "newOutgoingFormSelectEUR": "EUR",

@@ -669,6 +669,7 @@ const FinancialTable = () => {
                                   outgoingGroupData={outgoingGroup}
                                   reRender={reRender}
                                   setReRender={setReRender}
+                                  setOpenedForm={setOpenedForm}
                                   key={index}
                                 />
                               );

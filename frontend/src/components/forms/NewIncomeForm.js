@@ -100,6 +100,7 @@ const NewIncomeForm = ({ tableUuid, setOpenedForm, reRender, setReRender }) => {
           <input className="text" name="income-title" type="text" required />
         </fieldset>
         <fieldset className="new-income-popup--date">
+          <label htmlFor="income-date">{t("newIncomeFormDateLabel")}</label>
           <DatePicker
             selected={selectedDate}
             onChange={handleDateChange}
@@ -112,6 +113,9 @@ const NewIncomeForm = ({ tableUuid, setOpenedForm, reRender, setReRender }) => {
           <input className="text" name="income-amount" type="number" required />
         </fieldset>
         <fieldset>
+          <label htmlFor="income-select-currency">
+            {t("newIncomeFormCurrencyLabel")}
+          </label>
           <select value={selectedCurrency} onChange={handleOptionChange}>
             <option value="">{t("newIncomeFormSelectOptionTitle")}</option>
             <option value="HUF">{t("newIncomeFormSelectHUF")}</option>

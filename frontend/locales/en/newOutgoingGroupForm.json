@@ -1,5 +1,7 @@
 {
   "newOutgoingGroupFormTitle": "New outgoing group",
   "newOutgoingGroupFormNameLabel": "Outgoing group name",
+  "newOutgoingGroupFormDateLabel": "Outgoing group date",
+  "newOutgoingGroupFormDate": "Select a date",
   "newOutgoingGroupFormSubmit": "Submit"
 }

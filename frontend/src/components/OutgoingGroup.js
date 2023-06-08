@@ -249,7 +249,7 @@ const OutgoingGroup = ({
           <div className="income-group__popup">
             <NewOutgoingForm
               outgoingGroupUuid={outgoingGroupData.uuid}
-              setOpenedForm={setOpenedForm}
+              setShowAddPopup={setShowAddPopup}
               reRender={reRender}
               setReRender={setReRender}
             />

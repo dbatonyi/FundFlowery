@@ -7,7 +7,7 @@ import useTranslation from "next-translate/useTranslation";
 
 const NewOutgoingForm = ({
   outgoingGroupUuid,
-  setOpenedForm,
+  setShowAddPopup,
   reRender,
   setReRender,
 }) => {
@@ -70,7 +70,7 @@ const NewOutgoingForm = ({
       if (response.status === 200) {
         setStatusMessage(t("newOutgoingFormSubmittedResponse"));
         setReRender(!reRender);
-        setOpenedForm(null);
+        setShowAddPopup(null);
       }
     } catch (error) {
       const log = await fetch(`${configData.serverUrl}/api/log`, {
@@ -94,7 +94,7 @@ const NewOutgoingForm = ({
       <div
         className="new-outgoing-popup--close"
         onClick={() => {
-          setOpenedForm(null);
+          setShowAddPopup(null);
         }}
       >
         X

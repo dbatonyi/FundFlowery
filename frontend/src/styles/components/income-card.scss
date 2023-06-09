@@ -1,0 +1,33 @@
+.financial-table__income-card {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background: white;
+  border: 13px;
+  margin: 10px;
+  min-width: 300px;
+
+  &--container {
+  }
+
+  &--title {
+    font-size: 22px;
+    text-transform: uppercase;
+  }
+
+  &--dropdown {
+    visibility: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-in-out;
+
+    &.opened {
+      visibility: visible;
+      max-height: 100px;
+    }
+  }
+
+  &--controllers {
+    border-left: 2px solid rgb(161, 208, 247);
+    padding-left: 10px;
+  }
+}

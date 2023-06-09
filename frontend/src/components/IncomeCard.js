@@ -159,17 +159,15 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
                 }`}
               >
                 <div className="financial-table__income-card--category">
-                  {incomeData.incomeCategory}
+                  {t("incomeCardCategoryTitle")}: {incomeData.incomeCategory}
                 </div>
                 <div className="financial-table__income-card--origin">
-                  {incomeData.incomeOrigin}
+                  {t("incomeCardOriginTitle")}: {incomeData.incomeOrigin}
                 </div>
                 <div className="financial-table__income-card--description">
-                  {incomeData.description}
+                  {t("incomeCardDescTitle")}: {incomeData.description}
                 </div>
               </div>
-            </div>
-            <div className="financial-table__income-card--controllers">
               <div
                 className="financial-table__income-card--show-more"
                 onClick={() => {
@@ -177,9 +175,11 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
                 }}
               >
                 {showMore
-                  ? t("incomeCardShowMoreText")
-                  : t("incomeCardShowLessText")}
+                  ? t("incomeCardShowLessText")
+                  : t("incomeCardShowMoreText")}
               </div>
+            </div>
+            <div className="financial-table__income-card--controllers">
               <div
                 className="financial-table__income-card--edit"
                 onClick={() => {

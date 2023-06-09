@@ -1,4 +1,7 @@
 {
+  "incomeCardCategoryTitle": "Kategória",
+  "incomeCardOriginTitle": "Származás",
+  "incomeCardDescTitle": "Leírás",
   "incomeCardEditTitle": "Edit",
   "incomeCardDeleteTitle": "Delete",
   "incomeCardEditTitleLabel": "Title",

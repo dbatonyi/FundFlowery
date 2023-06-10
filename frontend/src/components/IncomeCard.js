@@ -159,13 +159,16 @@ const IncomeCard = ({ incomeData, reRender, setReRender }) => {
                 }`}
               >
                 <div className="financial-table__income-card--category">
-                  {t("incomeCardCategoryTitle")}: {incomeData.incomeCategory}
+                  <label>{t("incomeCardCategoryTitle")}:</label>{" "}
+                  {incomeData.incomeCategory}
                 </div>
                 <div className="financial-table__income-card--origin">
-                  {t("incomeCardOriginTitle")}: {incomeData.incomeOrigin}
+                  <label>{t("incomeCardOriginTitle")}:</label>{" "}
+                  {incomeData.incomeOrigin}
                 </div>
                 <div className="financial-table__income-card--description">
-                  {t("incomeCardDescTitle")}: {incomeData.description}
+                  <label>{t("incomeCardDescTitle")}:</label>{" "}
+                  {incomeData.description}
                 </div>
               </div>
               <div

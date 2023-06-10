@@ -5,10 +5,7 @@
   background: white;
   border: 13px;
   margin: 10px;
-  min-width: 300px;
-
-  &--container {
-  }
+  min-width: 350px;
 
   &--title {
     font-size: 22px;
@@ -23,11 +20,33 @@
     &.opened {
       visibility: visible;
       max-height: 100px;
+      padding: 10px 0;
     }
+
+    label {
+      font-weight: 600;
+    }
+  }
+
+  &--show-more {
+    text-decoration: underline;
+    cursor: pointer;
   }
 
   &--controllers {
     border-left: 2px solid rgb(161, 208, 247);
     padding-left: 10px;
+  }
+
+  &--edit {
+    color: #1c694c;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  &--delete {
+    color: #ea002c;
+    font-weight: bold;
+    cursor: pointer;
   }
 }

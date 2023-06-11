@@ -49,6 +49,16 @@
       justify-content: space-between;
       max-height: 300px;
       overflow-y: auto;
+
+      &--list {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+
+        > div {
+          width: 45%;
+        }
+      }
     }
   }
 }

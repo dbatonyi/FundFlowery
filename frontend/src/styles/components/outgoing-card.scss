@@ -1,0 +1,52 @@
+.financial-table__outgoing-group {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background: white;
+  border: 13px;
+  margin: 10px;
+  width: 100%;
+
+  &--title {
+    font-size: 22px;
+    text-transform: uppercase;
+  }
+
+  &--dropdown {
+    visibility: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-in-out;
+
+    &.opened {
+      visibility: visible;
+      max-height: 100px;
+      padding: 10px 0;
+    }
+
+    label {
+      font-weight: 600;
+    }
+  }
+
+  &--show-more {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  &--controllers {
+    border-left: 2px solid rgb(161, 208, 247);
+    padding-left: 10px;
+  }
+
+  &--edit {
+    color: #1c694c;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  &--delete {
+    color: #ea002c;
+    font-weight: bold;
+    cursor: pointer;
+  }
+}

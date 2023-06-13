@@ -143,8 +143,6 @@ const OutgoingGroup = ({
                   showMore ? " opened" : ""
                 }`}
               ></div>
-            </div>
-            <div className="financial-table__outgoing-group--controllers">
               <div
                 className="financial-table__outgoing-group--show-more"
                 onClick={() => {
@@ -155,6 +153,8 @@ const OutgoingGroup = ({
                   ? t("outgoingGroupShowMore")
                   : t("outgoingGroupShowLess")}
               </div>
+            </div>
+            <div className="financial-table__outgoing-group--controllers">
               <div
                 className="financial-table__outgoing-group--edit"
                 onClick={() => {

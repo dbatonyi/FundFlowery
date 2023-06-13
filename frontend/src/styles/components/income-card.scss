@@ -4,12 +4,18 @@
   padding: 20px;
   background: white;
   border: 13px;
-  margin: 10px;
+  margin-bottom: 10px;
+  min-height: 175px;
   width: 100%;
 
   &--title {
     font-size: 22px;
     text-transform: uppercase;
+  }
+
+  &--container {
+    width: 65%;
+    padding: 10px;
   }
 
   &--dropdown {
@@ -34,6 +40,7 @@
   }
 
   &--controllers {
+    width: 35%;
     border-left: 2px solid rgb(161, 208, 247);
     padding-left: 10px;
   }

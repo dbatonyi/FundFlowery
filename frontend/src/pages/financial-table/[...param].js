@@ -634,9 +634,16 @@ const FinancialTable = () => {
                   </div>
                 </div>
                 <div className="financial-table__main">
+                  <div className="financial-table__main--titles">
+                    <div className="incomes-title">
+                      {t("financialTableIncomeListText")}:
+                    </div>
+                    <div className="outgoings-title">
+                      {t("financialTableOutgoingListText")}:
+                    </div>
+                  </div>
                   <div className="financial-table__main--list">
                     <div className="financial-table__list--incomes">
-                      {t("financialTableIncomeListText")}:
                       {filteredIncomes && filteredIncomes.length > 0 ? (
                         <>
                           {filteredIncomes.map((incomeItem, index) => {
@@ -657,7 +664,6 @@ const FinancialTable = () => {
                       )}
                     </div>
                     <div className="financial-table__list--outgoings">
-                      {t("financialTableOutgoingListText")}:
                       {filteredOutgoingsGroup &&
                       filteredOutgoingsGroup.length > 0 ? (
                         <>

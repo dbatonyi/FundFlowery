@@ -40,10 +40,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      outgoingLocation: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
       outgoingOnSale: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,

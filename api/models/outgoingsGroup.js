@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      outgoingsGroupSummary: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       outgoingsGroupDate: {
         type: DataTypes.DATE,
         allowNull: false,

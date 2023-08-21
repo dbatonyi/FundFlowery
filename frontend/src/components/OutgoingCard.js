@@ -5,7 +5,6 @@ import { AuthContext } from "@/layouts/Layout";
 import "react-datepicker/dist/react-datepicker.css";
 import useTranslation from "next-translate/useTranslation";
 
-//TODO: Not working due to reorganisation of expenditure.
 const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
   const { t } = useTranslation("outgoingCard");
   const { setStatusMessage } = useContext(AuthContext);
@@ -136,10 +135,6 @@ const OutgoingCard = ({ outgoingData, reRender, setReRender }) => {
       setStatusMessage(data.message);
     }
   };
-
-  const date = new Date(outgoingData.outgoingDate);
-  const isoString = date.toISOString();
-  const formattedDate = isoString.slice(0, 10);
 
   return (
     <>

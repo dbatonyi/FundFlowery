@@ -14,7 +14,6 @@ const NewOutgoingForm = ({
   const { t } = useTranslation("newOutgoingForm");
   const { setStatusMessage } = useContext(AuthContext);
 
-  const [selectedDate, setSelectedDate] = useState(null);
   const [selectedCurrency, setSelectedCurrency] = useState("");
 
   const [isOnSaleChecked, setIsOnSaleChecked] = useState(false);
@@ -36,12 +35,7 @@ const NewOutgoingForm = ({
     const outgoingAmount = formData.get("outgoing-amount");
     const outgoingCategory = formData.get("outgoing-category");
     const outgoingOrigin = formData.get("outgoing-origin");
-    const outgoingLocation = formData.get("outgoing-location");
     const description = formData.get("description");
-
-    if (!selectedDate) {
-      return;
-    }
 
     try {
       const response = await fetch(
@@ -59,7 +53,6 @@ const NewOutgoingForm = ({
             outgoingCurrency: selectedCurrency,
             outgoingCategory: outgoingCategory.toLowerCase(),
             outgoingOrigin: outgoingOrigin.toLowerCase(),
-            outgoingLocation: outgoingLocation.toLowerCase(),
             outgoingOnSale: isOnSaleChecked,
             description,
             outgoingGroupUuid,

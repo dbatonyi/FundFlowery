@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import useTranslation from "next-translate/useTranslation";
 
 import NewOutgoingForm from "./forms/NewOutgoingForm";
+import OutgoingCard from "./OutgoingCard";
 
 const OutgoingGroup = ({
   outgoingGroupData,
@@ -150,9 +151,23 @@ const OutgoingGroup = ({
                 }}
               >
                 {showMore
-                  ? t("outgoingGroupShowMore")
-                  : t("outgoingGroupShowLess")}
+                  ? t("outgoingGroupShowLess")
+                  : t("outgoingGroupShowMore")}
               </div>
+              {showMore && (
+                <div className="financial-table__outgoing-group--cards">
+                  {outgoingGroupData?.outgoings.map((item, index) => {
+                    return (
+                      <OutgoingCard
+                        outgoingData={item}
+                        reRender={reRender}
+                        setReRender={setReRender}
+                        key={index}
+                      />
+                    );
+                  })}
+                </div>
+              )}
             </div>
             <div className="financial-table__outgoing-group--controllers">
               <div

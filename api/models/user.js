@@ -60,6 +60,10 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "Password must not be empty" },
         },
       },
+      role: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       status: {
         type: DataTypes.ENUM("active", "inactive"),
         defaultValue: "inactive",

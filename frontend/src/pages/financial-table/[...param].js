@@ -484,6 +484,7 @@ const FinancialTable = () => {
     );
   };
 
+  /* Permission system */
   useEffect(() => {
     const tableDataController = async () => {
       const permissionData = await getPermissionData();
@@ -676,6 +677,10 @@ const FinancialTable = () => {
                                   reRender={reRender}
                                   setReRender={setReRender}
                                   setOpenedForm={setOpenedForm}
+                                  getCurrencyExchangeRates={
+                                    getCurrencyExchangeRates
+                                  }
+                                  selectedCurrency={selectedCurrency}
                                   key={index}
                                 />
                               );

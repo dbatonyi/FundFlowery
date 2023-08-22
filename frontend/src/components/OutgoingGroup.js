@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import configData from "../../config";
 import { AuthContext } from "@/layouts/Layout";
 
@@ -14,6 +14,8 @@ const OutgoingGroup = ({
   setOpenedForm,
   reRender,
   setReRender,
+  selectedCurrency,
+  getCurrencyExchangeRates,
 }) => {
   const { t } = useTranslation("outgoingGroup");
   const { setStatusMessage } = useContext(AuthContext);
@@ -28,6 +30,8 @@ const OutgoingGroup = ({
   const [showDeletePopup, setShowDeletePopup] = useState(false);
 
   const [showAddPopup, setShowAddPopup] = useState(false);
+
+  const [sumByCurrency, setSumByCurrency] = useState({});
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -125,6 +129,46 @@ const OutgoingGroup = ({
   const isoString = date.toISOString();
   const formattedDate = isoString.slice(0, 10);
 
+  useEffect(() => {
+    const calculateGroupSum = async () => {
+      const currencyData = await getCurrencyExchangeRates();
+      const exchangeRateMap = new Map();
+
+      currencyData.forEach((exchange) => {
+        const key = `${exchange.currencyExchangeBase}_${exchange.currencyExchangeTarget}`;
+        exchangeRateMap.set(key, exchange.currencyExchangeRate);
+      });
+
+      const targetCurrency = selectedCurrency;
+      const newSumByCurrency = {};
+
+      outgoingGroupData?.outgoings.forEach((item) => {
+        const exchangeRateKey = `${item.outgoingCurrency}_${targetCurrency}`;
+
+        if (exchangeRateMap.has(exchangeRateKey)) {
+          const exchangeRate = exchangeRateMap.get(exchangeRateKey);
+          const convertedAmount = item.outgoingAmount * exchangeRate;
+
+          const convertedAmountFormatted = convertedAmount.toFixed(2);
+
+          if (newSumByCurrency[targetCurrency]) {
+            newSumByCurrency[targetCurrency] += parseFloat(
+              convertedAmountFormatted
+            );
+          } else {
+            newSumByCurrency[targetCurrency] = parseFloat(
+              convertedAmountFormatted
+            );
+          }
+        }
+      });
+
+      setSumByCurrency(newSumByCurrency);
+    };
+
+    calculateGroupSum();
+  }, [reRender]);
+
   return (
     <>
       <div className="financial-table__outgoing-group">
@@ -137,6 +181,9 @@ const OutgoingGroup = ({
                 </div>
                 <div className="financial-table__outgoing-group--date">
                   {formattedDate}
+                </div>
+                <div className="financial-table__outgoing-group--sum">
+                  {sumByCurrency?.[selectedCurrency]} {selectedCurrency}
                 </div>
               </div>
               <div

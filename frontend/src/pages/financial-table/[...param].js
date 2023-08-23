@@ -164,7 +164,7 @@ const FinancialTable = () => {
         setIncomes(dataJson.data[0].incomes);
         setOutgoingsGroup(dataJson.data[0].outgoingsGroup);
 
-        console.log(dataJson.data[0]);
+        console.log("Data: ", dataJson.data[0]);
 
         overallTotalSummary(
           selectedCurrency,
@@ -425,6 +425,8 @@ const FinancialTable = () => {
       return sumByCurrency;
     };
 
+    console.log("outgoindData: ", outgoingsData);
+
     const sumOutgoingAmounts = async (outgoingArray) => {
       const sumByCurrency = { HUF: 0, EUR: 0, USD: 0 };
 
@@ -669,11 +671,10 @@ const FinancialTable = () => {
                       filteredOutgoingsGroup.length > 0 ? (
                         <>
                           {filteredOutgoingsGroup.map(
-                            (outgoingGroup, index) => {
-                              console.log(outgoingGroup);
+                            (outgoingGroupData, index) => {
                               return (
                                 <OutgoingGroup
-                                  outgoingGroupData={outgoingGroup}
+                                  outgoingGroupData={outgoingGroupData}
                                   reRender={reRender}
                                   setReRender={setReRender}
                                   setOpenedForm={setOpenedForm}

@@ -20,7 +20,6 @@ const OutgoingGroup = ({
   const { t } = useTranslation("outgoingGroup");
   const { setStatusMessage } = useContext(AuthContext);
 
-  console.log(outgoingGroupData);
   const [selectedDate, setSelectedDate] = useState(
     outgoingGroupData.outgoingsGroupDate
   );
